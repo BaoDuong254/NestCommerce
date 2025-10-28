@@ -820,7 +820,7 @@
     "@tailwindcss/oxide-win32-arm64-msvc" "4.1.16"
     "@tailwindcss/oxide-win32-x64-msvc" "4.1.16"
 
-"@tailwindcss/vite@^4.1.15":
+"@tailwindcss/vite@^4.1.16":
   version "4.1.16"
   resolved "https://registry.yarnpkg.com/@tailwindcss/vite/-/vite-4.1.16.tgz#bf6b5a58f932feeb1131720f8e15368f1a0ad17c"
   integrity sha512-bbguNBcDxsRmi9nnlWJxhfDWamY3lmcyACHcdO1crxfzuLpOhHLLtEIN/nCbbAtj5rchUgQD17QVAKi1f7IsKg==
@@ -968,7 +968,7 @@
     "@typescript-eslint/types" "8.46.2"
     eslint-visitor-keys "^4.2.1"
 
-"@vitejs/plugin-react-swc@^4.1.0":
+"@vitejs/plugin-react-swc@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react-swc/-/plugin-react-swc-4.2.0.tgz#91c893b76018e32166ca0b9db0c7b1ef67e04595"
   integrity sha512-/tesahXD1qpkGC6FzMoFOJj0RyZdw9xLELOL+6jbElwmWfwOnIVy+IfpY+o9JfD9PKaR/Eyb6DNrvbXpuvA+8Q==
@@ -1624,7 +1624,7 @@ eslint-plugin-prettier@^5.5.4:
     prettier-linter-helpers "^1.0.0"
     synckit "^0.11.7"
 
-eslint-plugin-react-dom@^2.2.3:
+eslint-plugin-react-dom@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-dom/-/eslint-plugin-react-dom-2.2.4.tgz#9287e014b86dfec77412310cc178aa9a1d42b631"
   integrity sha512-mrr56eZsNF0m6NrZxV3wojQnxADLqYGB0A5FHYRuMEX8jmkOy0Jb7v6B4IdzLt0kI1HhAhriOogxOkFlCch/4w==
@@ -1641,7 +1641,7 @@ eslint-plugin-react-dom@^2.2.3:
     string-ts "^2.2.1"
     ts-pattern "^5.9.0"
 
-eslint-plugin-react-hooks@^7.0.0:
+eslint-plugin-react-hooks@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-7.0.1.tgz#66e258db58ece50723ef20cc159f8aa908219169"
   integrity sha512-O0d0m04evaNzEPoSW+59Mezf8Qt0InfgGIBJnpC0h3NH/WjUAR7BIKUfysC6todmtiZ/A0oUVS8Gce0WhBrHsA==
@@ -1657,7 +1657,7 @@ eslint-plugin-react-refresh@^0.4.24:
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-refresh/-/eslint-plugin-react-refresh-0.4.24.tgz#6914e8757eb7d7ccc3efb9dbcc8a51feda71d89e"
   integrity sha512-nLHIW7TEq3aLrEYWpVaJ1dRgFR+wLDPN8e8FpYAql/bMV2oBEfC37K0gLEGgv9fy66juNShSMV8OkTqzltcG/w==
 
-eslint-plugin-react-x@^2.2.3:
+eslint-plugin-react-x@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-x/-/eslint-plugin-react-x-2.2.4.tgz#6b74296cbd0c4d2cf182d277f07509275d91f257"
   integrity sha512-mdoxE1SPt653/udAGQvwPob7ZgaPjIk47G0MWNwKtzLyuI0oD5X+6uq1QAn99TOM1q+sqjsCvvL7aMwGDuZ6aw==
@@ -3116,7 +3116,7 @@ synckit@^0.11.7:
   dependencies:
     "@pkgr/core" "^0.2.9"
 
-tailwindcss@4.1.16, tailwindcss@^4.1.15:
+tailwindcss@4.1.16, tailwindcss@^4.1.16:
   version "4.1.16"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.16.tgz#c32179f98725eb551e5c1189813a3db437ad5a7f"
   integrity sha512-pONL5awpaQX4LN5eiv7moSiSPd/DLDzKVRJz8Q9PgzmAdd1R4307GQS2ZpfiN7ZmekdQrfhZZiSE5jkLR4WNaA==

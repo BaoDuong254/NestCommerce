@@ -968,7 +968,7 @@
     webpack "5.100.2"
     webpack-node-externals "3.0.0"
 
-"@nestjs/common@^11.1.7":
+"@nestjs/common@^11.1.8":
   version "11.1.8"
   resolved "https://registry.yarnpkg.com/@nestjs/common/-/common-11.1.8.tgz#624d01f50d2f263592a1a5407d9f180179a98b2c"
   integrity sha512-bbsOqwld/GdBfiRNc4nnjyWWENDEicq4SH+R5AuYatvf++vf1x5JIsHB1i1KtfZMD3eRte0D4K9WXuAYil6XAg==
@@ -979,7 +979,7 @@
     load-esm "1.0.3"
     tslib "2.8.1"
 
-"@nestjs/core@^11.1.7":
+"@nestjs/core@^11.1.8":
   version "11.1.8"
   resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.8.tgz#fb0d32f9d92e9396babb1e5d29a34727dbbe5285"
   integrity sha512-7riWfmTmMhCJHZ5ZiaG+crj4t85IPCq/wLRuOUSigBYyFT2JZj0lVHtAdf4Davp9ouNI8GINBDt9h9b5Gz9nTw==
@@ -1004,7 +1004,7 @@
   resolved "https://registry.yarnpkg.com/@nestjs/mapped-types/-/mapped-types-2.1.0.tgz#b9b536b7c3571567aa1d0223db8baa1a51505a19"
   integrity sha512-W+n+rM69XsFdwORF11UqJahn4J3xi4g/ZEOlJNL6KoW5ygWSmBB2p0S2BZ4FQeS/NDH72e6xIcu35SfJnE8bXw==
 
-"@nestjs/platform-express@^11.1.7":
+"@nestjs/platform-express@^11.1.8":
   version "11.1.8"
   resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-11.1.8.tgz#9e97c20d23df70ad8826125424a69c9103b68653"
   integrity sha512-rL6pZH9BW7BnL5X2eWbJMtt86uloAKjFgyY5+L2UkizgfEp7rgAs0+Z1z0BcW2Pgu5+q8O7RKPNyHJ/9ZNz/ZQ==
@@ -1026,7 +1026,7 @@
     jsonc-parser "3.3.1"
     pluralize "8.0.0"
 
-"@nestjs/testing@^11.1.7":
+"@nestjs/testing@^11.1.8":
   version "11.1.8"
   resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-11.1.8.tgz#b41855084e53cdea0fae5669fa0fb4792e49c687"
   integrity sha512-E6K+0UTKztcPxJzLnQa7S34lFjZbrj3Z1r7c5y5WDrL1m5HD1H4AeyBhicHgdaFmxjLAva2bq0sYKy/S7cdeYA==
@@ -1290,7 +1290,7 @@
     "@types/range-parser" "*"
     "@types/send" "*"
 
-"@types/express@^5.0.3":
+"@types/express@^5.0.5":
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-5.0.5.tgz#3ba069177caa34ab96585ca23b3984d752300cdc"
   integrity sha512-LuIQOcb6UmnF7C1PCFmEU1u2hmiHL43fgFQX67sN3H4Z+0Yk0Neo++mFsBjhOAuLzvlQeqAAkeDOZrJs9rzumQ==
