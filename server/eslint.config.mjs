@@ -3,15 +3,21 @@ import eslint from "@eslint/js";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import { defineConfig } from "eslint/config";
+import jestPlugin from "eslint-plugin-jest";
 
-export default tseslint.config(
+export default defineConfig(
   {
-    ignores: ["eslint.config.mjs"],
+    ignores: ["eslint.config.mjs", "dist/**", "node_modules/**"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   eslintPluginPrettierRecommended,
   {
+    plugins: {
+      "@typescript-eslint": tseslint.plugin,
+      jest: jestPlugin,
+    },
     languageOptions: {
       globals: {
         ...globals.node,
@@ -23,10 +29,8 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
-  },
-  {
     rules: {
-      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-floating-promises": "warn",
       "@typescript-eslint/no-unsafe-argument": "warn",
       "prettier/prettier": [
@@ -36,7 +40,7 @@ export default tseslint.config(
           semi: true,
           trailingComma: "es5",
           tabWidth: 2,
-          endOfLine: "auto",
+          endOfLine: "lf",
           useTabs: false,
           singleQuote: false,
           printWidth: 120,
