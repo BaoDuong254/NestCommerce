@@ -26,5 +26,9 @@
       "src/*": ["./src/*"],
       "generated/*": ["./generated/*"]
     }
+  },
+  // Enable ts-node to recognize path aliases
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   }
 }
