@@ -1,9 +1,10 @@
 {
   "name": "server",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "author": "",
   "private": true,
+  "packageManager": "pnpm@10.20.0",
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
@@ -18,7 +19,13 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "ts-node ./scripts/seed.ts"
+    "seed": "ts-node ./scripts/seed.ts",
+    "preinstall": "npx only-allow pnpm",
+    "clean": "rimraf dist/"
+  },
+  "engines": {
+    "node": "24.11.0",
+    "pnpm": "10.20.0"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.8",
@@ -43,6 +50,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "rimraf": "6.1.0",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
     "@nestjs/cli": "^11.0.10",
