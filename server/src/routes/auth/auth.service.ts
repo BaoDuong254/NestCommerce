@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from "@nestjs/common";
 import { AuthRepository } from "src/routes/auth/auth.repo";
-import { RegisterBodyType } from "src/routes/auth/models/auth.model";
+import { RegisterBodyType, SendOTPBodyType } from "src/routes/auth/models/auth.model";
 import { RolesService } from "src/routes/auth/roles.service";
 import { isUniqueConstraintPrismaError } from "src/shared/helpers";
 import { HashingService } from "src/shared/services/hashing.service";
@@ -32,5 +32,9 @@ export class AuthService {
       }
       throw error;
     }
+  }
+
+  sendOTP(body: SendOTPBodyType) {
+    return body;
   }
 }
