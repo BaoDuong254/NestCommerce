@@ -17,3 +17,11 @@ export function isUniqueConstraintPrismaError(error: any): error is Prisma.Prism
 export function isNotFoundPrismaError(error: any): error is Prisma.PrismaClientKnownRequestError {
   return error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025";
 }
+
+/**
+ * Generates a 6-digit One-Time Password (OTP).
+ * @returns A string representing the generated OTP.
+ */
+export const generateOTP = (): string => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
