@@ -22,6 +22,28 @@ export class AuthService {
 
   async register(body: RegisterBodyType) {
     try {
+      const verificationCode = await this.authRepository.findUniqueVerificationCode({
+        email_type: {
+          email: body.email,
+          type: "REGISTER",
+        },
+      });
+      if (!verificationCode || verificationCode.code !== body.code) {
+        throw new UnprocessableEntityException([
+          {
+            path: "code",
+            message: "Invalid verification code",
+          },
+        ]);
+      }
+      if (verificationCode.expiresAt < new Date()) {
+        throw new UnprocessableEntityException([
+          {
+            path: "code",
+            message: "Verification code has expired",
+          },
+        ]);
+      }
       const clientRoleID = await this.rolesService.getClientRoleID();
       const hashedPassword = await this.hashingService.hash(body.password);
       return await this.authRepository.createUser({
@@ -33,10 +55,12 @@ export class AuthService {
       });
     } catch (error) {
       if (isUniqueConstraintPrismaError(error)) {
-        throw new UnprocessableEntityException({
-          path: "email",
-          message: "Email is already in use",
-        });
+        throw new UnprocessableEntityException([
+          {
+            path: "email",
+            message: "Email is already in use",
+          },
+        ]);
       }
       throw error;
     }
@@ -46,10 +70,12 @@ export class AuthService {
     const user = await this.sharedUserRepository.findUnique({ email: body.email });
 
     if (user) {
-      throw new UnprocessableEntityException({
-        path: "email",
-        message: "Email is already in use",
-      });
+      throw new UnprocessableEntityException([
+        {
+          path: "email",
+          message: "Email is already in use",
+        },
+      ]);
     }
 
     const code = generateOTP();

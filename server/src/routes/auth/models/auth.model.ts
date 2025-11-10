@@ -9,7 +9,10 @@ export const registerBodySchema = userSchema
     name: true,
     phoneNumber: true,
   })
-  .extend({ confirmPassword: z.string().min(8).max(128) })
+  .extend({
+    confirmPassword: z.string().min(8).max(128),
+    code: z.string().length(6),
+  })
   .strict()
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {
