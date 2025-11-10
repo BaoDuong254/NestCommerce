@@ -23,6 +23,7 @@ const configSchema = z.object({
   REFRESH_TOKEN_EXPIRES_IN: z.string(),
   SECRET_API_KEY: z.string(),
   OTP_EXPIRES_IN: z.string().default("5m"),
+  RESEND_API_KEY: z.string(),
 });
 
 const configServer = configSchema.safeParse(process.env);

@@ -9,6 +9,7 @@ import { SharedUserRepository } from "src/shared/repositories/shared-user.repo";
 import { HashingService } from "src/shared/services/hashing.service";
 import { TokenService } from "src/shared/services/token.service";
 import { addMilliseconds } from "date-fns";
+import { EmailService } from "src/shared/services/email.service";
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,8 @@ export class AuthService {
     private readonly tokenService: TokenService,
     private readonly rolesService: RolesService,
     private readonly authRepository: AuthRepository,
-    private readonly sharedUserRepository: SharedUserRepository
+    private readonly sharedUserRepository: SharedUserRepository,
+    private readonly emailService: EmailService
   ) {}
 
   async register(body: RegisterBodyType) {
@@ -85,6 +87,17 @@ export class AuthService {
       type: body.type,
       expiresAt: addMilliseconds(new Date(), ms(envConfig.OTP_EXPIRES_IN as StringValue)), // 5 minutes
     });
+
+    const { error } = await this.emailService.sendOTP({ email: body.email, code });
+
+    if (error) {
+      throw new UnprocessableEntityException([
+        {
+          path: "code",
+          message: "Failed to send verification code",
+        },
+      ]);
+    }
 
     return verificationCode;
   }

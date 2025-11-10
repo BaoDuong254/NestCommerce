@@ -2,7 +2,7 @@
   "name": "client",
   "private": true,
   "version": "1.0.0",
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.21.0",
   "type": "module",
   "scripts": {
     "start:dev": "vite",
@@ -15,7 +15,7 @@
   },
   "engines": {
     "node": "24.11.0",
-    "pnpm": "10.20.0"
+    "pnpm": "10.21.0"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
