@@ -11,7 +11,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "preinstall": "npx only-allow pnpm",
+    "preinstall": "pnpm dlx only-allow pnpm",
     "start:dev": "turbo run start:dev --parallel",
     "build": "turbo run build",
     "lint": "turbo run lint",
