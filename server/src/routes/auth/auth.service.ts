@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from "@nestjs/common";
 import ms, { StringValue } from "ms";
 import { AuthRepository } from "src/routes/auth/auth.repo";
-import { RegisterBodyType, SendOTPBodyType } from "src/routes/auth/models/auth.model";
+import { LoginBodyType, RegisterBodyType, SendOTPBodyType } from "src/routes/auth/models/auth.model";
 import { RolesService } from "src/routes/auth/roles.service";
 import envConfig from "src/shared/config";
 import { generateOTP, isUniqueConstraintPrismaError } from "src/shared/helpers";
@@ -10,6 +10,7 @@ import { HashingService } from "src/shared/services/hashing.service";
 import { TokenService } from "src/shared/services/token.service";
 import { addMilliseconds } from "date-fns";
 import { EmailService } from "src/shared/services/email.service";
+import { AccessTokenPayloadCreate } from "src/shared/types/jwt.type";
 
 @Injectable()
 export class AuthService {
@@ -100,5 +101,57 @@ export class AuthService {
     }
 
     return verificationCode;
+  }
+
+  async login(body: LoginBodyType & { userAgent: string; ip: string }) {
+    const user = await this.authRepository.findUniqueUserIncludeRole({ email: body.email });
+    if (!user) {
+      throw new UnprocessableEntityException([
+        {
+          message: "Invalid email or password",
+          path: "email",
+        },
+      ]);
+    }
+    const isPasswordValid = await this.hashingService.compare(body.password, user.password);
+    if (!isPasswordValid) {
+      throw new UnprocessableEntityException([
+        {
+          message: "Invalid email or password",
+          path: "password",
+        },
+      ]);
+    }
+    const device = await this.authRepository.createDevice({
+      userId: user.id,
+      userAgent: body.userAgent,
+      ip: body.ip,
+    });
+    return this.generateTokens({
+      userId: user.id,
+      deviceId: device.id,
+      roleId: user.roleId,
+      roleName: user.role.name,
+    });
+  }
+
+  async generateTokens(payload: AccessTokenPayloadCreate) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.tokenService.signAccessToken({
+        ...payload,
+      }),
+      this.tokenService.signRefreshToken(payload),
+    ]);
+    const decodedRefreshToken = await this.tokenService.verifyRefreshToken(refreshToken);
+    await this.authRepository.createRefreshToken({
+      token: refreshToken,
+      userId: payload.userId,
+      expiresAt: new Date(decodedRefreshToken.exp * 1000),
+      deviceId: 1,
+    });
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }
