@@ -23,13 +23,11 @@ export const registerBodySchema = userSchema
       });
     }
   });
-export type RegisterBodyType = z.infer<typeof registerBodySchema>;
 
 export const registerResSchema = userSchema.omit({
   password: true,
   totpSecret: true,
 });
-export type RegisterResType = z.infer<typeof registerResSchema>;
 
 export const verificationCodeSchema = z.object({
   id: z.number(),
@@ -39,7 +37,6 @@ export const verificationCodeSchema = z.object({
   expiresAt: z.date(),
   createdAt: z.date(),
 });
-export type VerificationCodeType = z.infer<typeof verificationCodeSchema>;
 
 export const sendOTPBodySchema = verificationCodeSchema
   .pick({
@@ -47,7 +44,6 @@ export const sendOTPBodySchema = verificationCodeSchema
     type: true,
   })
   .strict();
-export type SendOTPBodyType = z.infer<typeof sendOTPBodySchema>;
 
 export const loginBodySchema = userSchema
   .pick({
@@ -55,21 +51,17 @@ export const loginBodySchema = userSchema
     password: true,
   })
   .strict();
-export type LoginBodyType = z.infer<typeof loginBodySchema>;
 
 export const loginResSchema = z.object({
   accessToken: z.string(),
   refreshToken: z.string(),
 });
-export type LoginResType = z.infer<typeof loginResSchema>;
 
 export const refreshTokenBodySchema = z.object({
   refreshToken: z.string(),
 });
-export type RefreshTokenBodyType = z.infer<typeof refreshTokenBodySchema>;
 
 export const refreshTokenResSchema = loginResSchema;
-export type RefreshTokenResType = z.infer<typeof refreshTokenResSchema>;
 
 export const deviceSchema = z.object({
   id: z.number(),
@@ -80,7 +72,6 @@ export const deviceSchema = z.object({
   createdAt: z.date(),
   isActive: z.boolean(),
 });
-export type DeviceType = z.infer<typeof deviceSchema>;
 
 export const roleSchema = z.object({
   id: z.number(),
@@ -94,4 +85,26 @@ export const roleSchema = z.object({
   updatedAt: z.date().nullable(),
   deletedAt: z.date().nullable(),
 });
+
+export const RefreshTokenSchema = z.object({
+  token: z.string(),
+  userId: z.number(),
+  deviceId: z.number(),
+  expiresAt: z.date(),
+  createdAt: z.date(),
+});
+
+export const logoutBodySchema = refreshTokenBodySchema;
+
 export type RoleType = z.infer<typeof roleSchema>;
+export type RegisterBodyType = z.infer<typeof registerBodySchema>;
+export type RegisterResType = z.infer<typeof registerResSchema>;
+export type VerificationCodeType = z.infer<typeof verificationCodeSchema>;
+export type SendOTPBodyType = z.infer<typeof sendOTPBodySchema>;
+export type LoginBodyType = z.infer<typeof loginBodySchema>;
+export type LoginResType = z.infer<typeof loginResSchema>;
+export type RefreshTokenBodyType = z.infer<typeof refreshTokenBodySchema>;
+export type RefreshTokenResType = z.infer<typeof refreshTokenResSchema>;
+export type DeviceType = z.infer<typeof deviceSchema>;
+export type RefreshTokenType = z.infer<typeof RefreshTokenSchema>;
+export type LogoutBodyType = z.infer<typeof logoutBodySchema>;
