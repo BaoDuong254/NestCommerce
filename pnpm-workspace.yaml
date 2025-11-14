@@ -11,4 +11,5 @@ onlyBuiltDependencies:
   - bcrypt
   - esbuild
   - prisma
+  - sharp
   - unrs-resolver

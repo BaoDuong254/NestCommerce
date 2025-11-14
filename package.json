@@ -1,5 +1,5 @@
 {
-  "name": "ecommerce-platform",
+  "name": "nest-commerce",
   "private": true,
   "packageManager": "pnpm@10.21.0",
   "devDependencies": {
