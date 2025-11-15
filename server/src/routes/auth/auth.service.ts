@@ -1,7 +1,12 @@
-import { Injectable, UnprocessableEntityException } from "@nestjs/common";
+import { HttpException, Injectable, UnauthorizedException, UnprocessableEntityException } from "@nestjs/common";
 import ms, { StringValue } from "ms";
 import { AuthRepository } from "src/routes/auth/auth.repo";
-import { LoginBodyType, RegisterBodyType, SendOTPBodyType } from "src/routes/auth/models/auth.model";
+import {
+  LoginBodyType,
+  RefreshTokenBodyType,
+  RegisterBodyType,
+  SendOTPBodyType,
+} from "src/routes/auth/models/auth.model";
 import { RolesService } from "src/routes/auth/roles.service";
 import envConfig from "src/shared/config";
 import { generateOTP, isUniqueConstraintPrismaError } from "src/shared/helpers";
@@ -153,5 +158,48 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  async refreshToken({ refreshToken, userAgent, ip }: RefreshTokenBodyType & { userAgent: string; ip: string }) {
+    try {
+      // Verify refresh token validity
+      const { userId } = await this.tokenService.verifyRefreshToken(refreshToken);
+      const refreshTokenInDB = await this.authRepository.findUniqueRefreshTokenIncludeUserRole({
+        token: refreshToken,
+      });
+      if (!refreshTokenInDB) {
+        throw new UnauthorizedException("Invalid refresh token");
+      }
+
+      const {
+        deviceId,
+        user: { roleId, name: roleName },
+      } = refreshTokenInDB;
+
+      // Update device info
+      const $updateDevice = this.authRepository.updateDevice(deviceId, {
+        ip,
+        userAgent,
+      });
+      // Delete old refresh token
+      const $deleteRefreshToken = this.authRepository.deleteRefreshToken({
+        token: refreshToken,
+      });
+      // Generate new tokens
+      const $tokens = this.generateTokens({
+        userId,
+        deviceId,
+        roleId,
+        roleName,
+      });
+      // Await all promises
+      const [, , tokens] = await Promise.all([$updateDevice, $deleteRefreshToken, $tokens]);
+      return tokens;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new UnauthorizedException("Invalid refresh token");
+    }
   }
 }

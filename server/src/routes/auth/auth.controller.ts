@@ -1,6 +1,14 @@
-import { Controller, Post, Body, Ip } from "@nestjs/common";
+import { Controller, Post, Body, Ip, HttpCode, HttpStatus } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { LoginBodyDto, RegisterBodyDto, RegisterResDto, SendOTPBodyDto } from "src/routes/auth/dto/auth.dto";
+import {
+  LoginBodyDto,
+  LoginResDto,
+  RefreshTokenBodyDto,
+  RefreshTokenResDto,
+  RegisterBodyDto,
+  RegisterResDto,
+  SendOTPBodyDto,
+} from "src/routes/auth/dto/auth.dto";
 import { ZodSerializerDto } from "nestjs-zod";
 import { UserAgent } from "src/shared/decorators/user-agent.decorator";
 
@@ -15,11 +23,12 @@ export class AuthController {
   }
 
   @Post("otp")
-  sendOTP(@Body() body: SendOTPBodyDto) {
-    return this.authService.sendOTP(body);
+  async sendOTP(@Body() body: SendOTPBodyDto) {
+    return await this.authService.sendOTP(body);
   }
 
   @Post("login")
+  @ZodSerializerDto(LoginResDto)
   async login(@Body() body: LoginBodyDto, @UserAgent() userAgent: string, @Ip() ip: string) {
     return await this.authService.login({
       ...body,
@@ -28,11 +37,16 @@ export class AuthController {
     });
   }
 
-  // @Post("refresh-token")
-  // @HttpCode(HttpStatus.OK)
-  // async refreshToken(@Body() body: any) {
-  //   return await this.authService.refreshToken(body.refreshToken);
-  // }
+  @Post("refresh-token")
+  @HttpCode(HttpStatus.OK)
+  @ZodSerializerDto(RefreshTokenResDto)
+  async refreshToken(@Body() body: RefreshTokenBodyDto, @UserAgent() userAgent: string, @Ip() ip: string) {
+    return await this.authService.refreshToken({
+      refreshToken: body.refreshToken,
+      userAgent,
+      ip,
+    });
+  }
 
   // @Post("logout")
   // async logout(@Body() body: any) {
