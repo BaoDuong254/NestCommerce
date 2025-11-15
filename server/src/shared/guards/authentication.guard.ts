@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthType, ConditionGuard } from "src/shared/constants/auth.constant";
@@ -29,12 +28,12 @@ export class AuthenticationGuard implements CanActivate {
     ]) ?? { authTypes: [AuthType.Bearer], options: { condition: ConditionGuard.And } };
 
     const guards = authTypeValue.authTypes.map((authType) => this.authTypeGuardMap[authType]);
-    let error = new UnauthorizedException();
+    let error: Error = new UnauthorizedException();
 
     if (authTypeValue.options.condition === ConditionGuard.Or) {
       for (const instance of guards) {
         const canActivate = await Promise.resolve(instance.canActivate(context)).catch((err) => {
-          error = err;
+          error = err instanceof Error ? err : new UnauthorizedException();
           return false;
         });
         if (canActivate) {
@@ -45,7 +44,7 @@ export class AuthenticationGuard implements CanActivate {
     } else {
       for (const instance of guards) {
         const canActivate = await Promise.resolve(instance.canActivate(context)).catch((err) => {
-          error = err;
+          error = err instanceof Error ? err : new UnauthorizedException();
           return false;
         });
         if (!canActivate) {

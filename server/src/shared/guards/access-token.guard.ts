@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from "@nestjs/common";
+import { Request } from "express";
 import { REQUEST_USER_KEY } from "src/shared/constants/auth.constant";
 import { TokenService } from "src/shared/services/token.service";
 
@@ -9,7 +7,7 @@ import { TokenService } from "src/shared/services/token.service";
 export class AccessTokenGuard implements CanActivate {
   constructor(private readonly tokenService: TokenService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<Request>();
     const accessToken = request.headers.authorization?.split(" ")[1] as string;
     if (!accessToken) {
       throw new UnauthorizedException();
