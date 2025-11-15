@@ -1,5 +1,4 @@
 import { HttpException, Injectable, UnauthorizedException, UnprocessableEntityException } from "@nestjs/common";
-import ms, { StringValue } from "ms";
 import { AuthRepository } from "src/routes/auth/auth.repo";
 import {
   LoginBodyType,
@@ -8,12 +7,10 @@ import {
   SendOTPBodyType,
 } from "src/routes/auth/models/auth.model";
 import { RolesService } from "src/routes/auth/roles.service";
-import envConfig from "src/shared/config";
 import { generateOTP, isNotFoundPrismaError, isUniqueConstraintPrismaError } from "src/shared/helpers";
 import { SharedUserRepository } from "src/shared/repositories/shared-user.repo";
 import { HashingService } from "src/shared/services/hashing.service";
 import { TokenService } from "src/shared/services/token.service";
-import { addMilliseconds } from "date-fns";
 import { EmailService } from "src/shared/services/email.service";
 import { AccessTokenPayloadCreate } from "src/shared/types/jwt.type";
 
@@ -87,12 +84,6 @@ export class AuthService {
     }
 
     const code = generateOTP();
-    const verificationCode = this.authRepository.createVerificationCode({
-      email: body.email,
-      code,
-      type: body.type,
-      expiresAt: addMilliseconds(new Date(), ms(envConfig.OTP_EXPIRES_IN as StringValue)), // 5 minutes
-    });
 
     const { error } = await this.emailService.sendOTP({ email: body.email, code });
 
@@ -105,7 +96,7 @@ export class AuthService {
       ]);
     }
 
-    return verificationCode;
+    return { message: "Verification code sent successfully" };
   }
 
   async login(body: LoginBodyType & { userAgent: string; ip: string }) {
