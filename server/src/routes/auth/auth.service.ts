@@ -9,7 +9,7 @@ import {
 } from "src/routes/auth/models/auth.model";
 import { RolesService } from "src/routes/auth/roles.service";
 import envConfig from "src/shared/config";
-import { generateOTP, isUniqueConstraintPrismaError } from "src/shared/helpers";
+import { generateOTP, isNotFoundPrismaError, isUniqueConstraintPrismaError } from "src/shared/helpers";
 import { SharedUserRepository } from "src/shared/repositories/shared-user.repo";
 import { HashingService } from "src/shared/services/hashing.service";
 import { TokenService } from "src/shared/services/token.service";
@@ -198,6 +198,23 @@ export class AuthService {
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
+      }
+      throw new UnauthorizedException("Invalid refresh token");
+    }
+  }
+
+  async logout(refreshToken: string) {
+    try {
+      const deletedRefreshToken = await this.authRepository.deleteRefreshToken({ token: refreshToken });
+      await this.authRepository.updateDevice(deletedRefreshToken.deviceId, {
+        isActive: false,
+      });
+      return {
+        message: "Logged out successfully",
+      };
+    } catch (error) {
+      if (isNotFoundPrismaError(error)) {
+        throw new UnauthorizedException("Refresh token not found");
       }
       throw new UnauthorizedException("Invalid refresh token");
     }

@@ -17,4 +17,4 @@ export class LoginBodyDto extends createZodDto(loginBodySchema) {}
 export class LoginResDto extends createZodDto(loginResSchema) {}
 export class RefreshTokenBodyDto extends createZodDto(refreshTokenBodySchema) {}
 export class RefreshTokenResDto extends createZodDto(refreshTokenResSchema) {}
-export class LogoutBodyDtp extends createZodDto(logoutBodySchema) {}
+export class LogoutBodyDto extends createZodDto(logoutBodySchema) {}
