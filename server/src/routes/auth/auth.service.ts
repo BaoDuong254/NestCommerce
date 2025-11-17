@@ -1,4 +1,4 @@
-import { HttpException, Injectable, UnauthorizedException, UnprocessableEntityException } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import { AuthRepository } from "src/routes/auth/auth.repo";
 import {
   LoginBodyType,
@@ -17,6 +17,16 @@ import { StringValue } from "ms";
 import envConfig from "src/shared/config";
 import { addMilliseconds } from "date-fns";
 import ms from "ms";
+import {
+  EmailAlreadyExistsException,
+  EmailNotFoundException,
+  FailedToSendOTPException,
+  InvalidOTPException,
+  InvalidPasswordException,
+  OTPExpiredException,
+  RefreshTokenAlreadyUsedException,
+  UnauthorizedAccessException,
+} from "src/routes/auth/models/error.model";
 
 @Injectable()
 export class AuthService {
@@ -38,20 +48,10 @@ export class AuthService {
         },
       });
       if (!verificationCode || verificationCode.code !== body.code) {
-        throw new UnprocessableEntityException([
-          {
-            path: "code",
-            message: "Invalid verification code",
-          },
-        ]);
+        throw InvalidOTPException;
       }
       if (verificationCode.expiresAt < new Date()) {
-        throw new UnprocessableEntityException([
-          {
-            path: "code",
-            message: "Verification code has expired",
-          },
-        ]);
+        throw OTPExpiredException;
       }
       const clientRoleID = await this.rolesService.getClientRoleID();
       const hashedPassword = await this.hashingService.hash(body.password);
@@ -64,12 +64,7 @@ export class AuthService {
       });
     } catch (error) {
       if (isUniqueConstraintPrismaError(error)) {
-        throw new UnprocessableEntityException([
-          {
-            path: "email",
-            message: "Email is already in use",
-          },
-        ]);
+        throw EmailAlreadyExistsException;
       }
       throw error;
     }
@@ -79,12 +74,7 @@ export class AuthService {
     const user = await this.sharedUserRepository.findUnique({ email: body.email });
 
     if (user) {
-      throw new UnprocessableEntityException([
-        {
-          path: "email",
-          message: "Email is already in use",
-        },
-      ]);
+      throw EmailAlreadyExistsException;
     }
 
     const code = generateOTP();
@@ -99,12 +89,7 @@ export class AuthService {
     const { error } = await this.emailService.sendOTP({ email: body.email, code });
 
     if (error) {
-      throw new UnprocessableEntityException([
-        {
-          path: "code",
-          message: "Failed to send verification code",
-        },
-      ]);
+      throw FailedToSendOTPException;
     }
 
     return { message: "Verification code sent successfully" };
@@ -113,21 +98,11 @@ export class AuthService {
   async login(body: LoginBodyType & { userAgent: string; ip: string }) {
     const user = await this.authRepository.findUniqueUserIncludeRole({ email: body.email });
     if (!user) {
-      throw new UnprocessableEntityException([
-        {
-          message: "Invalid email or password",
-          path: "email",
-        },
-      ]);
+      throw EmailNotFoundException;
     }
     const isPasswordValid = await this.hashingService.compare(body.password, user.password);
     if (!isPasswordValid) {
-      throw new UnprocessableEntityException([
-        {
-          message: "Invalid email or password",
-          path: "password",
-        },
-      ]);
+      throw InvalidPasswordException;
     }
     const device = await this.authRepository.createDevice({
       userId: user.id,
@@ -170,12 +145,15 @@ export class AuthService {
         token: refreshToken,
       });
       if (!refreshTokenInDB) {
-        throw new UnauthorizedException("Invalid refresh token");
+        throw RefreshTokenAlreadyUsedException;
       }
 
       const {
         deviceId,
-        user: { roleId, name: roleName },
+        user: {
+          roleId,
+          role: { name: roleName },
+        },
       } = refreshTokenInDB;
 
       // Update device info
@@ -201,7 +179,7 @@ export class AuthService {
       if (error instanceof HttpException) {
         throw error;
       }
-      throw new UnauthorizedException("Invalid refresh token");
+      throw UnauthorizedAccessException;
     }
   }
 
@@ -216,9 +194,9 @@ export class AuthService {
       };
     } catch (error) {
       if (isNotFoundPrismaError(error)) {
-        throw new UnauthorizedException("Refresh token not found");
+        throw RefreshTokenAlreadyUsedException;
       }
-      throw new UnauthorizedException("Invalid refresh token");
+      throw UnauthorizedAccessException;
     }
   }
 }

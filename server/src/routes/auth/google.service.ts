@@ -8,6 +8,7 @@ import { HashingService } from "src/shared/services/hashing.service";
 import { RolesService } from "src/routes/auth/roles.service";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "src/routes/auth/auth.service";
+import { GoogleUserInfoError } from "src/routes/auth/models/error.model";
 
 @Injectable()
 export class GoogleService {
@@ -74,7 +75,7 @@ export class GoogleService {
       });
       const { data } = await oauth2.userinfo.get();
       if (!data.email) {
-        throw new Error("Google account has no email");
+        throw GoogleUserInfoError;
       }
 
       let user = await this.authRepository.findUniqueUserIncludeRole({

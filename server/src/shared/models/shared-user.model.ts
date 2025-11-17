@@ -2,21 +2,30 @@ import { UserStatus } from "src/shared/constants/auth.constant";
 import { z } from "zod";
 
 export const userSchema = z.object({
-  id: z.number(),
-  email: z.email(),
-  name: z.string().min(1).max(100),
-  password: z.string().min(8).max(128),
-  phoneNumber: z.string().min(10).max(15),
-  avatar: z.string().nullable(),
-  totpSecret: z.string().nullable(),
-  status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE, UserStatus.BLOCKED]),
-  roleId: z.number().positive(),
-  createdById: z.number().nullable(),
-  updatedById: z.number().nullable(),
-  deletedById: z.number().nullable(),
-  deletedAt: z.date().nullable(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  id: z.number({ error: "Error.InvalidID" }).positive({ error: "Error.InvalidID" }),
+  email: z.email({ error: "Error.InvalidEmail" }),
+  name: z
+    .string({ error: "Error.InvalidName" })
+    .min(1, { error: "Error.NameTooShort" })
+    .max(100, { error: "Error.NameTooLong" }),
+  password: z
+    .string({ error: "Error.InvalidPassword" })
+    .min(8, { error: "Error.PasswordTooShort" })
+    .max(128, { error: "Error.PasswordTooLong" }),
+  phoneNumber: z
+    .string({ error: "Error.InvalidPhoneNumber" })
+    .min(10, { error: "Error.PhoneNumberTooShort" })
+    .max(15, { error: "Error.PhoneNumberTooLong" }),
+  avatar: z.string({ error: "Error.InvalidAvatar" }).nullable(),
+  totpSecret: z.string({ error: "Error.InvalidTotpSecret" }).nullable(),
+  status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE, UserStatus.BLOCKED], { error: "Error.InvalidStatus" }),
+  roleId: z.number({ error: "Error.InvalidRoleID" }).positive({ error: "Error.InvalidRoleID" }),
+  createdById: z.number({ error: "Error.InvalidCreatedByID" }).nullable(),
+  updatedById: z.number({ error: "Error.InvalidUpdatedByID" }).nullable(),
+  deletedById: z.number({ error: "Error.InvalidDeletedByID" }).nullable(),
+  deletedAt: z.date({ error: "Error.InvalidDeletedAt" }).nullable(),
+  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export type UserType = z.infer<typeof userSchema>;

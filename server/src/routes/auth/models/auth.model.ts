@@ -10,15 +10,18 @@ export const registerBodySchema = userSchema
     phoneNumber: true,
   })
   .extend({
-    confirmPassword: z.string().min(8).max(128),
-    code: z.string().length(6),
+    confirmPassword: z
+      .string({ error: "Error.InvalidConfirmPassword" })
+      .min(8, { error: "Error.ConfirmPasswordTooShort" })
+      .max(128, { error: "Error.ConfirmPasswordTooLong" }),
+    code: z.string({ error: "Error.InvalidCode" }).length(6, { error: "Error.CodeInvalidLength" }),
   })
   .strict()
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {
       ctx.addIssue({
         code: "custom",
-        message: "Passwords do not match",
+        error: "Error.PasswordsDoNotMatch",
         path: ["confirmPassword"],
       });
     }
@@ -30,12 +33,14 @@ export const registerResSchema = userSchema.omit({
 });
 
 export const verificationCodeSchema = z.object({
-  id: z.number(),
-  email: z.email(),
-  code: z.string().length(6),
-  type: z.enum([TypeOfVerificationCode.REGISTER, TypeOfVerificationCode.FORGOT_PASSWORD]),
-  expiresAt: z.date(),
-  createdAt: z.date(),
+  id: z.number({ error: "Error.InvalidID" }),
+  email: z.email({ error: "Error.InvalidEmail" }),
+  code: z.string({ error: "Error.InvalidCode" }).length(6, { error: "Error.CodeInvalidLength" }),
+  type: z.enum([TypeOfVerificationCode.REGISTER, TypeOfVerificationCode.FORGOT_PASSWORD], {
+    error: "Error.InvalidVerificationType",
+  }),
+  expiresAt: z.date({ error: "Error.InvalidExpiresAt" }),
+  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
 });
 
 export const sendOTPBodySchema = verificationCodeSchema
@@ -53,45 +58,45 @@ export const loginBodySchema = userSchema
   .strict();
 
 export const loginResSchema = z.object({
-  accessToken: z.string(),
-  refreshToken: z.string(),
+  accessToken: z.string({ error: "Error.InvalidAccessToken" }),
+  refreshToken: z.string({ error: "Error.InvalidRefreshToken" }),
 });
 
 export const refreshTokenBodySchema = z.object({
-  refreshToken: z.string(),
+  refreshToken: z.string({ error: "Error.InvalidRefreshToken" }),
 });
 
 export const refreshTokenResSchema = loginResSchema;
 
 export const deviceSchema = z.object({
-  id: z.number(),
-  userId: z.number(),
-  userAgent: z.string(),
-  ip: z.string(),
-  lastActive: z.date(),
-  createdAt: z.date(),
-  isActive: z.boolean(),
+  id: z.number({ error: "Error.InvalidID" }),
+  userId: z.number({ error: "Error.InvalidUserID" }),
+  userAgent: z.string({ error: "Error.InvalidUserAgent" }),
+  ip: z.string({ error: "Error.InvalidIP" }),
+  lastActive: z.date({ error: "Error.InvalidLastActive" }),
+  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
+  isActive: z.boolean({ error: "Error.InvalidIsActive" }),
 });
 
 export const roleSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  description: z.string(),
-  isActive: z.boolean(),
-  createdById: z.number().nullable(),
-  updatedById: z.number().nullable(),
-  deletedById: z.number().nullable(),
-  createdAt: z.date(),
-  updatedAt: z.date().nullable(),
-  deletedAt: z.date().nullable(),
+  id: z.number({ error: "Error.InvalidID" }),
+  name: z.string({ error: "Error.InvalidName" }),
+  description: z.string({ error: "Error.InvalidDescription" }),
+  isActive: z.boolean({ error: "Error.InvalidIsActive" }),
+  createdById: z.number({ error: "Error.InvalidCreatedByID" }).nullable(),
+  updatedById: z.number({ error: "Error.InvalidUpdatedByID" }).nullable(),
+  deletedById: z.number({ error: "Error.InvalidDeletedByID" }).nullable(),
+  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }).nullable(),
+  deletedAt: z.date({ error: "Error.InvalidDeletedAt" }).nullable(),
 });
 
 export const RefreshTokenSchema = z.object({
-  token: z.string(),
-  userId: z.number(),
-  deviceId: z.number(),
-  expiresAt: z.date(),
-  createdAt: z.date(),
+  token: z.string({ error: "Error.InvalidToken" }),
+  userId: z.number({ error: "Error.InvalidUserID" }),
+  deviceId: z.number({ error: "Error.InvalidDeviceID" }),
+  expiresAt: z.date({ error: "Error.InvalidExpiresAt" }),
+  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
 });
 
 export const logoutBodySchema = refreshTokenBodySchema;
@@ -102,7 +107,7 @@ export const googleAuthStateSchema = deviceSchema.pick({
 });
 
 export const getAuthorizationUrlResSchema = z.object({
-  url: z.url(),
+  url: z.url({ error: "Error.InvalidURL" }),
 });
 
 export type RoleType = z.infer<typeof roleSchema>;
