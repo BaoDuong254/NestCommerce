@@ -3,11 +3,21 @@ import { OAuth2Client } from "google-auth-library";
 import { GoogleAuthStateType } from "src/routes/auth/models/auth.model";
 import envConfig from "src/shared/config";
 import { google } from "googleapis";
+import { AuthRepository } from "src/routes/auth/auth.repo";
+import { HashingService } from "src/shared/services/hashing.service";
+import { RolesService } from "src/routes/auth/roles.service";
+import { v4 as uuidv4 } from "uuid";
+import { AuthService } from "src/routes/auth/auth.service";
 
 @Injectable()
 export class GoogleService {
   private readonly oauth2Client: OAuth2Client;
-  constructor() {
+  constructor(
+    private readonly hashingService: HashingService,
+    private readonly authRepository: AuthRepository,
+    private readonly rolesService: RolesService,
+    private readonly authService: AuthService
+  ) {
     this.oauth2Client = new google.auth.OAuth2({
       clientId: envConfig.GOOGLE_CLIENT_ID,
       clientSecret: envConfig.GOOGLE_CLIENT_SECRET,
@@ -38,66 +48,70 @@ export class GoogleService {
     return { url };
   }
 
-  // async googleCallback({ code, state }: { code: string; state: string }) {
-  //   try {
-  //     let userAgent = "Unknown";
-  //     let ip = "Unknown";
-  //     // 1. Lấy state từ url
-  //     try {
-  //       if (state) {
-  //         const clientInfo = JSON.parse(Buffer.from(state, "base64").toString()) as GoogleAuthStateType;
-  //         userAgent = clientInfo.userAgent;
-  //         ip = clientInfo.ip;
-  //       }
-  //     } catch (error) {
-  //       console.error("Error parsing state", error);
-  //     }
-  //     // 2. Dùng code để lấy token
-  //     const { tokens } = await this.oauth2Client.getToken(code);
-  //     this.oauth2Client.setCredentials(tokens);
+  async googleCallback({ code, state }: { code: string; state: string }) {
+    try {
+      let userAgent = "Unknown";
+      let ip = "Unknown";
+      // Get state from url, then get userAgent and ip from state
+      try {
+        if (state) {
+          const clientInfo = JSON.parse(Buffer.from(state, "base64").toString()) as GoogleAuthStateType;
+          userAgent = clientInfo.userAgent;
+          ip = clientInfo.ip;
+        }
+      } catch (error) {
+        console.error("Error parsing state", error);
+      }
 
-  //     // 3. Lấy thông tin google user
-  //     const oauth2 = google.oauth2({
-  //       auth: this.oauth2Client,
-  //       version: "v2",
-  //     });
-  //     const { data } = await oauth2.userinfo.get();
-  //     if (!data.email) {
-  //       throw GoogleUserInfoError;
-  //     }
+      // Get token from code
+      const { tokens } = await this.oauth2Client.getToken(code);
+      this.oauth2Client.setCredentials(tokens);
 
-  //     let user = await this.authRepository.findUniqueUserIncludeRole({
-  //       email: data.email,
-  //     });
-  //     // Nếu không có user tức là người mới, vậy nên sẽ tiến hành đăng ký
-  //     if (!user) {
-  //       const clientRoleId = await this.sharedRoleRepository.getClientRoleId();
-  //       const randomPassword = uuidv4();
-  //       const hashedPassword = await this.hashingService.hash(randomPassword);
-  //       user = await this.authRepository.createUserInclueRole({
-  //         email: data.email,
-  //         name: data.name ?? "",
-  //         password: hashedPassword,
-  //         roleId: clientRoleId,
-  //         phoneNumber: "",
-  //         avatar: data.picture ?? null,
-  //       });
-  //     }
-  //     const device = await this.authRepository.createDevice({
-  //       userId: user.id,
-  //       userAgent,
-  //       ip,
-  //     });
-  //     const authTokens = await this.authService.generateTokens({
-  //       userId: user.id,
-  //       deviceId: device.id,
-  //       roleId: user.roleId,
-  //       roleName: user.role.name,
-  //     });
-  //     return authTokens;
-  //   } catch (error) {
-  //     console.error("Error in googleCallback", error);
-  //     throw error;
-  //   }
-  // }
+      // Get user info
+      const oauth2 = google.oauth2({
+        auth: this.oauth2Client,
+        version: "v2",
+      });
+      const { data } = await oauth2.userinfo.get();
+      if (!data.email) {
+        throw new Error("Google account has no email");
+      }
+
+      let user = await this.authRepository.findUniqueUserIncludeRole({
+        email: data.email,
+      });
+
+      // If user not found, create new user
+      if (!user) {
+        const clientRoleId = await this.rolesService.getClientRoleID();
+        const randomPassword = uuidv4();
+        const hashedPassword = await this.hashingService.hash(randomPassword);
+        user = await this.authRepository.createUserIncludeRole({
+          email: data.email,
+          name: data.name ?? "",
+          password: hashedPassword,
+          roleId: clientRoleId,
+          phoneNumber: "",
+          avatar: data.picture ?? null,
+        });
+      }
+      // Create device
+      const device = await this.authRepository.createDevice({
+        userId: user.id,
+        userAgent,
+        ip,
+      });
+      // Generate tokens
+      const authTokens = await this.authService.generateTokens({
+        userId: user.id,
+        deviceId: device.id,
+        roleId: user.roleId,
+        roleName: user.role.name,
+      });
+      return authTokens;
+    } catch (error) {
+      console.error("Error in googleCallback", error);
+      throw error;
+    }
+  }
 }

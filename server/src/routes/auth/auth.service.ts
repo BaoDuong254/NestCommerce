@@ -143,7 +143,7 @@ export class AuthService {
       token: refreshToken,
       userId: payload.userId,
       expiresAt: new Date(decodedRefreshToken.exp * 1000),
-      deviceId: 1,
+      deviceId: payload.deviceId,
     });
     return {
       accessToken,
