@@ -36,9 +36,17 @@ export const verificationCodeSchema = z.object({
   id: z.number({ error: "Error.InvalidID" }),
   email: z.email({ error: "Error.InvalidEmail" }),
   code: z.string({ error: "Error.InvalidCode" }).length(6, { error: "Error.CodeInvalidLength" }),
-  type: z.enum([TypeOfVerificationCode.REGISTER, TypeOfVerificationCode.FORGOT_PASSWORD], {
-    error: "Error.InvalidVerificationType",
-  }),
+  type: z.enum(
+    [
+      TypeOfVerificationCode.REGISTER,
+      TypeOfVerificationCode.FORGOT_PASSWORD,
+      TypeOfVerificationCode.LOGIN,
+      TypeOfVerificationCode.DISABLE_2FA,
+    ],
+    {
+      error: "Error.InvalidVerificationType",
+    }
+  ),
   expiresAt: z.date({ error: "Error.InvalidExpiresAt" }),
   createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
 });
@@ -54,6 +62,10 @@ export const loginBodySchema = userSchema
   .pick({
     email: true,
     password: true,
+  })
+  .extend({
+    totp: z.string({ error: "Error.InvalidTOTP" }).length(6, { error: "Error.TOTPInvalidLength" }).optional(), // 2FA code
+    code: z.string({ error: "Error.InvalidCode" }).length(6, { error: "Error.CodeInvalidLength" }).optional(), // Email OTP code
   })
   .strict();
 
@@ -134,6 +146,27 @@ export const ForgotPasswordBodySchema = z
     }
   });
 
+export const disable2FABodySchema = z
+  .object({
+    totpCode: z.string({ error: "Error.InvalidTOTP" }).length(6, { error: "Error.TOTPInvalidLength" }).optional(),
+    code: z.string({ error: "Error.InvalidCode" }).length(6, { error: "Error.CodeInvalidLength" }).optional(),
+  })
+  .strict()
+  .superRefine(({ totpCode, code }, ctx) => {
+    if ((totpCode !== undefined) === (code !== undefined)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["totpCode", "code"],
+        message: "Error.EitherTOTPOrCodeRequired",
+      });
+    }
+  });
+
+export const twoFASetupResSchema = z.object({
+  secret: z.string({ error: "Error.InvalidSecret" }),
+  url: z.string({ error: "Error.InvalidURL" }), // otpauth URL for authenticator app
+});
+
 export type RoleType = z.infer<typeof roleSchema>;
 export type RegisterBodyType = z.infer<typeof registerBodySchema>;
 export type RegisterResType = z.infer<typeof registerResSchema>;
@@ -149,3 +182,5 @@ export type LogoutBodyType = z.infer<typeof logoutBodySchema>;
 export type GoogleAuthStateType = z.infer<typeof googleAuthStateSchema>;
 export type GetAuthorizationUrlResType = z.infer<typeof getAuthorizationUrlResSchema>;
 export type ForgotPasswordBodyType = z.infer<typeof ForgotPasswordBodySchema>;
+export type Disable2FABodyType = z.infer<typeof disable2FABodySchema>;
+export type TwoFASetupResType = z.infer<typeof twoFASetupResSchema>;
