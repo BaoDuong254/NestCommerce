@@ -7,6 +7,7 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isInitialized: boolean;
   error: string | null;
 
   // Actions
@@ -23,6 +24,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isAuthenticated: false,
   isLoading: false,
+  isInitialized: false,
   error: null,
 
   login: async (credentials: LoginRequest) => {
@@ -114,7 +116,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     if (accessToken) {
       // If we have access token, user is authenticated
-      set({ isAuthenticated: true });
+      set({ isAuthenticated: true, isInitialized: true });
 
       // Try to load user data if available
       if (userStr) {
@@ -128,7 +130,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       }
     } else {
       // No access token means not authenticated
-      set({ isAuthenticated: false, user: null });
+      set({ isAuthenticated: false, user: null, isInitialized: true });
     }
   },
 }));
