@@ -64,10 +64,19 @@ export const loginBodySchema = userSchema
     password: true,
   })
   .extend({
-    totp: z.string({ error: "Error.InvalidTOTP" }).length(6, { error: "Error.TOTPInvalidLength" }).optional(), // 2FA code
+    totpCode: z.string({ error: "Error.InvalidTOTP" }).length(6, { error: "Error.TOTPInvalidLength" }).optional(), // 2FA code
     code: z.string({ error: "Error.InvalidCode" }).length(6, { error: "Error.CodeInvalidLength" }).optional(), // Email OTP code
   })
-  .strict();
+  .strict()
+  .superRefine(({ totpCode, code }, ctx) => {
+    if (totpCode !== undefined && code !== undefined) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["totpCode", "code"],
+        message: "Error.EitherTOTPOrCodeRequired",
+      });
+    }
+  });
 
 export const loginResSchema = z.object({
   accessToken: z.string({ error: "Error.InvalidAccessToken" }),
@@ -153,7 +162,7 @@ export const disable2FABodySchema = z
   })
   .strict()
   .superRefine(({ totpCode, code }, ctx) => {
-    if ((totpCode !== undefined) === (code !== undefined)) {
+    if (totpCode !== undefined && code !== undefined) {
       ctx.addIssue({
         code: "custom",
         path: ["totpCode", "code"],
