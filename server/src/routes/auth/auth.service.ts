@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { AuthRepository } from "src/routes/auth/auth.repo";
 import {
+  Disable2FABodyType,
   ForgotPasswordBodyType,
   LoginBodyType,
   RefreshTokenBodyType,
@@ -29,6 +30,7 @@ import {
   OTPExpiredException,
   RefreshTokenAlreadyUsedException,
   TOTPAlreadyEnabledException,
+  TOTPNotEnabledException,
   UnauthorizedAccessException,
 } from "src/routes/auth/models/error.model";
 import { TypeOfVerificationCode, TypeOfVerificationCodeType } from "src/shared/constants/auth.constant";
@@ -315,6 +317,44 @@ export class AuthService {
     return {
       secret,
       uri,
+    };
+  }
+
+  async disableTwoFactorAuth(data: Disable2FABodyType & { userId: number }) {
+    const { userId, code, totpCode } = data;
+
+    const user = await this.sharedUserRepository.findUnique({ id: userId });
+    if (!user) {
+      throw EmailNotFoundException;
+    }
+
+    if (!user.totpSecret) {
+      throw TOTPNotEnabledException;
+    }
+
+    if (totpCode) {
+      const isTOTPValid = this.twoFactorService.verifyTOTP({
+        email: user.email,
+        secret: user.totpSecret,
+        token: totpCode,
+      });
+      if (!isTOTPValid) {
+        throw InvalidTOTPException;
+      }
+    } else if (code) {
+      await this.validateVerificationCode({
+        email: user.email,
+        code,
+        type: TypeOfVerificationCode.DISABLE_2FA,
+      });
+    } else {
+      throw InvalidTOTPAndCodeException;
+    }
+
+    await this.authRepository.updateUser({ id: userId }, { totpSecret: null });
+
+    return {
+      message: "Two-factor authentication disabled successfully",
     };
   }
 }
