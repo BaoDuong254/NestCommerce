@@ -11,6 +11,7 @@ import {
   RegisterBodyDto,
   RegisterResDto,
   SendOTPBodyDto,
+  TwoFASetupResDto,
 } from "src/routes/auth/dto/auth.dto";
 import { ZodSerializerDto } from "nestjs-zod";
 import { UserAgent } from "src/shared/decorators/user-agent.decorator";
@@ -19,6 +20,8 @@ import { IsPublic } from "src/shared/decorators/auth.decorator";
 import { GoogleService } from "src/routes/auth/google.service";
 import type { Response } from "express";
 import envConfig from "src/shared/config";
+import { EmptyBodyDto } from "src/shared/dtos/request.dto";
+import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 
 @Controller("auth")
 export class AuthController {
@@ -99,5 +102,11 @@ export class AuthController {
   @ZodSerializerDto(MessageResDto)
   async forgotPassword(@Body() body: ForgotPasswordBodyDto) {
     return await this.authService.forgotPassword(body);
+  }
+
+  @Post("2fa/setup")
+  @ZodSerializerDto(TwoFASetupResDto)
+  setupTwoFactorAuth(@Body() _: EmptyBodyDto, @ActiveUser("userId") userId: number) {
+    return this.authService.setupTwoFactorAuth(userId);
   }
 }

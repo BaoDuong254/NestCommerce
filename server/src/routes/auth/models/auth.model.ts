@@ -164,7 +164,7 @@ export const disable2FABodySchema = z
 
 export const twoFASetupResSchema = z.object({
   secret: z.string({ error: "Error.InvalidSecret" }),
-  url: z.string({ error: "Error.InvalidURL" }), // otpauth URL for authenticator app
+  uri: z.string({ error: "Error.InvalidURL" }), // otpauth URL for authenticator app
 });
 
 export type RoleType = z.infer<typeof roleSchema>;

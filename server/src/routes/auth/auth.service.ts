@@ -26,9 +26,11 @@ import {
   InvalidPasswordException,
   OTPExpiredException,
   RefreshTokenAlreadyUsedException,
+  TOTPAlreadyEnabledException,
   UnauthorizedAccessException,
 } from "src/routes/auth/models/error.model";
 import { TypeOfVerificationCode, TypeOfVerificationCodeType } from "src/shared/constants/auth.constant";
+import { TwoFactorService } from "src/shared/services/2fa.service";
 
 @Injectable()
 export class AuthService {
@@ -38,7 +40,8 @@ export class AuthService {
     private readonly rolesService: RolesService,
     private readonly authRepository: AuthRepository,
     private readonly sharedUserRepository: SharedUserRepository,
-    private readonly emailService: EmailService
+    private readonly emailService: EmailService,
+    private readonly twoFactorService: TwoFactorService
   ) {}
 
   async validateVerificationCode({
@@ -265,6 +268,26 @@ export class AuthService {
 
     return {
       message: "Password reset successfully",
+    };
+  }
+
+  async setupTwoFactorAuth(userId: number) {
+    const user = await this.sharedUserRepository.findUnique({ id: userId });
+    if (!user) {
+      throw EmailNotFoundException;
+    }
+
+    if (user.totpSecret) {
+      throw TOTPAlreadyEnabledException;
+    }
+
+    const { secret, uri } = this.twoFactorService.generateTOTPSecret(user.email);
+
+    await this.authRepository.updateUser({ id: userId }, { totpSecret: secret });
+
+    return {
+      secret,
+      uri,
     };
   }
 }
