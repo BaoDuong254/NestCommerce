@@ -13,6 +13,10 @@ import { HashingService } from "src/shared/services/hashing.service";
 import { TokenService } from "src/shared/services/token.service";
 import { EmailService } from "src/shared/services/email.service";
 import { AccessTokenPayloadCreate } from "src/shared/types/jwt.type";
+import { StringValue } from "ms";
+import envConfig from "src/shared/config";
+import { addMilliseconds } from "date-fns";
+import ms from "ms";
 
 @Injectable()
 export class AuthService {
@@ -84,6 +88,13 @@ export class AuthService {
     }
 
     const code = generateOTP();
+
+    await this.authRepository.createVerificationCode({
+      email: body.email,
+      code,
+      type: body.type,
+      expiresAt: addMilliseconds(new Date(), ms(envConfig.OTP_EXPIRES_IN as StringValue)), // 5 minutes
+    });
 
     const { error } = await this.emailService.sendOTP({ email: body.email, code });
 
