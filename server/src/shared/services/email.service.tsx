@@ -16,7 +16,7 @@ export class EmailService {
   }
   async sendOTP(payload: { email: string; code: string }) {
     return this.resend.emails.send({
-      from: "Ecommerce <onboarding@resend.dev>",
+      from: "NestCommerce <onboarding@resend.dev>",
       to: ["duonggiabao254@gmail.com"],
       subject: subjectTemplate,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

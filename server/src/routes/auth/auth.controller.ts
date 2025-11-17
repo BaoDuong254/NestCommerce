@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Ip, HttpCode, HttpStatus, Get, Query, Res } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import {
+  ForgotPasswordBodyDto,
   GetAuthorizationUrlResDto,
   LoginBodyDto,
   LoginResDto,
@@ -91,5 +92,12 @@ export class AuthController {
       const message = error instanceof Error ? error.message : "Unknown error occurred";
       return res.redirect(`${envConfig.GOOGLE_CLIENT_REDIRECT_URI}?error=${encodeURIComponent(message)}`);
     }
+  }
+
+  @Post("forgot-password")
+  @IsPublic()
+  @ZodSerializerDto(MessageResDto)
+  async forgotPassword(@Body() body: ForgotPasswordBodyDto) {
+    return await this.authService.forgotPassword(body);
   }
 }

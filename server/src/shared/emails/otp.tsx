@@ -25,7 +25,7 @@ export default function OtpEmail({
         <Container style={styles.emailContainer}>
           {/* Header */}
           <Section style={styles.header}>
-            <Heading style={styles.headerTitle}>🛒 Ecommerce</Heading>
+            <Heading style={styles.headerTitle}>🛒 NestCommerce</Heading>
             <Text style={styles.headerSubtitle}>Secure Email Verification</Text>
           </Section>
 
@@ -64,7 +64,7 @@ export default function OtpEmail({
               </Text>
               <Text style={styles.infoText}>
                 This email was sent because someone attempted to verify an account using your email address on
-                Ecommerce. If this wasn't you, no action is needed.
+                NestCommerce. If this wasn't you, no action is needed.
               </Text>
             </Section>
 
@@ -82,7 +82,7 @@ export default function OtpEmail({
           {/* Footer */}
           <Section style={styles.footer}>
             <Text style={styles.footerBrand}>
-              <strong>Ecommerce</strong>
+              <strong>NestCommerce</strong>
             </Text>
             <Text style={styles.footerTagline}>Your trusted online shopping destination</Text>
             <Section style={styles.footerLinks}>
@@ -100,7 +100,7 @@ export default function OtpEmail({
                 </Link>
               </Text>
             </Section>
-            <Text style={styles.footerCopyright}>© {currentYear} Ecommerce. All rights reserved.</Text>
+            <Text style={styles.footerCopyright}>© {currentYear} NestCommerce. All rights reserved.</Text>
           </Section>
         </Container>
       </Body>

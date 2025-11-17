@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { AuthRepository } from "src/routes/auth/auth.repo";
 import {
+  ForgotPasswordBodyType,
   LoginBodyType,
   RefreshTokenBodyType,
   RegisterBodyType,
@@ -27,6 +28,7 @@ import {
   RefreshTokenAlreadyUsedException,
   UnauthorizedAccessException,
 } from "src/routes/auth/models/error.model";
+import { TypeOfVerificationCode, TypeOfVerificationCodeType } from "src/shared/constants/auth.constant";
 
 @Injectable()
 export class AuthService {
@@ -39,29 +41,55 @@ export class AuthService {
     private readonly emailService: EmailService
   ) {}
 
+  async validateVerificationCode({
+    email,
+    code,
+    type,
+  }: {
+    email: string;
+    code: string;
+    type: TypeOfVerificationCodeType;
+  }) {
+    const verificationCode = await this.authRepository.findUniqueVerificationCode({
+      email_type: {
+        email,
+        type,
+      },
+    });
+    if (!verificationCode || verificationCode.code !== code) {
+      throw InvalidOTPException;
+    }
+    if (verificationCode.expiresAt < new Date()) {
+      throw OTPExpiredException;
+    }
+    return verificationCode;
+  }
+
   async register(body: RegisterBodyType) {
     try {
-      const verificationCode = await this.authRepository.findUniqueVerificationCode({
-        email_type: {
-          email: body.email,
-          type: "REGISTER",
-        },
+      await this.validateVerificationCode({
+        email: body.email,
+        code: body.code,
+        type: TypeOfVerificationCode.REGISTER,
       });
-      if (!verificationCode || verificationCode.code !== body.code) {
-        throw InvalidOTPException;
-      }
-      if (verificationCode.expiresAt < new Date()) {
-        throw OTPExpiredException;
-      }
       const clientRoleID = await this.rolesService.getClientRoleID();
       const hashedPassword = await this.hashingService.hash(body.password);
-      return await this.authRepository.createUser({
-        email: body.email,
-        name: body.name,
-        phoneNumber: body.phoneNumber,
-        password: hashedPassword,
-        roleId: clientRoleID,
-      });
+      const [user] = await Promise.all([
+        this.authRepository.createUser({
+          email: body.email,
+          name: body.name,
+          phoneNumber: body.phoneNumber,
+          password: hashedPassword,
+          roleId: clientRoleID,
+        }),
+        this.authRepository.deleteVerificationCode({
+          email_type: {
+            email: body.email,
+            type: TypeOfVerificationCode.REGISTER,
+          },
+        }),
+      ]);
+      return user;
     } catch (error) {
       if (isUniqueConstraintPrismaError(error)) {
         throw EmailAlreadyExistsException;
@@ -73,8 +101,12 @@ export class AuthService {
   async sendOTP(body: SendOTPBodyType) {
     const user = await this.sharedUserRepository.findUnique({ email: body.email });
 
-    if (user) {
+    if (user && body.type === TypeOfVerificationCode.REGISTER) {
       throw EmailAlreadyExistsException;
+    }
+
+    if (!user && body.type === TypeOfVerificationCode.FORGOT_PASSWORD) {
+      throw EmailNotFoundException;
     }
 
     const code = generateOTP();
@@ -198,5 +230,38 @@ export class AuthService {
       }
       throw UnauthorizedAccessException;
     }
+  }
+
+  async forgotPassword(body: ForgotPasswordBodyType) {
+    const { email, code, newPassword } = body;
+
+    const user = await this.sharedUserRepository.findUnique({ email });
+
+    if (!user) {
+      throw EmailNotFoundException;
+    }
+
+    await this.validateVerificationCode({
+      email,
+      code,
+      type: TypeOfVerificationCode.FORGOT_PASSWORD,
+    });
+
+    const hashedPassword = await this.hashingService.hash(newPassword);
+
+    await Promise.all([
+      this.authRepository.updateUser({ id: user.id }, { password: hashedPassword }),
+
+      this.authRepository.deleteVerificationCode({
+        email_type: {
+          email,
+          type: TypeOfVerificationCode.FORGOT_PASSWORD,
+        },
+      }),
+    ]);
+
+    return {
+      message: "Password reset successfully",
+    };
   }
 }

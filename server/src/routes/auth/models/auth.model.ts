@@ -110,6 +110,30 @@ export const getAuthorizationUrlResSchema = z.object({
   url: z.url({ error: "Error.InvalidURL" }),
 });
 
+export const ForgotPasswordBodySchema = z
+  .object({
+    email: z.email({ error: "Error.InvalidEmail" }),
+    code: z.string({ error: "Error.InvalidCode" }).length(6, { error: "Error.CodeInvalidLength" }),
+    newPassword: z
+      .string({ error: "Error.InvalidNewPassword" })
+      .min(8, { error: "Error.NewPasswordTooShort" })
+      .max(128, { error: "Error.NewPasswordTooLong" }),
+    confirmNewPassword: z
+      .string({ error: "Error.InvalidConfirmPassword" })
+      .min(8, { error: "Error.ConfirmPasswordTooShort" })
+      .max(128, { error: "Error.ConfirmPasswordTooLong" }),
+  })
+  .strict()
+  .superRefine(({ confirmNewPassword, newPassword }, ctx) => {
+    if (confirmNewPassword !== newPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Error.PasswordsDoNotMatch",
+        path: ["confirmNewPassword"],
+      });
+    }
+  });
+
 export type RoleType = z.infer<typeof roleSchema>;
 export type RegisterBodyType = z.infer<typeof registerBodySchema>;
 export type RegisterResType = z.infer<typeof registerResSchema>;
@@ -124,3 +148,4 @@ export type RefreshTokenType = z.infer<typeof RefreshTokenSchema>;
 export type LogoutBodyType = z.infer<typeof logoutBodySchema>;
 export type GoogleAuthStateType = z.infer<typeof googleAuthStateSchema>;
 export type GetAuthorizationUrlResType = z.infer<typeof getAuthorizationUrlResSchema>;
+export type ForgotPasswordBodyType = z.infer<typeof ForgotPasswordBodySchema>;
