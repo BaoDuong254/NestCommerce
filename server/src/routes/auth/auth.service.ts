@@ -32,7 +32,7 @@ import {
   TOTPAlreadyEnabledException,
   TOTPNotEnabledException,
   UnauthorizedAccessException,
-} from "src/routes/auth/models/error.model";
+} from "src/routes/auth/auth.error";
 import { TypeOfVerificationCode, TypeOfVerificationCodeType } from "src/shared/constants/auth.constant";
 import { TwoFactorService } from "src/shared/services/2fa.service";
 
