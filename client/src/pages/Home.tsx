@@ -24,7 +24,7 @@ export default function Home() {
           <div className='flex h-16 justify-between'>
             <div className='flex'>
               <div className='flex shrink-0 items-center'>
-                <h1 className='text-xl font-bold text-gray-900'>E-Commerce</h1>
+                <h1 className='text-xl font-bold text-gray-900'>NestCommerce</h1>
               </div>
             </div>
             <div className='flex items-center'>
@@ -41,7 +41,7 @@ export default function Home() {
 
       <main className='mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8'>
         <div className='rounded-lg bg-white px-5 py-6 shadow sm:px-6'>
-          <h2 className='mb-4 text-2xl font-bold text-gray-900'>Welcome to E-Commerce!</h2>
+          <h2 className='mb-4 text-2xl font-bold text-gray-900'>Welcome to NestCommerce!</h2>
           <div className='space-y-2'>
             <p className='text-gray-600'>You are successfully logged in.</p>
             {user && (
