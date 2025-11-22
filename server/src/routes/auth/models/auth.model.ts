@@ -99,19 +99,6 @@ export const deviceSchema = z.object({
   isActive: z.boolean({ error: "Error.InvalidIsActive" }),
 });
 
-export const roleSchema = z.object({
-  id: z.number({ error: "Error.InvalidID" }),
-  name: z.string({ error: "Error.InvalidName" }),
-  description: z.string({ error: "Error.InvalidDescription" }),
-  isActive: z.boolean({ error: "Error.InvalidIsActive" }),
-  createdById: z.number({ error: "Error.InvalidCreatedByID" }).nullable(),
-  updatedById: z.number({ error: "Error.InvalidUpdatedByID" }).nullable(),
-  deletedById: z.number({ error: "Error.InvalidDeletedByID" }).nullable(),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }).nullable(),
-  deletedAt: z.date({ error: "Error.InvalidDeletedAt" }).nullable(),
-});
-
 export const RefreshTokenSchema = z.object({
   token: z.string({ error: "Error.InvalidToken" }),
   userId: z.number({ error: "Error.InvalidUserID" }),
@@ -176,7 +163,6 @@ export const twoFASetupResSchema = z.object({
   uri: z.string({ error: "Error.InvalidURL" }), // otpauth URL for authenticator app
 });
 
-export type RoleType = z.infer<typeof roleSchema>;
 export type RegisterBodyType = z.infer<typeof registerBodySchema>;
 export type RegisterResType = z.infer<typeof registerResSchema>;
 export type VerificationCodeType = z.infer<typeof verificationCodeSchema>;

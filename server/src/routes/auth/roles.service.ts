@@ -1,30 +1,44 @@
 import { PrismaService } from "src/shared/services/prisma.service";
 import { Injectable } from "@nestjs/common";
 import { RoleName } from "src/shared/constants/role.constant";
+import { RoleType } from "src/shared/models/shared-role.model";
 
 @Injectable()
 export class RolesService {
-  private clientRoleID: number | null = null;
+  private clientRoleId: number | null = null;
+  private adminRoleId: number | null = null;
 
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getClientRoleID(): Promise<number> {
-    if (this.clientRoleID) {
-      return this.clientRoleID;
-    }
-
-    const clientRole = await this.prismaService.role.findUniqueOrThrow({
-      where: {
-        name: RoleName.Client,
-      },
+  private async getRole(roleName: string) {
+    const role: RoleType = await this.prismaService.$queryRaw<RoleType[]>`
+    SELECT * FROM "Role" WHERE name = ${roleName} AND "deletedAt" IS NULL LIMIT 1;
+  `.then((res) => {
+      if (res.length === 0) {
+        throw new Error("Role not found");
+      }
+      return res[0];
     });
+    return role;
+  }
 
-    if (!clientRole) {
-      throw new Error("Client role not found in the database.");
+  async getClientRoleID() {
+    if (this.clientRoleId) {
+      return this.clientRoleId;
     }
+    const role = await this.getRole(RoleName.Client);
 
-    this.clientRoleID = clientRole.id;
+    this.clientRoleId = role.id;
+    return role.id;
+  }
 
-    return this.clientRoleID;
+  async getAdminRoleID() {
+    if (this.adminRoleId) {
+      return this.adminRoleId;
+    }
+    const role = await this.getRole(RoleName.Admin);
+
+    this.adminRoleId = role.id;
+    return role.id;
   }
 }
