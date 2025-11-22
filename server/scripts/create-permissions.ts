@@ -2,7 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { Application } from "express";
 import { AppModule } from "src/app.module";
 import { HTTPMethod } from "src/shared/constants/http.constant";
-// import { RoleName } from "src/shared/constants/role.constant";
+import { RoleName } from "src/shared/constants/role.constant";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 interface RouteLayer {
@@ -19,8 +19,8 @@ interface AvailableRoute {
   module: string;
 }
 
-// const SellerModule = ["AUTH", "MEDIA", "MANAGE-PRODUCT", "PRODUCT-TRANSLATION", "PROFILE", "CART", "ORDERS", "REVIEWS"];
-// const ClientModule = ["AUTH", "MEDIA", "PROFILE", "CART", "ORDERS", "REVIEWS"];
+const SellerModule = ["AUTH", "MEDIA", "MANAGE-PRODUCT", "PRODUCT-TRANSLATION", "PROFILE", "CART", "ORDERS", "REVIEWS"];
+const ClientModule = ["AUTH", "MEDIA", "PROFILE", "CART", "ORDERS", "REVIEWS"];
 const prisma = new PrismaService();
 
 async function bootstrap() {
@@ -100,46 +100,46 @@ async function bootstrap() {
   }
 
   // Get updated permissions from database
-  //   const updatedPermissionsInDb = await prisma.permission.findMany({
-  //     where: {
-  //       deletedAt: null,
-  //     },
-  //   });
-  //   const adminPermissionIds = updatedPermissionsInDb.map((item) => ({ id: item.id }));
-  //   const sellerPermissionIds = updatedPermissionsInDb
-  //     .filter((item) => SellerModule.includes(item.module))
-  //     .map((item) => ({ id: item.id }));
-  //   const clientPermissionIds = updatedPermissionsInDb
-  //     .filter((item) => ClientModule.includes(item.module))
-  //     .map((item) => ({ id: item.id }));
+  const updatedPermissionsInDb = await prisma.permission.findMany({
+    where: {
+      deletedAt: null,
+    },
+  });
+  const adminPermissionIds = updatedPermissionsInDb.map((item) => ({ id: item.id }));
+  const sellerPermissionIds = updatedPermissionsInDb
+    .filter((item) => SellerModule.includes(item.module))
+    .map((item) => ({ id: item.id }));
+  const clientPermissionIds = updatedPermissionsInDb
+    .filter((item) => ClientModule.includes(item.module))
+    .map((item) => ({ id: item.id }));
 
-  //   await Promise.all([
-  //     updateRole(adminPermissionIds, RoleName.Admin),
-  //     updateRole(sellerPermissionIds, RoleName.Seller),
-  //     updateRole(clientPermissionIds, RoleName.Client),
-  //   ]);
-  //   process.exit(0);
-  // }
-
-  // const updateRole = async (permissionIds: { id: number }[], roleName: string) => {
-  //   // Update permissions for the role
-  //   const role = await prisma.role.findFirstOrThrow({
-  //     where: {
-  //       name: roleName,
-  //       deletedAt: null,
-  //     },
-  //   });
-
-  //   await prisma.role.update({
-  //     where: {
-  //       id: role.id,
-  //     },
-  //     data: {
-  //       permissions: {
-  //         set: permissionIds,
-  //       },
-  //     },
-  //   });
+  await Promise.all([
+    updateRole(adminPermissionIds, RoleName.Admin),
+    updateRole(sellerPermissionIds, RoleName.Seller),
+    updateRole(clientPermissionIds, RoleName.Client),
+  ]);
+  process.exit(0);
 }
+
+const updateRole = async (permissionIds: { id: number }[], roleName: string) => {
+  // Update permissions for the role
+  const role = await prisma.role.findFirstOrThrow({
+    where: {
+      name: roleName,
+      deletedAt: null,
+    },
+  });
+
+  await prisma.role.update({
+    where: {
+      id: role.id,
+    },
+    data: {
+      permissions: {
+        set: permissionIds,
+      },
+    },
+  });
+};
 
 void bootstrap();
