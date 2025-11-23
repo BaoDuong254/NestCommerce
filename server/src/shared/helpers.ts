@@ -19,6 +19,15 @@ export function isNotFoundPrismaError(error: any): error is Prisma.PrismaClientK
 }
 
 /**
+ * Checks if the given error is a Prisma foreign key constraint violation error.
+ * @param error - The error to check.
+ * @returns True if the error is a foreign key constraint violation, false otherwise.
+ */
+export function isForeignKeyConstraintPrismaError(error: any): error is Prisma.PrismaClientKnownRequestError {
+  return error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2003";
+}
+
+/**
  * Generates a 6-digit One-Time Password (OTP).
  * @returns A string representing the generated OTP.
  */
