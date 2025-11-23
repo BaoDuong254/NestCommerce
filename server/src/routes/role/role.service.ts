@@ -7,17 +7,15 @@ import { RoleName } from "src/shared/constants/role.constant";
 import {
   CreateRoleBodyType,
   GetRolesQueryType,
-  GetRolesResType,
   RoleWithPermissionsType,
   UpdateRoleBodyType,
 } from "src/routes/role/models/role.model";
-import { RoleType } from "src/shared/models/shared-role.model";
 
 @Injectable()
 export class RoleService {
   constructor(private roleRepo: RoleRepo) {}
 
-  async list(pagination: GetRolesQueryType): Promise<GetRolesResType> {
+  async list(pagination: GetRolesQueryType) {
     const data = await this.roleRepo.list(pagination);
     return data;
   }
@@ -30,7 +28,7 @@ export class RoleService {
     return role;
   }
 
-  async create({ data, createdById }: { data: CreateRoleBodyType; createdById: number }): Promise<RoleType> {
+  async create({ data, createdById }: { data: CreateRoleBodyType; createdById: number }) {
     try {
       const role = await this.roleRepo.create({
         createdById,
@@ -45,7 +43,7 @@ export class RoleService {
     }
   }
 
-  private async verifyRole(roleId: number): Promise<void> {
+  private async verifyRole(roleId: number) {
     const role = await this.roleRepo.findById(roleId);
     if (!role) {
       throw NotFoundRecordException;
@@ -57,15 +55,7 @@ export class RoleService {
     }
   }
 
-  async update({
-    id,
-    data,
-    updatedById,
-  }: {
-    id: number;
-    data: UpdateRoleBodyType;
-    updatedById: number;
-  }): Promise<RoleWithPermissionsType> {
+  async update({ id, data, updatedById }: { id: number; data: UpdateRoleBodyType; updatedById: number }) {
     try {
       await this.verifyRole(id);
       const updatedRole = await this.roleRepo.update({
@@ -85,7 +75,7 @@ export class RoleService {
     }
   }
 
-  async delete({ id, deletedById }: { id: number; deletedById: number }): Promise<{ message: string }> {
+  async delete({ id, deletedById }: { id: number; deletedById: number }) {
     try {
       await this.verifyRole(id);
       await this.roleRepo.delete({

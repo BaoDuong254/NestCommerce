@@ -45,6 +45,8 @@ export const createRoleBodySchema = roleSchema
   })
   .strict();
 
+export const createRoleResSchema = roleSchema;
+
 export const updateRoleBodySchema = roleSchema
   .pick({
     name: true,
@@ -63,5 +65,6 @@ export type GetRolesResType = z.infer<typeof getRolesResSchema>;
 export type GetRolesQueryType = z.infer<typeof getRolesQuerySchema>;
 export type GetRoleDetailResType = z.infer<typeof getRoleDetailResSchema>;
 export type CreateRoleBodyType = z.infer<typeof createRoleBodySchema>;
+export type CreateRoleResType = z.infer<typeof createRoleResSchema>;
 export type GetRoleParamsType = z.infer<typeof getRoleParamsSchema>;
 export type UpdateRoleBodyType = z.infer<typeof updateRoleBodySchema>;
