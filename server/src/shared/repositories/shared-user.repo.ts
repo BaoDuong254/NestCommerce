@@ -12,7 +12,7 @@ export class SharedUserRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findUnique(where: WhereUniqueUserType): Promise<UserType | null> {
-    return this.prismaService.user.findUnique({
+    return this.prismaService.user.findFirst({
       where: {
         ...where,
         deletedAt: null,
@@ -40,7 +40,7 @@ export class SharedUserRepository {
     });
   }
 
-  update(where: WhereUniqueUserType, data: Partial<UserType>): Promise<UserType> {
+  update(where: { id: number }, data: Partial<UserType>): Promise<UserType> {
     return this.prismaService.user.update({
       where: {
         ...where,
