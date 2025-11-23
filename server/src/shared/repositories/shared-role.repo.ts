@@ -4,7 +4,7 @@ import { RoleName } from "src/shared/constants/role.constant";
 import { RoleType } from "src/shared/models/shared-role.model";
 
 @Injectable()
-export class RolesService {
+export class SharedRoleRepository {
   private clientRoleId: number | null = null;
   private adminRoleId: number | null = null;
 

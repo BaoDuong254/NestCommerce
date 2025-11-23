@@ -8,7 +8,6 @@ import {
   RegisterBodyType,
   SendOTPBodyType,
 } from "src/routes/auth/models/auth.model";
-import { RolesService } from "src/routes/auth/roles.service";
 import { generateOTP, isNotFoundPrismaError, isUniqueConstraintPrismaError } from "src/shared/helpers";
 import { SharedUserRepository } from "src/shared/repositories/shared-user.repo";
 import { HashingService } from "src/shared/services/hashing.service";
@@ -35,13 +34,14 @@ import {
 import { TypeOfVerificationCode, TypeOfVerificationCodeType } from "src/shared/constants/auth.constant";
 import { TwoFactorService } from "src/shared/services/2fa.service";
 import { InvalidPasswordException } from "src/shared/error";
+import { SharedRoleRepository } from "src/shared/repositories/shared-role.repo";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly hashingService: HashingService,
     private readonly tokenService: TokenService,
-    private readonly rolesService: RolesService,
+    private readonly sharedRoleRepository: SharedRoleRepository,
     private readonly authRepository: AuthRepository,
     private readonly sharedUserRepository: SharedUserRepository,
     private readonly emailService: EmailService,
@@ -80,7 +80,7 @@ export class AuthService {
         code: body.code,
         type: TypeOfVerificationCode.REGISTER,
       });
-      const clientRoleID = await this.rolesService.getClientRoleID();
+      const clientRoleID = await this.sharedRoleRepository.getClientRoleID();
       const hashedPassword = await this.hashingService.hash(body.password);
       const [user] = await Promise.all([
         this.authRepository.createUser({
