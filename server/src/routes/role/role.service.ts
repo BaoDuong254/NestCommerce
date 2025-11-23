@@ -4,18 +4,25 @@ import { NotFoundRecordException } from "src/shared/error";
 import { isNotFoundPrismaError, isUniqueConstraintPrismaError } from "src/shared/helpers";
 import { ProhibitedActionOnBaseRoleException, RoleAlreadyExistsException } from "src/routes/role/role.error";
 import { RoleName } from "src/shared/constants/role.constant";
-import { CreateRoleBodyType, GetRolesQueryType, UpdateRoleBodyType } from "src/routes/role/models/role.model";
+import {
+  CreateRoleBodyType,
+  GetRolesQueryType,
+  GetRolesResType,
+  RoleWithPermissionsType,
+  UpdateRoleBodyType,
+} from "src/routes/role/models/role.model";
+import { RoleType } from "src/shared/models/shared-role.model";
 
 @Injectable()
 export class RoleService {
   constructor(private roleRepo: RoleRepo) {}
 
-  async list(pagination: GetRolesQueryType) {
+  async list(pagination: GetRolesQueryType): Promise<GetRolesResType> {
     const data = await this.roleRepo.list(pagination);
     return data;
   }
 
-  async findById(id: number) {
+  async findById(id: number): Promise<RoleWithPermissionsType | null> {
     const role = await this.roleRepo.findById(id);
     if (!role) {
       throw NotFoundRecordException;
@@ -23,7 +30,7 @@ export class RoleService {
     return role;
   }
 
-  async create({ data, createdById }: { data: CreateRoleBodyType; createdById: number }) {
+  async create({ data, createdById }: { data: CreateRoleBodyType; createdById: number }): Promise<RoleType> {
     try {
       const role = await this.roleRepo.create({
         createdById,
@@ -38,7 +45,7 @@ export class RoleService {
     }
   }
 
-  private async verifyRole(roleId: number) {
+  private async verifyRole(roleId: number): Promise<void> {
     const role = await this.roleRepo.findById(roleId);
     if (!role) {
       throw NotFoundRecordException;
@@ -50,7 +57,15 @@ export class RoleService {
     }
   }
 
-  async update({ id, data, updatedById }: { id: number; data: UpdateRoleBodyType; updatedById: number }) {
+  async update({
+    id,
+    data,
+    updatedById,
+  }: {
+    id: number;
+    data: UpdateRoleBodyType;
+    updatedById: number;
+  }): Promise<RoleWithPermissionsType> {
     try {
       await this.verifyRole(id);
       const updatedRole = await this.roleRepo.update({
@@ -70,7 +85,7 @@ export class RoleService {
     }
   }
 
-  async delete({ id, deletedById }: { id: number; deletedById: number }) {
+  async delete({ id, deletedById }: { id: number; deletedById: number }): Promise<{ message: string }> {
     try {
       await this.verifyRole(id);
       await this.roleRepo.delete({

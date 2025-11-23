@@ -98,9 +98,6 @@ export class PermissionRepo {
           where: {
             id,
           },
-          include: {
-            roles: true,
-          },
         })
       : this.prismaService.permission.update({
           where: {
