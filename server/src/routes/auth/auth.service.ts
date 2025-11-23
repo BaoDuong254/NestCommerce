@@ -24,7 +24,6 @@ import {
   EmailNotFoundException,
   FailedToSendOTPException,
   InvalidOTPException,
-  InvalidPasswordException,
   InvalidTOTPAndCodeException,
   InvalidTOTPException,
   OTPExpiredException,
@@ -35,6 +34,7 @@ import {
 } from "src/routes/auth/auth.error";
 import { TypeOfVerificationCode, TypeOfVerificationCodeType } from "src/shared/constants/auth.constant";
 import { TwoFactorService } from "src/shared/services/2fa.service";
+import { InvalidPasswordException } from "src/shared/error";
 
 @Injectable()
 export class AuthService {
@@ -284,7 +284,7 @@ export class AuthService {
     const hashedPassword = await this.hashingService.hash(newPassword);
 
     await Promise.all([
-      this.authRepository.updateUser({ id: user.id }, { password: hashedPassword }),
+      this.sharedUserRepository.update({ id: user.id }, { password: hashedPassword, updatedById: user.id }),
 
       this.authRepository.deleteVerificationCode({
         email_code_type: {
@@ -312,7 +312,7 @@ export class AuthService {
 
     const { secret, uri } = this.twoFactorService.generateTOTPSecret(user.email);
 
-    await this.authRepository.updateUser({ id: userId }, { totpSecret: secret });
+    await this.sharedUserRepository.update({ id: userId }, { totpSecret: secret, updatedById: userId });
 
     return {
       secret,
@@ -351,7 +351,7 @@ export class AuthService {
       throw InvalidTOTPAndCodeException;
     }
 
-    await this.authRepository.updateUser({ id: userId }, { totpSecret: null });
+    await this.sharedUserRepository.update({ id: userId }, { totpSecret: null, updatedById: userId });
 
     return {
       message: "Two-factor authentication disabled successfully",
