@@ -1,0 +1,16 @@
+{
+  "workspace": {
+    "id": "ca5b6270-228d-4ff5-897f-8fca394dde3d"
+  },
+  "entities": {
+    "collections": [
+      "..\\postman\\collections\\NestCommerce.postman_collection.json"
+    ],
+    "environments": [
+      "..\\postman\\environments\\NestCommerce.postman_environment.json"
+    ],
+    "specs": [],
+    "flows": [],
+    "globals": []
+  }
+}
