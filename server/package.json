@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed": "ts-node ./prisma/seed.ts",
     "create:permissions": "ts-node ./scripts/create-permissions.ts",
+    "seed:brands": "ts-node ./scripts/seed-brands.ts",
     "preinstall": "pnpm dlx only-allow pnpm",
     "clean": "rimraf dist/",
     "email:dev": "email dev --dir src/shared/emails --port 3001",

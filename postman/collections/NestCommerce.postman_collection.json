@@ -1108,12 +1108,26 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/brands",
+							"raw": "{{host}}/brands?page=1&limit=10&lang=all",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"brands"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "lang",
+									"value": "all"
+								}
 							]
 						}
 					},
