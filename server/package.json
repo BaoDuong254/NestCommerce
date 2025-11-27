@@ -32,17 +32,17 @@
     "pnpm": "10.23.0"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.937.0",
-    "@aws-sdk/lib-storage": "3.937.0",
-    "@aws-sdk/s3-request-presigner": "3.937.0",
+    "@aws-sdk/client-s3": "3.940.0",
+    "@aws-sdk/lib-storage": "3.940.0",
+    "@aws-sdk/s3-request-presigner": "3.940.0",
     "@nestjs/common": "^11.1.9",
     "@nestjs/core": "^11.1.9",
     "@nestjs/jwt": "^11.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.1.9",
-    "@prisma/adapter-pg": "7.0.0",
-    "@prisma/client": "^7.0.0",
-    "@prisma/client-runtime-utils": "7.0.0",
+    "@prisma/adapter-pg": "7.0.1",
+    "@prisma/client": "^7.0.1",
+    "@prisma/client-runtime-utils": "7.0.1",
     "@react-email/components": "1.0.1",
     "@react-email/render": "2.0.0",
     "@types/bcrypt": "^6.0.0",
@@ -50,7 +50,7 @@
     "@types/ms": "^2.1.0",
     "bcrypt": "^6.0.0",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.2",
+    "class-validator": "^0.14.3",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "google-auth-library": "10.5.0",
@@ -66,12 +66,12 @@
     "resend": "6.5.2",
     "rxjs": "^7.8.2",
     "uuid": "13.0.0",
-    "zod": "^4.1.12"
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
-    "@nestjs/cli": "^11.0.12",
+    "@nestjs/cli": "^11.0.13",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.9",
     "@react-email/preview-server": "5.0.5",
@@ -83,12 +83,12 @@
     "@types/supertest": "^6.0.3",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jest": "^29.2.0",
+    "eslint-plugin-jest": "^29.2.1",
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.5.0",
     "jest": "^30.2.0",
-    "prettier": "^3.6.2",
-    "prisma": "^7.0.0",
+    "prettier": "^3.7.1",
+    "prisma": "^7.0.1",
     "react-email": "5.0.5",
     "rimraf": "6.1.2",
     "source-map-support": "^0.5.21",
@@ -98,7 +98,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.47.0"
+    "typescript-eslint": "^8.48.0"
   },
   "jest": {
     "moduleFileExtensions": [
