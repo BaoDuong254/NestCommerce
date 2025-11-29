@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Patch } from "@nestjs/common";
 import { ZodSerializerDto } from "nestjs-zod";
 import { BrandTranslationService } from "src/routes/brand/brand-translation/brand-translation.service";
 import {
@@ -29,7 +29,7 @@ export class BrandTranslationController {
     });
   }
 
-  @Put(":brandTranslationId")
+  @Patch(":brandTranslationId")
   @ZodSerializerDto(GetBrandTranslationDetailResDto)
   update(
     @Body() body: UpdateBrandTranslationBodyDto,

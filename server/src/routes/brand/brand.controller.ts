@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Patch, Query } from "@nestjs/common";
 import { ZodSerializerDto } from "nestjs-zod";
 import { BrandService } from "src/routes/brand/brand.service";
 import {
@@ -40,7 +40,7 @@ export class BrandController {
     });
   }
 
-  @Put(":brandId")
+  @Patch(":brandId")
   @ZodSerializerDto(GetBrandDetailResDto)
   update(@Body() body: UpdateBrandBodyDto, @Param() params: GetBrandParamsDto, @ActiveUser("userId") userId: number) {
     return this.brandService.update({

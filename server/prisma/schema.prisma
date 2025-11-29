@@ -37,18 +37,17 @@ model Language {
 
 model User {
   id          Int     @id @default(autoincrement())
-  email       String  
+  email       String
   name        String  @db.VarChar(500)
   password    String  @db.VarChar(500)
   phoneNumber String  @db.VarChar(50)
   avatar      String? @db.VarChar(1000)
 
-  // Này có thể dùng để thực hiện chức năng quên mật khẩu, đăng nhập 2 bước
   totpSecret                  String?               @db.VarChar(1000)
   status                      UserStatus            @default(INACTIVE)
   roleId                      Int
   role                        Role                  @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  devices                     Device[] // Liên kết 1-n với Device
+  devices                     Device[]
   refreshTokens               RefreshToken[]
   carts                       CartItem[]
   orders                      Order[]
@@ -95,9 +94,6 @@ model User {
   receivedMessages            Message[]             @relation("ToUser")
   webSockets                  Websocket[]
 
-  // 1 user có thể tạo ra nhiều user khác
-  // 1 user chỉ có thể được tạo ra bởi 1 user khác
-  // Tự quan hệ 1-n
   createdById  Int?
   createdBy    User?  @relation("CreatorUsers", fields: [createdById], references: [id], onDelete: SetNull, onUpdate: NoAction)
   createdUsers User[] @relation("CreatorUsers")
@@ -158,10 +154,10 @@ model Device {
   user          User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   userAgent     String
   ip            String
-  lastActive    DateTime       @updatedAt // Thay updatedAt bằng lastActive cho ý nghĩa rõ hơn
+  lastActive    DateTime       @updatedAt
   createdAt     DateTime       @default(now())
-  isActive      Boolean        @default(true) // Trạng thái thiết bị (đang login hay đã logout)
-  refreshTokens RefreshToken[] // Liên kết 1-n với RefreshToken
+  isActive      Boolean        @default(true)
+  refreshTokens RefreshToken[]
 }
 
 model RefreshToken {

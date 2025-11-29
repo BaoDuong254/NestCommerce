@@ -4,7 +4,7 @@
   "description": "",
   "author": "",
   "private": true,
-  "packageManager": "pnpm@10.23.0",
+  "packageManager": "pnpm@10.24.0",
   "license": "MIT",
   "scripts": {
     "build": "nest build",
@@ -22,6 +22,7 @@
     "seed": "ts-node ./prisma/seed.ts",
     "create:permissions": "ts-node ./scripts/create-permissions.ts",
     "seed:brands": "ts-node ./scripts/seed-brands.ts",
+    "seed:categories": "ts-node ./scripts/seed-categories.ts",
     "preinstall": "pnpm dlx only-allow pnpm",
     "clean": "rimraf dist/",
     "email:dev": "email dev --dir src/shared/emails --port 3001",
@@ -72,9 +73,9 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.1",
-    "@nestjs/cli": "^11.0.13",
+    "@nestjs/cli": "^11.0.14",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.1.9",
     "@react-email/preview-server": "5.0.5",
@@ -90,7 +91,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.5.0",
     "jest": "^30.2.0",
-    "prettier": "^3.7.1",
+    "prettier": "^3.7.2",
     "prisma": "^7.0.1",
     "react-email": "5.0.5",
     "rimraf": "6.1.2",
