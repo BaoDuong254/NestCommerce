@@ -1,8 +1,9 @@
+import { STORAGE_KEYS } from "@/constants";
+import envConfig from "@/lib/env";
 import axios from "axios";
-import { STORAGE_KEYS } from "../constants";
 
 const http = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: envConfig.VITE_API_ENDPOINT,
   headers: {
     "Content-Type": "application/json",
   },
