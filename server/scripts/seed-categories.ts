@@ -400,16 +400,16 @@ const categoriesData: CategoryData[] = [
   },
 ];
 
-async function main() {
+export default async function main() {
   console.log("Starting category and translation seeding...\n");
 
   // Ensure languages exist
   const languages = await ensureLanguagesExist();
-  console.log("✓ Languages verified:", languages.map((l) => l.id).join(", "));
+  console.log("✅ Languages verified:", languages.map((l) => l.id).join(", "));
 
   // Get or create a system user for createdById
   const systemUser = await ensureSystemUser();
-  console.log("✓ System user verified: ID", systemUser.id, "\n");
+  console.log("✅ System user verified: ID", systemUser.id, "\n");
 
   let createdCategories = 0;
   let createdTranslations = 0;
@@ -437,7 +437,7 @@ async function main() {
 
       let category: Awaited<ReturnType<typeof prisma.category.findFirst>>;
       if (existingCategory) {
-        console.log(`⊘ Category "${categoryData.name}" already exists (ID: ${existingCategory.id})`);
+        console.log(`⏭️ Category "${categoryData.name}" already exists (ID: ${existingCategory.id})`);
         category = existingCategory;
       } else {
         // Create category
@@ -450,14 +450,14 @@ async function main() {
           },
         });
         createdCategories++;
-        console.log(`✓ Created category: ${category.name} (ID: ${category.id})`);
+        console.log(`✅ Created category: ${category.name} (ID: ${category.id})`);
       }
 
       // Create translations for both languages
       for (const [langCode, translation] of Object.entries(categoryData.translations)) {
         const language = languages.find((l) => l.id === langCode);
         if (!language) {
-          console.log(`  ✗ Language ${langCode} not found, skipping translation`);
+          console.log(`  ❌ Language ${langCode} not found, skipping translation`);
           continue;
         }
 
@@ -471,7 +471,7 @@ async function main() {
         });
 
         if (existingTranslation) {
-          console.log(`  ⊘ Translation [${langCode}] already exists for "${categoryData.name}"`);
+          console.log(`  ⏭️ Translation [${langCode}] already exists for "${categoryData.name}"`);
           continue;
         }
 
@@ -486,12 +486,12 @@ async function main() {
           },
         });
         createdTranslations++;
-        console.log(`  ✓ Created translation [${langCode}]: ${translation.name}`);
+        console.log(`  ✅ Created translation [${langCode}]: ${translation.name}`);
       }
 
       // Process children categories
       if (categoryData.children && categoryData.children.length > 0) {
-        console.log(`  → Processing ${categoryData.children.length} child categories...`);
+        console.log(`  🔄 Processing ${categoryData.children.length} child categories...`);
         for (const childData of categoryData.children) {
           await processCategory(childData, category.id, systemUserId, languages);
         }
@@ -499,7 +499,7 @@ async function main() {
 
       console.log("");
     } catch (error) {
-      console.error(`✗ Error processing category "${categoryData.name}":`, error);
+      console.error(`❌ Error processing category "${categoryData.name}":`, error);
     }
   }
 
@@ -582,11 +582,13 @@ async function ensureSystemUser() {
   return user;
 }
 
-main()
-  .catch((e) => {
-    console.error("Error during seeding:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+if (require.main === module) {
+  main()
+    .catch((e) => {
+      console.error("Error during seeding:", e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}

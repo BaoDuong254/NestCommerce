@@ -186,16 +186,16 @@ const brandsData: BrandData[] = [
   },
 ];
 
-async function main() {
+export default async function main() {
   console.log("Starting brand and translation seeding...\n");
 
   // Ensure languages exist
   const languages = await ensureLanguagesExist();
-  console.log("✓ Languages verified:", languages.map((l) => l.id).join(", "));
+  console.log("✅ Languages verified:", languages.map((l) => l.id).join(", "));
 
   // Get or create a system user for createdById
   const systemUser = await ensureSystemUser();
-  console.log("✓ System user verified: ID", systemUser.id, "\n");
+  console.log("✅ System user verified: ID", systemUser.id, "\n");
 
   let createdBrands = 0;
   let createdTranslations = 0;
@@ -212,7 +212,7 @@ async function main() {
 
       let brand: Awaited<ReturnType<typeof prisma.brand.findFirst>>;
       if (existingBrand) {
-        console.log(`⊘ Brand "${brandData.name}" already exists (ID: ${existingBrand.id})`);
+        console.log(`⏭️ Brand "${brandData.name}" already exists (ID: ${existingBrand.id})`);
         brand = existingBrand;
       } else {
         // Create brand
@@ -224,14 +224,14 @@ async function main() {
           },
         });
         createdBrands++;
-        console.log(`✓ Created brand: ${brand.name} (ID: ${brand.id})`);
+        console.log(`✅ Created brand: ${brand.name} (ID: ${brand.id})`);
       }
 
       // Create translations for both languages
       for (const [langCode, translation] of Object.entries(brandData.translations)) {
         const language = languages.find((l) => l.id === langCode);
         if (!language) {
-          console.log(`  ✗ Language ${langCode} not found, skipping translation`);
+          console.log(`  ❌ Language ${langCode} not found, skipping translation`);
           continue;
         }
 
@@ -245,7 +245,7 @@ async function main() {
         });
 
         if (existingTranslation) {
-          console.log(`  ⊘ Translation [${langCode}] already exists for "${brandData.name}"`);
+          console.log(`  ⏭️ Translation [${langCode}] already exists for "${brandData.name}"`);
           continue;
         }
 
@@ -260,12 +260,12 @@ async function main() {
           },
         });
         createdTranslations++;
-        console.log(`  ✓ Created translation [${langCode}]: ${translation.name}`);
+        console.log(`  ✅ Created translation [${langCode}]: ${translation.name}`);
       }
 
       console.log("");
     } catch (error) {
-      console.error(`✗ Error processing brand "${brandData.name}":`, error);
+      console.error(`❌ Error processing brand "${brandData.name}":`, error);
     }
   }
 
@@ -348,11 +348,13 @@ async function ensureSystemUser() {
   return user;
 }
 
-main()
-  .catch((e) => {
-    console.error("Error during seeding:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+if (require.main === module) {
+  main()
+    .catch((e) => {
+      console.error("Error during seeding:", e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}

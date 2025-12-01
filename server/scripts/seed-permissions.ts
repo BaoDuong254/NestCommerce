@@ -23,7 +23,7 @@ const SellerModule = ["AUTH", "MEDIA", "MANAGE-PRODUCT", "PRODUCT-TRANSLATION", 
 const ClientModule = ["AUTH", "MEDIA", "PROFILE", "CART", "ORDERS", "REVIEWS"];
 const prisma = new PrismaService();
 
-async function bootstrap() {
+export default async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(3001);
   const server = app.getHttpAdapter().getInstance() as Application;
@@ -118,7 +118,9 @@ async function bootstrap() {
     updateRole(sellerPermissionIds, RoleName.Seller),
     updateRole(clientPermissionIds, RoleName.Client),
   ]);
-  process.exit(0);
+  if (require.main === module) {
+    process.exit(0);
+  }
 }
 
 const updateRole = async (permissionIds: { id: number }[], roleName: string) => {
@@ -142,4 +144,6 @@ const updateRole = async (permissionIds: { id: number }[], roleName: string) => 
   });
 };
 
-void bootstrap();
+if (require.main === module) {
+  void bootstrap();
+}

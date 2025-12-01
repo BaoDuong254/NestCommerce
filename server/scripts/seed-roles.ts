@@ -6,11 +6,22 @@ import { RoleName } from "src/shared/constants/role.constant";
 const prisma = new PrismaService();
 const hashingService = new HashingService();
 
-const main = async () => {
+export const main = async () => {
   const roleCount = await prisma.role.count();
   if (roleCount > 0) {
-    throw new Error("Roles already exist");
+    console.log("⏭️ Roles already exist, skipping role seeding...");
+    const adminUser = await prisma.user.findFirst({
+      where: {
+        email: envConfig.ADMIN_EMAIL,
+      },
+    });
+    return {
+      createdRoleCount: 0,
+      adminUser: adminUser || undefined,
+      skipped: true,
+    };
   }
+
   const roles = await prisma.role.createMany({
     data: [
       {
@@ -46,12 +57,17 @@ const main = async () => {
   return {
     createdRoleCount: roles.count,
     adminUser,
+    skipped: false,
   };
 };
 
-main()
-  .then(({ adminUser, createdRoleCount }) => {
-    console.log(`Created ${createdRoleCount} roles`);
-    console.log(`Created admin user: ${adminUser.email}`);
-  })
-  .catch(console.error);
+if (require.main === module) {
+  main()
+    .then(({ adminUser, createdRoleCount, skipped }) => {
+      if (!skipped) {
+        console.log(`Created ${createdRoleCount} roles`);
+        console.log(`Created admin user: ${adminUser?.email}`);
+      }
+    })
+    .catch(console.error);
+}

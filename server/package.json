@@ -19,15 +19,16 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "ts-node ./prisma/seed.ts",
-    "create:permissions": "ts-node ./scripts/create-permissions.ts",
-    "seed:brands": "ts-node ./scripts/seed-brands.ts",
-    "seed:categories": "ts-node ./scripts/seed-categories.ts",
     "preinstall": "pnpm dlx only-allow pnpm",
     "clean": "rimraf dist/",
     "email:dev": "email dev --dir src/shared/emails --port 3001",
     "email:build": "email build --dir src/shared/emails",
-    "email:export": "email export --dir src/shared/emails"
+    "email:export": "email export --dir src/shared/emails",
+    "seed": "ts-node -r tsconfig-paths/register scripts/index.ts",
+    "seed:roles": "ts-node -r tsconfig-paths/register scripts/seed-roles.ts",
+    "seed:permissions": "ts-node -r tsconfig-paths/register scripts/seed-permissions.ts",
+    "seed:brands": "ts-node -r tsconfig-paths/register scripts/seed-brands.ts",
+    "seed:categories": "ts-node -r tsconfig-paths/register scripts/seed-categories.ts"
   },
   "engines": {
     "node": "24.11.0",
