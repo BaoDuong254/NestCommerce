@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "@/stores/authStore";
 import { ROUTES } from "@/constants";
 import type { LoginRequest } from "@/types/auth";
+import { authService } from "@/services/auth.service";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -34,7 +35,6 @@ export default function Login() {
   const handleGoogleLogin = () => {
     void (async () => {
       try {
-        const { authService } = await import("../services/auth.service");
         const { url } = await authService.getGoogleAuthUrl();
         window.location.href = url;
       } catch (error) {
