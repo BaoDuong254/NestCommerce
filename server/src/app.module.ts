@@ -19,9 +19,20 @@ import { AcceptLanguageResolver, I18nModule, QueryResolver } from "nestjs-i18n";
 import path from "path";
 import { CategoryModule } from "src/routes/category/category.module";
 import { CategoryTranslationModule } from "src/routes/category/category-translation/category-translation.module";
+import { ProductModule } from "src/routes/product/product.module";
+import { ProductTranslationModule } from "src/routes/product/product-translation/product-translation.module";
 
 @Module({
   imports: [
+    I18nModule.forRoot({
+      fallbackLanguage: "en",
+      loaderOptions: {
+        path: path.resolve("src/i18n/"),
+        watch: true,
+      },
+      resolvers: [{ use: QueryResolver, options: ["lang"] }, AcceptLanguageResolver],
+      typesOutputPath: path.resolve("src/generated/i18n.generated.ts"),
+    }),
     SharedModule,
     AuthModule,
     LanguageModule,
@@ -34,15 +45,8 @@ import { CategoryTranslationModule } from "src/routes/category/category-translat
     BrandTranslationModule,
     CategoryModule,
     CategoryTranslationModule,
-    I18nModule.forRoot({
-      fallbackLanguage: "en",
-      loaderOptions: {
-        path: path.resolve("src/i18n/"),
-        watch: true,
-      },
-      resolvers: [{ use: QueryResolver, options: ["lang"] }, AcceptLanguageResolver],
-      typesOutputPath: path.resolve("src/generated/i18n.generated.ts"),
-    }),
+    ProductModule,
+    ProductTranslationModule,
   ],
   controllers: [AppController],
   providers: [

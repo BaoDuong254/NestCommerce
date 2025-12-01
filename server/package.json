@@ -94,6 +94,7 @@
     "jest": "^30.2.0",
     "prettier": "^3.7.3",
     "prisma": "^7.0.1",
+    "prisma-json-types-generator": "3.6.2",
     "react-email": "5.0.5",
     "rimraf": "6.1.2",
     "source-map-support": "^0.5.21",
