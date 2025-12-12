@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
-import { ZodResponse } from "nestjs-zod";
+import { ZodSerializerDto } from "nestjs-zod";
 import {
   GetProductDetailResDTO,
   GetProductParamsDTO,
@@ -15,7 +15,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  @ZodResponse({ type: GetProductsResDTO })
+  @ZodSerializerDto(GetProductsResDTO)
   list(@Query() query: GetProductsQueryDTO) {
     return this.productService.list({
       query,
@@ -23,7 +23,7 @@ export class ProductController {
   }
 
   @Get(":productId")
-  @ZodResponse({ type: GetProductDetailResDTO })
+  @ZodSerializerDto(GetProductDetailResDTO)
   findById(@Param() params: GetProductParamsDTO) {
     return this.productService.getDetail({
       productId: params.productId,

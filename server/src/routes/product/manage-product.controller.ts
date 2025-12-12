@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { ZodSerializerDto } from "nestjs-zod";
 import { ManageProductService } from "src/routes/product/manage-product.service";
 import {
@@ -47,7 +47,7 @@ export class ManageProductController {
     });
   }
 
-  @Put(":productId")
+  @Patch(":productId")
   @ZodSerializerDto(ProductDTO)
   update(
     @Body() body: UpdateProductBodyDTO,
