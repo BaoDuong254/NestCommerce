@@ -19,7 +19,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Bao\",\r\n    \"email\": \"duonggiabao254s@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"confirmPassword\": \"123456789\",\r\n    \"phoneNumber\": \"0945188349\",\r\n    \"code\": \"792054\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Seller 3\",\r\n    \"email\": \"seller3@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"confirmPassword\": \"123456789\",\r\n    \"phoneNumber\": \"0945188342\",\r\n    \"code\": \"458632\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -67,7 +67,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"duonggiabao254@gmail.com\",\r\n    \"password\": \"123456789\"\r\n    // \"code\": \"375242\"\r\n    // \"totpCode\": \"123123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"seller2@gmail.com\",\r\n    \"password\": \"123456789\"\r\n    // \"code\": \"375242\"\r\n    // \"totpCode\": \"123123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -187,7 +187,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"duonggiabao254s@gmail.com\",\r\n    \"type\": \"REGISTER\"\r\n}",
+							"raw": "{\r\n    \"email\": \"seller3@gmail.com\",\r\n    \"type\": \"REGISTER\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -798,7 +798,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"duonggiabao2541@gmail.com\",\r\n    \"name\": \"Duonggiabao\",\r\n    \"phoneNumber\": \"1234393231\",\r\n    \"roleId\": 2,\r\n    \"avatar\": \"google.com\",\r\n    \"password\": \"123456789\",\r\n    \"status\": \"ACTIVE\"\r\n}",
+							"raw": "{\r\n    \"email\": \"seller2@gmail.com\",\r\n    \"name\": \"John Sell\",\r\n    \"phoneNumber\": \"1234393231\",\r\n    \"roleId\": 3,\r\n    \"avatar\": \"google.com\",\r\n    \"password\": \"123456789\",\r\n    \"status\": \"ACTIVE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1435,6 +1435,281 @@
 							"path": [
 								"categories",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "module product",
+			"item": [
+				{
+					"name": "module product-translation",
+					"item": [
+						{
+							"name": "Product-translation detail",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/product-translations/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"product-translations",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a product-translation",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\": 1,\r\n    \"languageId\": \"en\",\r\n    \"name\": \"\",\r\n    \"description\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/product-translations/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"product-translations",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a product-translation",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\": 1,\r\n    \"languageId\": \"en\",\r\n    \"name\": \"\",\r\n    \"description\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/product-translations/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"product-translations",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a product-translation",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/product-translations/1",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"product-translations",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Giày Nike\",\r\n    \"publishedAt\": null,\r\n    \"basePrice\": 12000,\r\n    \"virtualPrice\": 15000,\r\n    \"brandId\": 1,\r\n    \"images\": [],\r\n    \"categories\": [\r\n        1,\r\n        2,\r\n        3\r\n    ],\r\n    \"variants\": [\r\n        {\r\n            \"value\": \"Màu sắc\",\r\n            \"options\": [\r\n                \"Đen\",\r\n                \"Trắng\",\r\n                \"Xanh\",\r\n                \"Đỏ\"\r\n            ]\r\n        },\r\n        {\r\n            \"value\": \"Kích thước\",\r\n            \"options\": [\r\n                \"S\",\r\n                \"M\",\r\n                \"L\",\r\n                \"XL\"\r\n            ]\r\n        }\r\n    ],\r\n    \"skus\": [\r\n        {\r\n            \"value\": \"Đen-S\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Đen-M\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Đen-L\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Đen-XL\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Trắng-S\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Trắng-M\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Trắng-L\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Trắng-XL\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Xanh-S\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Xanh-M\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Xanh-L\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Xanh-XL\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Đỏ-S\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Đỏ-M\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Đỏ-L\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        },\r\n        {\r\n            \"value\": \"Đỏ-XL\",\r\n            \"price\": 0,\r\n            \"stock\": 100,\r\n            \"image\": \"\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/manage-product/products",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manage-product",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Giày Nike\",\r\n    \"publishedAt\": \"2025-12-12T16:58:30.677Z\",\r\n    \"basePrice\": 12000,\r\n    \"virtualPrice\": 15000,\r\n    \"brandId\": 1,\r\n    \"images\": [],\r\n    \"categories\": [\r\n        1,\r\n        2,\r\n        3\r\n    ],\r\n    \"variants\": [\r\n        {\r\n            \"value\": \"Màu sắc\",\r\n            \"options\": [\r\n                \"Đen\",\r\n                \"Trắng\",\r\n                \"Xanh\",\r\n                \"Đỏ\"\r\n            ]\r\n        },\r\n        {\r\n            \"value\": \"Kích thước\",\r\n            \"options\": [\r\n                \"S\",\r\n                \"M\",\r\n                \"L\",\r\n                \"XL\"\r\n            ]\r\n        }\r\n    ],\r\n    \"skus\":\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/manage-product/products/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manage-product",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/manage-product/products?createdById=5&orderBy=asc&sortBy=price",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manage-product",
+								"products"
+							],
+							"query": [
+								{
+									"key": "createdById",
+									"value": "5"
+								},
+								{
+									"key": "isPublic",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "brandIds",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "minPrice",
+									"value": "13000",
+									"disabled": true
+								},
+								{
+									"key": "maxPrice",
+									"value": "14000",
+									"disabled": true
+								},
+								{
+									"key": "categories",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "nike",
+									"disabled": true
+								},
+								{
+									"key": "orderBy",
+									"value": "asc"
+								},
+								{
+									"key": "sortBy",
+									"value": "price"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list product detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/manage-product/products/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manage-product",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/manage-product/products/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"manage-product",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list products for guest",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/products",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"products"
 							]
 						}
 					},
