@@ -130,7 +130,6 @@ export const GetProductDetailResSchema = ProductSchema.extend({
 });
 
 export const CreateProductBodySchema = ProductSchema.pick({
-  publishedAt: true,
   name: true,
   basePrice: true,
   virtualPrice: true,
@@ -139,6 +138,7 @@ export const CreateProductBodySchema = ProductSchema.pick({
   variants: true,
 })
   .extend({
+    publishedAt: z.coerce.date({ error: "Error.InvalidPublishedAt" }).nullable(),
     categories: z.array(
       z.coerce
         .number({ error: "Error.InvalidCategoryId" })
