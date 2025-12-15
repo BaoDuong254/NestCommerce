@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Query } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Patch, Query } from "@nestjs/common";
 import { CartService } from "./cart.service";
 import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 import {
@@ -29,7 +29,7 @@ export class CartController {
     return this.cartService.addToCart(userId, body);
   }
 
-  @Put(":cartItemId")
+  @Patch(":cartItemId")
   @ZodSerializerDto(CartItemDTO)
   updateCartItem(
     @ActiveUser("userId") userId: number,

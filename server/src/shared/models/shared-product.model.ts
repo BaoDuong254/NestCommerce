@@ -33,7 +33,7 @@ export const VariantsSchema = z.array(VariantSchema).superRefine((variants, ctx)
 
 export const ProductSchema = z.object({
   id: z.number({ error: "Error.InvalidProductId" }),
-  publishedAt: z.date({ error: "Error.InvalidPublishedAt" }).nullable(),
+  publishedAt: z.coerce.date({ error: "Error.InvalidPublishedAt" }).nullable(),
   name: z.string({ error: "Error.InvalidProductName" }).trim().max(500, { error: "Error.ProductNameTooLong" }),
   basePrice: z.number({ error: "Error.InvalidBasePrice" }).min(0, { error: "Error.BasePriceTooLow" }),
   virtualPrice: z.number({ error: "Error.InvalidVirtualPrice" }).min(0, { error: "Error.VirtualPriceTooLow" }),
@@ -43,9 +43,9 @@ export const ProductSchema = z.object({
   createdById: z.number({ error: "Error.InvalidCreatedById" }).nullable(),
   updatedById: z.number({ error: "Error.InvalidUpdatedById" }).nullable(),
   deletedById: z.number({ error: "Error.InvalidDeletedById" }).nullable(),
-  deletedAt: z.date({ error: "Error.InvalidDeletedAt" }).nullable(),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }),
+  deletedAt: z.coerce.date({ error: "Error.InvalidDeletedAt" }).nullable(),
+  createdAt: z.coerce.date({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.coerce.date({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export type ProductType = z.infer<typeof ProductSchema>;

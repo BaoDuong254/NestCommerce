@@ -10,8 +10,8 @@ export const CartItemSchema = z.object({
   skuId: z.number({ error: "Error.InvalidSkuId" }),
   userId: z.number({ error: "Error.InvalidUserId" }),
 
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }),
+  createdAt: z.coerce.date({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.coerce.date({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export const GetCartItemParamsSchema = z.object({

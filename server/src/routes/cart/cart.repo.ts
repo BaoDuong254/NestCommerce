@@ -51,20 +51,20 @@ export class CartRepo {
         },
       }),
     ]);
-    // Kiểm tra tồn tại của SKU
+    // Check SKU exists
     if (!sku) {
       throw NotFoundSKUException;
     }
     if (cartItem && isCreate && quantity + cartItem.quantity > sku.stock) {
       throw InvalidQuantityException;
     }
-    // Kiểm tra lượng hàng còn lại
+    // Check quantity
     if (sku.stock < 1 || sku.stock < quantity) {
       throw OutOfStockSKUException;
     }
     const { product } = sku;
 
-    // Kiểm tra sản phẩm đã bị xóa hoặc có công khai hay không
+    // Check product status
     if (
       product.deletedAt !== null ||
       product.publishedAt === null ||
