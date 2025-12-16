@@ -141,7 +141,7 @@ export class CartRepo {
     };
   }
 
-  async list2({
+  async listRaw({
     userId,
     languageId,
     page,
@@ -154,7 +154,7 @@ export class CartRepo {
   }): Promise<GetCartResType> {
     const skip = (page - 1) * limit;
     const take = limit;
-    // Đếm tổng số nhóm sản phẩm
+    // Count total items
     const totalItems$ = this.prismaService.$queryRaw<{ createdById: number }[]>`
       SELECT
         "Product"."createdById"
@@ -167,6 +167,7 @@ export class CartRepo {
         AND "Product"."publishedAt" <= NOW()
       GROUP BY "Product"."createdById"
     `;
+    // Group cart items by shop
     const data$ = this.prismaService.$queryRaw<CartItemDetailType[]>`
      SELECT
        "Product"."createdById",
