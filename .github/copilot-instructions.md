@@ -27,7 +27,6 @@ ecommerce/
 
 ## CRITICAL RULES (Always follow)
 
-- Backend: NestJS + Prisma + TypeScript strict
 - NEVER use `any`
 - ALWAYS validate input using Zod DTOs
 - ALWAYS check `deletedAt: null` (soft delete)
@@ -39,6 +38,10 @@ ecommerce/
 
 ## Backend Rules
 
+- NestJS + TypeScript strict
+- Modular structure (one module per feature)
+- Use Dependency Injection
+- Use Prisma ORM
 - Use Prisma from `server/generated/prisma/`
 - Use absolute imports from `src/*`
 - Select only required fields in queries
@@ -66,3 +69,8 @@ ecommerce/
 - Do not use relative imports across modules
 - Do not bypass permission checks
 - Do not ignore TypeScript errors
+
+## Related Instructions
+- See `.github/instructions/nestjs.instructions.md` for NestJS patterns
+- See `.github/instructions/reactjs.instructions.md` for React patterns
+- See `.github/instructions/typescript-5-es2022.instructions.md` for TypeScript rules
