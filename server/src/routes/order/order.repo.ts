@@ -137,7 +137,6 @@ export class OrderRepo {
         }
 
         // 5. Create order and delete cartItem in transaction to ensure data integrity
-
         const payment = await tx.payment.create({
           data: {
             status: "PENDING",
