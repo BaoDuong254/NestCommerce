@@ -51,7 +51,10 @@ export const CancelOrderResSchema = OrderSchema;
 
 export const GetOrderParamsSchema = z
   .object({
-    orderId: z.coerce.number().int().positive(),
+    orderId: z.coerce
+      .number({ error: "InvalidOrderId" })
+      .int({ error: "OrderIdMustBeInteger" })
+      .positive({ error: "OrderIdMustBePositive" }),
   })
   .strict();
 
