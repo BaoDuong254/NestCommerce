@@ -26,6 +26,7 @@ import { OrderModule } from "src/routes/order/order.module";
 import { PaymentModule } from "src/routes/payment/payment.module";
 import { BullModule } from "@nestjs/bullmq";
 import { PaymentConsumer } from "src/queues/payment.consumer";
+import envConfig from "src/shared/config";
 
 @Module({
   imports: [
@@ -40,10 +41,7 @@ import { PaymentConsumer } from "src/queues/payment.consumer";
     }),
     BullModule.forRoot({
       connection: {
-        username: "default",
-        password: "7mO1pWSdXBL0OXi0KB1LMhKs8p9wd9us",
-        host: "redis-11113.c1.ap-southeast-1-1.ec2.cloud.redislabs.com",
-        port: 11113,
+        url: envConfig.REDIS_URL,
       },
     }),
     SharedModule,
