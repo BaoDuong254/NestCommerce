@@ -3,15 +3,20 @@ import path from "path";
 import { config } from "dotenv";
 import z from "zod";
 
-config({
-  path: ".env",
-});
+const envPath = path.resolve(__dirname, "../../.env");
 
-if (!fs.existsSync(path.resolve(".env"))) {
-  console.log("Not found .env file. Please create it.");
+// Only load .env file if it exists (development mode)
+// In production, Docker Compose injects env vars directly
+if (fs.existsSync(envPath)) {
+  config({ path: envPath });
+} else if (process.env.NODE_ENV !== "production") {
+  console.log("Can not find .env file!");
   process.exit(1);
 }
+
 const configSchema = z.object({
+  PORT: z.string().optional(),
+  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   DATABASE_URL: z.string(),
   ADMIN_PASSWORD: z.string(),
   ADMIN_EMAIL: z.email(),
