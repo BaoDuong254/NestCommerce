@@ -21,7 +21,7 @@ const configSchema = z.object({
   ACCESS_TOKEN_EXPIRES_IN: z.string(),
   REFRESH_TOKEN_SECRET: z.string(),
   REFRESH_TOKEN_EXPIRES_IN: z.string(),
-  SECRET_API_KEY: z.string(),
+  PAYMENT_API_KEY: z.string(),
   OTP_EXPIRES_IN: z.string().default("5m"),
   RESEND_API_KEY: z.string(),
   GOOGLE_CLIENT_ID: z.string(),

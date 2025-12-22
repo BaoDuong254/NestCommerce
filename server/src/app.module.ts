@@ -24,6 +24,8 @@ import { ProductTranslationModule } from "src/routes/product/product-translation
 import { CartModule } from "src/routes/cart/cart.module";
 import { OrderModule } from "src/routes/order/order.module";
 import { PaymentModule } from "src/routes/payment/payment.module";
+import { BullModule } from "@nestjs/bullmq";
+import { PaymentConsumer } from "src/queues/payment.consumer";
 
 @Module({
   imports: [
@@ -35,6 +37,14 @@ import { PaymentModule } from "src/routes/payment/payment.module";
       },
       resolvers: [{ use: QueryResolver, options: ["lang"] }, AcceptLanguageResolver],
       typesOutputPath: path.resolve("src/generated/i18n.generated.ts"),
+    }),
+    BullModule.forRoot({
+      connection: {
+        username: "default",
+        password: "7mO1pWSdXBL0OXi0KB1LMhKs8p9wd9us",
+        host: "redis-11113.c1.ap-southeast-1-1.ec2.cloud.redislabs.com",
+        port: 11113,
+      },
     }),
     SharedModule,
     AuthModule,
@@ -69,6 +79,7 @@ import { PaymentModule } from "src/routes/payment/payment.module";
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
+    PaymentConsumer,
   ],
 })
 export class AppModule {}

@@ -46,3 +46,21 @@ export const generateRandomFilename = (filename: string) => {
   const ext = path.extname(filename);
   return `${uuidv4()}${ext}`;
 };
+
+/**
+ * Generates a job ID for canceling a payment based on the payment ID.
+ * @param paymentId - The payment ID.
+ * @returns A string representing the generated job ID.
+ */
+export const generateCancelPaymentJobId = (paymentId: number) => {
+  return `paymentId-${paymentId}`;
+};
+
+/**
+ * Generates a room user ID based on the user ID.
+ * @param userId - The user ID.
+ * @returns A string representing the generated room user ID.
+ */
+export const generateRoomUserId = (userId: number) => {
+  return `userId-${userId}`;
+};

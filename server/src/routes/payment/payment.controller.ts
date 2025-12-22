@@ -1,22 +1,18 @@
-import { Controller, Get, Param, Delete } from "@nestjs/common";
+import { Controller, Post, Body } from "@nestjs/common";
 import { PaymentService } from "./payment.service";
+import { ZodSerializerDto } from "nestjs-zod";
+import { Auth } from "src/shared/decorators/auth.decorator";
+import { WebhookPaymentBodyDTO } from "src/routes/payment/dto/payment.dto";
+import { MessageResDto } from "src/shared/dtos/response.dto";
 
 @Controller("payment")
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
-  @Get()
-  findAll() {
-    return this.paymentService.findAll();
-  }
-
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.paymentService.findOne(+id);
-  }
-
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.paymentService.remove(+id);
+  @Post("/receiver")
+  @ZodSerializerDto(MessageResDto)
+  @Auth(["PaymentAPIKey"])
+  receiver(@Body() body: WebhookPaymentBodyDTO) {
+    return this.paymentService.receiver(body);
   }
 }

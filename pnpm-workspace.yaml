@@ -10,6 +10,7 @@ onlyBuiltDependencies:
   - '@swc/core'
   - bcrypt
   - esbuild
+  - msgpackr-extract
   - prisma
   - sharp
   - unrs-resolver
