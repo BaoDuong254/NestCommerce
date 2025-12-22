@@ -25,7 +25,6 @@ export class PaymentRepo {
   }
 
   async receiver(body: WebhookPaymentBodyType): Promise<number> {
-    // 1. Insert transaction record to database
     // Reference: https://docs.sepay.vn/lap-trinh-webhooks.html
     let amountIn = 0;
     let amountOut = 0;
@@ -43,6 +42,7 @@ export class PaymentRepo {
       throw new BadRequestException("Transaction already exists");
     }
     const userId = await this.prismaService.$transaction(async (tx) => {
+      // 1. Insert transaction record to database
       await tx.paymentTransaction.create({
         data: {
           id: body.id,
