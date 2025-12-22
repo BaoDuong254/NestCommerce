@@ -15,6 +15,7 @@ export const ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
   GOOGLE_CALLBACK: "/oauth-google-callback",
+  PAYMENT: "/payment/:orderId",
 } as const;
 
 export const STORAGE_KEYS = {

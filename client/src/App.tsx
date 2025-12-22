@@ -6,6 +6,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Home from "@/pages/Home";
 import GoogleCallback from "@/pages/GoogleCallback";
+import PaymentPage from "@/pages/PaymentPage";
 import { ROUTES } from "@/constants";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -33,6 +34,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.PAYMENT}
+          element={
+            <ProtectedRoute>
+              <PaymentPage />
             </ProtectedRoute>
           }
         />

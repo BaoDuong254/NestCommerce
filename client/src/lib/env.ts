@@ -4,6 +4,8 @@ const configSchema = z.object({
   PORT: z.coerce.number().default(5173),
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   VITE_API_ENDPOINT: z.string().default("http://localhost:3000"),
+  VITE_BANK_ACCOUNT_NUMBER: z.string(),
+  VITE_BANK_NAME: z.string(),
 });
 
 const configServer = configSchema.safeParse(import.meta.env);
