@@ -1802,7 +1802,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"skuId\": 49,\r\n    \"quantity\": 2\r\n}",
+							"raw": "{\r\n    \"skuId\": 52,\r\n    \"quantity\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1891,7 +1891,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[\r\n    {\r\n        \"shopId\": 5,\r\n        \"receiver\": {\r\n            \"name\": \"test\",\r\n            \"phone\": \"09451883439\",\r\n            \"address\": \"KTX Khu A\"\r\n        },\r\n        \"cartItemIds\": [\r\n            2\r\n        ]\r\n    }\r\n]",
+							"raw": "[\r\n    {\r\n        \"shopId\": 5,\r\n        \"receiver\": {\r\n            \"name\": \"test\",\r\n            \"phone\": \"09451883439\",\r\n            \"address\": \"KTX Khu A\"\r\n        },\r\n        \"cartItemIds\": [\r\n            10\r\n        ]\r\n    }\r\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1934,13 +1934,60 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/orders/1",
+							"raw": "{{host}}/orders/7",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"orders",
-								"1"
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "module payment",
+			"item": [
+				{
+					"name": "Webhook receiver",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "Apikey {{paymentAPIKey}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 5,                                   // ID giao dịch trên SePay\r\n    \"gateway\":\"Vietcombank\",                  // Brand name của ngân hàng\r\n    \"transactionDate\":\"2023-03-25 14:02:37\",  // Thời gian xảy ra giao dịch phía ngân hàng\r\n    \"accountNumber\":\"0123499999\",              // Số tài khoản ngân hàng\r\n    \"code\":null,                               // Mã code thanh toán (sepay tự nhận diện dựa vào cấu hình tại Công ty -> Cấu hình chung)\r\n    \"content\":\"DH8\",                            // Nội dung chuyển khoản\r\n    \"transferType\":\"in\",                       // Loại giao dịch. in là tiền vào, out là tiền ra\r\n    \"transferAmount\": 0,                        // Số tiền giao dịch\r\n    \"accumulated\":19077000,                    // Số dư tài khoản (lũy kế)\r\n    \"subAccount\":null,                         // Tài khoản ngân hàng phụ (tài khoản định danh),\r\n    \"referenceCode\":\"MBVCB.3278907687\",         // Mã tham chiếu của tin nhắn sms\r\n    \"description\":\"\"                           // Toàn bộ nội dung tin nhắn sms\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/payment/receiver",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"payment",
+								"receiver"
 							]
 						}
 					},
