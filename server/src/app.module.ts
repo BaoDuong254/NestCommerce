@@ -29,9 +29,12 @@ import { WebsocketModule } from "src/websockets/websocket.module";
 import { ThrottlerModule } from "@nestjs/throttler";
 import { ThrottlerBehindProxyGuard } from "src/shared/guards/throttler-behind-proxy.guard";
 import { ReviewModule } from "src/routes/review/review.module";
+import { ScheduleModule } from "@nestjs/schedule";
+import { RemoveRefreshTokenCronjob } from "src/cronjobs/remove-refresh-token.cronjob";
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     I18nModule.forRoot({
       fallbackLanguage: "en",
       loaderOptions: {
@@ -98,6 +101,7 @@ import { ReviewModule } from "src/routes/review/review.module";
       useClass: ThrottlerBehindProxyGuard,
     },
     PaymentConsumer,
+    RemoveRefreshTokenCronjob,
   ],
 })
 export class AppModule {}

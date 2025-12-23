@@ -4,7 +4,7 @@
   "description": "",
   "author": "",
   "private": true,
-  "packageManager": "pnpm@10.26.1",
+  "packageManager": "pnpm@10.26.2",
   "license": "MIT",
   "scripts": {
     "build": "nest build",
@@ -34,12 +34,12 @@
   },
   "engines": {
     "node": "24.11.1",
-    "pnpm": "10.26.1"
+    "pnpm": "10.26.2"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "3.956.0",
-    "@aws-sdk/lib-storage": "3.956.0",
-    "@aws-sdk/s3-request-presigner": "3.956.0",
+    "@aws-sdk/client-s3": "3.957.0",
+    "@aws-sdk/lib-storage": "3.957.0",
+    "@aws-sdk/s3-request-presigner": "3.957.0",
     "@nestjs/bullmq": "11.0.4",
     "@nestjs/common": "^11.1.10",
     "@nestjs/core": "^11.1.10",
@@ -47,6 +47,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.1.10",
     "@nestjs/platform-socket.io": "11.1.10",
+    "@nestjs/schedule": "6.1.0",
     "@nestjs/swagger": "11.2.3",
     "@nestjs/throttler": "6.5.0",
     "@nestjs/websockets": "11.1.10",
@@ -100,7 +101,7 @@
     "@types/supertest": "^6.0.3",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jest": "^29.9.0",
+    "eslint-plugin-jest": "^29.10.1",
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.5.0",
     "jest": "^30.2.0",
