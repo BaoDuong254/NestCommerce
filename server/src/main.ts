@@ -5,9 +5,13 @@ import envConfig from "src/shared/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { cleanupOpenApiDoc } from "nestjs-zod";
 import chalk from "chalk";
+import { NestExpressApplication } from "@nestjs/platform-express";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Trust proxy settings
+  app.set("trust proxy", "loopback");
 
   // Enable CORS
   app.enableCors();

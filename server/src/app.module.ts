@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { SharedModule } from "./shared/shared.module";
-import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { AuthModule } from "src/routes/auth/auth.module";
 import CustomZodValidationPipe from "src/shared/pipes/custom-zod-validation.pipe";
 import { ZodSerializerInterceptor } from "nestjs-zod";
@@ -26,6 +26,8 @@ import { BullModule } from "@nestjs/bullmq";
 import { PaymentConsumer } from "src/queues/payment.consumer";
 import envConfig from "src/shared/config";
 import { WebsocketModule } from "src/websockets/websocket.module";
+import { ThrottlerModule } from "@nestjs/throttler";
+import { ThrottlerBehindProxyGuard } from "src/shared/guards/throttler-behind-proxy.guard";
 
 @Module({
   imports: [
@@ -42,6 +44,20 @@ import { WebsocketModule } from "src/websockets/websocket.module";
       connection: {
         url: envConfig.REDIS_URL,
       },
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          name: "short-term",
+          ttl: 60000, // 1 minute
+          limit: 10,
+        },
+        {
+          name: "long-term",
+          ttl: 600000, // 10 minutes
+          limit: 50,
+        },
+      ],
     }),
     SharedModule,
     AuthModule,
@@ -74,6 +90,10 @@ import { WebsocketModule } from "src/websockets/websocket.module";
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerBehindProxyGuard,
     },
     PaymentConsumer,
   ],
