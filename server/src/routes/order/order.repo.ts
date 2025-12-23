@@ -22,8 +22,10 @@ import { Prisma } from "generated/prisma";
 import { OrderStatus } from "src/shared/constants/order.constant";
 import { PaymentStatus } from "src/shared/constants/payment.constant";
 import { OrderProducer } from "src/routes/order/order.producer";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 
 @Injectable()
+@SerializeAll()
 export class OrderRepo {
   constructor(
     private readonly prismaService: PrismaService,
@@ -61,7 +63,7 @@ export class OrderRepo {
       limit,
       totalItems,
       totalPages: Math.ceil(totalItems / limit),
-    };
+    } as unknown as Promise<GetOrderListResType>;
   }
 
   async create(
@@ -148,7 +150,7 @@ export class OrderRepo {
         });
         const orders: CreateOrderResType["orders"] = [];
         for (const item of body) {
-          const order = await tx.order.create({
+          const order = (await tx.order.create({
             data: {
               userId,
               status: OrderStatus.PENDING_PAYMENT,
@@ -187,7 +189,7 @@ export class OrderRepo {
                 }),
               },
             },
-          });
+          })) as unknown as CreateOrderResType["orders"][0];
           orders.push(order);
         }
 
@@ -246,7 +248,7 @@ export class OrderRepo {
     if (!order) {
       throw OrderNotFoundException;
     }
-    return order;
+    return order as unknown as Promise<GetOrderDetailResType>;
   }
 
   async cancel(userId: number, orderId: number): Promise<CancelOrderResType> {
@@ -272,7 +274,7 @@ export class OrderRepo {
           updatedById: userId,
         },
       });
-      return updatedOrder;
+      return updatedOrder as unknown as Promise<CancelOrderResType>;
     } catch (error) {
       if (isNotFoundPrismaError(error)) {
         throw OrderNotFoundException;

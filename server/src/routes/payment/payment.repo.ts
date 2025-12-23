@@ -5,24 +5,16 @@ import { PaymentProducer } from "src/routes/payment/payment.producer";
 import { OrderStatus } from "src/shared/constants/order.constant";
 import { PREFIX_PAYMENT_CODE } from "src/shared/constants/other.constant";
 import { PaymentStatus } from "src/shared/constants/payment.constant";
-import { OrderIncludeProductSKUSnapshotType } from "src/shared/models/shared-order.model";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class PaymentRepo {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly paymentProducer: PaymentProducer
   ) {}
-
-  private getTotalPrice(orders: OrderIncludeProductSKUSnapshotType[]): number {
-    return orders.reduce((total, order) => {
-      const orderTotal = order.items.reduce((totalPrice, productSku) => {
-        return totalPrice + productSku.skuPrice * productSku.quantity;
-      }, 0);
-      return total + orderTotal;
-    }, 0);
-  }
 
   async receiver(body: WebhookPaymentBodyType): Promise<number> {
     // Reference: https://docs.sepay.vn/lap-trinh-webhooks.html
@@ -83,9 +75,23 @@ export class PaymentRepo {
       if (!payment) {
         throw new BadRequestException(`Cannot find payment with id ${paymentId}`);
       }
+      if (!payment.orders || payment.orders.length === 0) {
+        throw new BadRequestException(`Payment ${paymentId} has no orders`);
+      }
       const userId = payment.orders[0].userId;
       const { orders } = payment;
-      const totalPrice = this.getTotalPrice(orders as OrderIncludeProductSKUSnapshotType[]);
+
+      // Calculate total price from orders
+      let totalPrice = 0;
+      for (const order of orders) {
+        if (!order.items || order.items.length === 0) {
+          throw new BadRequestException(`Order ${order.id} has no items`);
+        }
+        for (const item of order.items) {
+          totalPrice += item.skuPrice * item.quantity;
+        }
+      }
+
       if (totalPrice !== body.transferAmount) {
         throw new BadRequestException(`Price not match, expected ${totalPrice} but got ${body.transferAmount}`);
       }

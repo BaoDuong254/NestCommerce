@@ -10,8 +10,8 @@ export const CartItemSchema = z.object({
   skuId: z.number({ error: "Error.InvalidSkuId" }),
   userId: z.number({ error: "Error.InvalidUserId" }),
 
-  createdAt: z.coerce.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.coerce.date({ error: "Error.InvalidUpdatedAt" }),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.iso.datetime({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export const GetCartItemParamsSchema = z.object({
@@ -38,6 +38,11 @@ export const CartItemDetailSchema = z.object({
               updatedAt: true,
             })
           ),
+          createdBy: userSchema.pick({
+            id: true,
+            name: true,
+            avatar: true,
+          }),
         }).omit({
           createdById: true,
           updatedById: true,

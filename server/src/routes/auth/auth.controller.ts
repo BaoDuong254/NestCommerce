@@ -14,7 +14,7 @@ import {
   SendOTPBodyDto,
   TwoFASetupResDto,
 } from "src/routes/auth/dto/auth.dto";
-import { ZodSerializerDto } from "nestjs-zod";
+import { ZodResponse } from "nestjs-zod";
 import { UserAgent } from "src/shared/decorators/user-agent.decorator";
 import { MessageResDto } from "src/shared/dtos/response.dto";
 import { IsPublic } from "src/shared/decorators/auth.decorator";
@@ -33,21 +33,21 @@ export class AuthController {
 
   @Post("register")
   @IsPublic()
-  @ZodSerializerDto(RegisterResDto)
+  @ZodResponse({ type: RegisterResDto })
   async register(@Body() body: RegisterBodyDto) {
     return await this.authService.register(body);
   }
 
   @Post("otp")
   @IsPublic()
-  @ZodSerializerDto(MessageResDto)
+  @ZodResponse({ type: MessageResDto })
   async sendOTP(@Body() body: SendOTPBodyDto) {
     return await this.authService.sendOTP(body);
   }
 
   @Post("login")
   @IsPublic()
-  @ZodSerializerDto(LoginResDto)
+  @ZodResponse({ type: LoginResDto })
   async login(@Body() body: LoginBodyDto, @UserAgent() userAgent: string, @Ip() ip: string) {
     return await this.authService.login({
       ...body,
@@ -59,7 +59,7 @@ export class AuthController {
   @Post("refresh-token")
   @IsPublic()
   @HttpCode(HttpStatus.OK)
-  @ZodSerializerDto(RefreshTokenResDto)
+  @ZodResponse({ type: RefreshTokenResDto })
   async refreshToken(@Body() body: RefreshTokenBodyDto, @UserAgent() userAgent: string, @Ip() ip: string) {
     return await this.authService.refreshToken({
       refreshToken: body.refreshToken,
@@ -69,14 +69,14 @@ export class AuthController {
   }
 
   @Post("logout")
-  @ZodSerializerDto(MessageResDto)
+  @ZodResponse({ type: MessageResDto })
   async logout(@Body() body: LogoutBodyDto) {
     return await this.authService.logout(body.refreshToken);
   }
 
   @Get("google-link")
   @IsPublic()
-  @ZodSerializerDto(GetAuthorizationUrlResDto)
+  @ZodResponse({ type: GetAuthorizationUrlResDto })
   getAuthorizationUrl(@UserAgent() userAgent: string, @Ip() ip: string) {
     return this.googleService.getAuthorizationUrl({
       userAgent,
@@ -100,19 +100,19 @@ export class AuthController {
 
   @Post("forgot-password")
   @IsPublic()
-  @ZodSerializerDto(MessageResDto)
+  @ZodResponse({ type: MessageResDto })
   async forgotPassword(@Body() body: ForgotPasswordBodyDto) {
     return await this.authService.forgotPassword(body);
   }
 
   @Post("2fa/setup")
-  @ZodSerializerDto(TwoFASetupResDto)
+  @ZodResponse({ type: TwoFASetupResDto })
   setupTwoFactorAuth(@Body() _: EmptyBodyDto, @ActiveUser("userId") userId: number) {
     return this.authService.setupTwoFactorAuth(userId);
   }
 
   @Post("2fa/disable")
-  @ZodSerializerDto(MessageResDto)
+  @ZodResponse({ type: MessageResDto })
   disableTwoFactorAuth(@Body() body: Disable2FABodyDto, @ActiveUser("userId") userId: number) {
     return this.authService.disableTwoFactorAuth({
       ...body,

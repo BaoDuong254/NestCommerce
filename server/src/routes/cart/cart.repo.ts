@@ -16,11 +16,13 @@ import {
   UpdateCartItemBodyType,
 } from "src/routes/cart/models/cart.model";
 import { ALL_LANGUAGE_CODE } from "src/shared/constants/other.constant";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { isNotFoundPrismaError } from "src/shared/helpers";
 import { SKUSchemaType } from "src/shared/models/shared-sku.model";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class CartRepo {
   constructor(private readonly prismaService: PrismaService) {}
 
@@ -72,7 +74,7 @@ export class CartRepo {
     ) {
       throw ProductNotFoundException;
     }
-    return sku;
+    return sku as unknown as Promise<SKUSchemaType>;
   }
 
   async list({
@@ -124,7 +126,7 @@ export class CartRepo {
         if (!groupMap.has(shopId)) {
           groupMap.set(shopId, { shop: cartItem.sku.product.createdBy, cartItems: [] });
         }
-        groupMap.get(shopId)?.cartItems.push(cartItem);
+        groupMap.get(shopId)?.cartItems.push(cartItem as unknown as CartItemDetailType["cartItems"][number]);
       }
     }
     const sortedGroups = Array.from(groupMap.values());
@@ -177,8 +179,8 @@ export class CartRepo {
            'quantity', "CartItem"."quantity",
            'skuId', "CartItem"."skuId",
            'userId', "CartItem"."userId",
-           'createdAt', "CartItem"."createdAt",
-           'updatedAt', "CartItem"."updatedAt",
+           'createdAt', to_char("CartItem"."createdAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),
+           'updatedAt', to_char("CartItem"."updatedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),
            'sku', jsonb_build_object(
              'id', "SKU"."id",
               'value', "SKU"."value",
@@ -188,13 +190,18 @@ export class CartRepo {
               'productId', "SKU"."productId",
               'product', jsonb_build_object(
                 'id', "Product"."id",
-                'publishedAt', "Product"."publishedAt",
+                'publishedAt', to_char("Product"."publishedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),
                 'name', "Product"."name",
                 'basePrice', "Product"."basePrice",
                 'virtualPrice', "Product"."virtualPrice",
                 'brandId', "Product"."brandId",
                 'images', "Product"."images",
                 'variants', "Product"."variants",
+                'createdBy', jsonb_build_object(
+                  'id', "User"."id",
+                  'name', "User"."name",
+                  'avatar', "User"."avatar"
+                ),
                 'productTranslations', COALESCE((
                   SELECT json_agg(
                     jsonb_build_object(
@@ -234,7 +241,7 @@ export class CartRepo {
      ORDER BY MAX("CartItem"."updatedAt") DESC
       LIMIT ${take}
       OFFSET ${skip}
-   `;
+   ` as unknown as Promise<CartItemDetailType[]>;
     const [data, totalItems] = await Promise.all([data$, totalItems$]);
     return {
       data,
@@ -270,7 +277,7 @@ export class CartRepo {
         skuId: body.skuId,
         quantity: body.quantity,
       },
-    });
+    }) as unknown as Promise<CartItemType>;
   }
 
   async update({
@@ -305,7 +312,7 @@ export class CartRepo {
           throw NotFoundCartItemException;
         }
         throw error;
-      });
+      }) as unknown as Promise<CartItemType>;
   }
 
   delete(userId: number, body: DeleteCartBodyType): Promise<{ count: number }> {

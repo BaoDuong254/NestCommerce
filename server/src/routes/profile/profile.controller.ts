@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch } from "@nestjs/common";
-import { ZodSerializerDto } from "nestjs-zod";
+import { ZodResponse } from "nestjs-zod";
 import { ChangePasswordBodyDto, UpdateMeBodyDto } from "src/routes/profile/dto/profile.dto";
 import { ProfileService } from "src/routes/profile/profile.service";
 import { ActiveUser } from "src/shared/decorators/active-user.decorator";
@@ -11,13 +11,13 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Get()
-  @ZodSerializerDto(GetUserProfileResDto)
+  @ZodResponse({ type: GetUserProfileResDto })
   getProfile(@ActiveUser("userId") userId: number) {
     return this.profileService.getProfile(userId);
   }
 
   @Patch()
-  @ZodSerializerDto(UpdateProfileResDto)
+  @ZodResponse({ type: UpdateProfileResDto })
   updateProfile(@Body() body: UpdateMeBodyDto, @ActiveUser("userId") userId: number) {
     return this.profileService.updateProfile({
       userId,
@@ -26,7 +26,7 @@ export class ProfileController {
   }
 
   @Patch("change-password")
-  @ZodSerializerDto(MessageResDto)
+  @ZodResponse({ type: MessageResDto })
   changePassword(@Body() body: ChangePasswordBodyDto, @ActiveUser("userId") userId: number) {
     return this.profileService.changePassword({
       userId,

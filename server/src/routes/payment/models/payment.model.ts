@@ -3,7 +3,7 @@ import { z } from "zod";
 export const PaymentTransactionSchema = z.object({
   id: z.number({ error: "Error.InvalidPaymentTransactionId" }),
   gateway: z.string({ error: "Error.InvalidGateway" }),
-  transactionDate: z.coerce.date({ error: "Error.InvalidTransactionDate" }),
+  transactionDate: z.iso.datetime({ error: "Error.InvalidTransactionDate" }),
   accountNumber: z.string({ error: "Error.InvalidAccountNumber" }).nullable(),
   subAccount: z.string({ error: "Error.InvalidSubAccount" }).nullable(),
   amountIn: z.number({ error: "Error.InvalidAmountIn" }),
@@ -13,7 +13,7 @@ export const PaymentTransactionSchema = z.object({
   transactionContent: z.string({ error: "Error.InvalidTransactionContent" }).nullable(),
   referenceNumber: z.string({ error: "Error.InvalidReferenceNumber" }).nullable(),
   body: z.string({ error: "Error.InvalidBody" }).nullable(),
-  createdAt: z.coerce.date({ error: "Error.InvalidCreatedAt" }),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
 });
 
 /**

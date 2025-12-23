@@ -4,9 +4,11 @@ import {
   LanguageType,
   UpdateLanguageBodyType,
 } from "src/routes/language/models/language.model";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class LanguageRepo {
   constructor(private prismaService: PrismaService) {}
 
@@ -15,7 +17,7 @@ export class LanguageRepo {
       where: {
         deletedAt: null,
       },
-    });
+    }) as unknown as Promise<LanguageType[]>;
   }
 
   findById(id: string): Promise<LanguageType | null> {
@@ -24,7 +26,7 @@ export class LanguageRepo {
         id,
         deletedAt: null,
       },
-    });
+    }) as unknown as Promise<LanguageType | null>;
   }
 
   create({ createdById, data }: { createdById: number; data: CreateLanguageBodyType }): Promise<LanguageType> {
@@ -33,7 +35,7 @@ export class LanguageRepo {
         ...data,
         createdById,
       },
-    });
+    }) as unknown as Promise<LanguageType>;
   }
 
   update({
@@ -54,17 +56,17 @@ export class LanguageRepo {
         ...data,
         updatedById,
       },
-    });
+    }) as unknown as Promise<LanguageType>;
   }
 
   delete(id: string, isHard?: boolean): Promise<LanguageType> {
     return isHard
-      ? this.prismaService.language.delete({
+      ? (this.prismaService.language.delete({
           where: {
             id,
           },
-        })
-      : this.prismaService.language.update({
+        }) as unknown as Promise<LanguageType>)
+      : (this.prismaService.language.update({
           where: {
             id,
             deletedAt: null,
@@ -72,6 +74,6 @@ export class LanguageRepo {
           data: {
             deletedAt: new Date(),
           },
-        });
+        }) as unknown as Promise<LanguageType>);
   }
 }

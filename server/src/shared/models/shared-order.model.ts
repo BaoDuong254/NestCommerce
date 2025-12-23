@@ -24,9 +24,9 @@ export const OrderSchema = z.object({
   createdById: z.number({ error: "Error.InvalidCreatedByID" }).nullable(),
   updatedById: z.number({ error: "Error.InvalidUpdatedByID" }).nullable(),
   deletedById: z.number({ error: "Error.InvalidDeletedByID" }).nullable(),
-  deletedAt: z.date({ error: "Error.InvalidDeletedAt" }).nullable(),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }),
+  deletedAt: z.iso.datetime({ error: "Error.InvalidDeletedAt" }).nullable(),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.iso.datetime({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export const ProductSKUSnapshotSchema = z.object({
@@ -48,7 +48,7 @@ export const ProductSKUSnapshotSchema = z.object({
   orderId: z.number({ error: "Error.InvalidOrderId" }).nullable(),
   quantity: z.number({ error: "Error.InvalidQuantity" }),
 
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
 });
 
 export const OrderIncludeProductSKUSnapshotSchema = OrderSchema.extend({

@@ -7,10 +7,12 @@ import {
   UpdateProductBodyType,
 } from "src/routes/product/models/product.model";
 import { ALL_LANGUAGE_CODE, OrderByType, SortBy, SortByType } from "src/shared/constants/other.constant";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { ProductType } from "src/shared/models/shared-product.model";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class ProductRepo {
   constructor(private readonly prismaService: PrismaService) {}
 
@@ -127,7 +129,7 @@ export class ProductRepo {
       page: page,
       limit: limit,
       totalPages: Math.ceil(totalItems / limit),
-    };
+    } as unknown as GetProductsResType;
   }
 
   findById(productId: number): Promise<ProductType | null> {
@@ -136,7 +138,7 @@ export class ProductRepo {
         id: productId,
         deletedAt: null,
       },
-    });
+    }) as Promise<ProductType | null>;
   }
 
   getDetail({
@@ -192,7 +194,7 @@ export class ProductRepo {
           },
         },
       },
-    });
+    }) as unknown as Promise<GetProductDetailResType | null>;
   }
 
   create({
@@ -244,7 +246,7 @@ export class ProductRepo {
           },
         },
       },
-    });
+    }) as unknown as Promise<GetProductDetailResType>;
   }
 
   async update({
@@ -345,7 +347,7 @@ export class ProductRepo {
       }),
     ]);
 
-    return product;
+    return product as unknown as ProductType;
   }
 
   async delete(
@@ -363,7 +365,7 @@ export class ProductRepo {
         where: {
           id,
         },
-      });
+      }) as unknown as Promise<ProductType>;
     }
     const now = new Date();
     const [product] = await Promise.all([
@@ -398,6 +400,6 @@ export class ProductRepo {
         },
       }),
     ]);
-    return product;
+    return product as unknown as ProductType;
   }
 }

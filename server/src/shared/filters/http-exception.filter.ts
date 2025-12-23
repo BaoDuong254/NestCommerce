@@ -12,6 +12,8 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
       const zodError = exception.getZodError();
       if (zodError instanceof ZodError) {
         this.logger.error(`ZodSerializationException: ${zodError.message}`);
+      } else {
+        console.error(zodError);
       }
     }
 

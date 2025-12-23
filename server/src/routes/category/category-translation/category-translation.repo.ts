@@ -5,9 +5,11 @@ import {
   CategoryTranslationType,
   UpdateCategoryTranslationBodyType,
 } from "src/routes/category/category-translation/models/category-translation.model";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class CategoryTranslationRepo {
   constructor(private prismaService: PrismaService) {}
 
@@ -17,7 +19,7 @@ export class CategoryTranslationRepo {
         id,
         deletedAt: null,
       },
-    });
+    }) as unknown as Promise<GetCategoryTranslationDetailResType | null>;
   }
 
   create({
@@ -32,7 +34,7 @@ export class CategoryTranslationRepo {
         ...data,
         createdById,
       },
-    });
+    }) as unknown as Promise<CategoryTranslationType>;
   }
 
   update({
@@ -53,7 +55,7 @@ export class CategoryTranslationRepo {
         ...data,
         updatedById,
       },
-    });
+    }) as unknown as Promise<CategoryTranslationType>;
   }
 
   delete(
@@ -67,12 +69,12 @@ export class CategoryTranslationRepo {
     isHard?: boolean
   ): Promise<CategoryTranslationType> {
     return isHard
-      ? this.prismaService.categoryTranslation.delete({
+      ? (this.prismaService.categoryTranslation.delete({
           where: {
             id,
           },
-        })
-      : this.prismaService.categoryTranslation.update({
+        }) as unknown as Promise<CategoryTranslationType>)
+      : (this.prismaService.categoryTranslation.update({
           where: {
             id,
             deletedAt: null,
@@ -81,6 +83,6 @@ export class CategoryTranslationRepo {
             deletedAt: new Date(),
             deletedById,
           },
-        });
+        }) as unknown as Promise<CategoryTranslationType>);
   }
 }

@@ -5,9 +5,9 @@ export const languageSchema = z.object({
   name: z.string({ error: "Error.InvalidLanguageName" }).max(500, { error: "Error.LanguageNameTooLong" }),
   createdById: z.number({ error: "Error.InvalidCreatedByID" }).nullable(),
   updatedById: z.number({ error: "Error.InvalidUpdatedByID" }).nullable(),
-  deletedAt: z.date({ error: "Error.InvalidDeletedAt" }).nullable(),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }),
+  deletedAt: z.iso.datetime({ error: "Error.InvalidDeletedAt" }).nullable(),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.iso.datetime({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export const getLanguagesResSchema = z.object({

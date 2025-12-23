@@ -6,10 +6,12 @@ import {
   RoleWithPermissionsType,
   UpdateRoleBodyType,
 } from "src/routes/role/models/role.model";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { RolePermissionsType, RoleType } from "src/shared/models/shared-role.model";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class RoleRepo {
   constructor(private prismaService: PrismaService) {}
 
@@ -36,7 +38,7 @@ export class RoleRepo {
       page: pagination.page,
       limit: pagination.limit,
       totalPages: Math.ceil(totalItems / pagination.limit),
-    };
+    } as unknown as Promise<GetRolesResType>;
   }
 
   findById(id: number): Promise<RoleWithPermissionsType | null> {
@@ -52,7 +54,7 @@ export class RoleRepo {
           },
         },
       },
-    });
+    }) as unknown as Promise<RoleWithPermissionsType | null>;
   }
 
   create({ createdById, data }: { createdById: number | null; data: CreateRoleBodyType }): Promise<RoleType> {
@@ -61,7 +63,7 @@ export class RoleRepo {
         ...data,
         createdById,
       },
-    });
+    }) as unknown as Promise<RoleType>;
   }
 
   async update({
@@ -109,7 +111,7 @@ export class RoleRepo {
           },
         },
       },
-    });
+    }) as unknown as Promise<RolePermissionsType>;
   }
 
   delete(
@@ -123,12 +125,12 @@ export class RoleRepo {
     isHard?: boolean
   ): Promise<RoleType> {
     return isHard
-      ? this.prismaService.role.delete({
+      ? (this.prismaService.role.delete({
           where: {
             id,
           },
-        })
-      : this.prismaService.role.update({
+        }) as unknown as Promise<RoleType>)
+      : (this.prismaService.role.update({
           where: {
             id,
             deletedAt: null,
@@ -137,6 +139,6 @@ export class RoleRepo {
             deletedAt: new Date(),
             deletedById,
           },
-        });
+        }) as unknown as Promise<RoleType>);
   }
 }

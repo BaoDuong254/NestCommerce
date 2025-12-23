@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Patch } from "@nestjs/common";
-import { ZodSerializerDto } from "nestjs-zod";
+import { ZodResponse } from "nestjs-zod";
 import {
   CreateLanguageBodyDto,
   GetLanguageDetailResDto,
@@ -16,19 +16,19 @@ export class LanguageController {
   constructor(private readonly languageService: LanguageService) {}
 
   @Get()
-  @ZodSerializerDto(GetLanguagesResDto)
+  @ZodResponse({ type: GetLanguagesResDto })
   async findAll() {
     return await this.languageService.findAll();
   }
 
   @Get(":languageId")
-  @ZodSerializerDto(GetLanguageDetailResDto)
+  @ZodResponse({ type: GetLanguageDetailResDto })
   async findById(@Param() params: GetLanguageParamsDto) {
     return await this.languageService.findById(params.languageId);
   }
 
   @Post()
-  @ZodSerializerDto(GetLanguageDetailResDto)
+  @ZodResponse({ type: GetLanguageDetailResDto })
   async create(@Body() body: CreateLanguageBodyDto, @ActiveUser("userId") userId: number) {
     return await this.languageService.create({
       data: body,
@@ -37,7 +37,7 @@ export class LanguageController {
   }
 
   @Patch(":languageId")
-  @ZodSerializerDto(GetLanguageDetailResDto)
+  @ZodResponse({ type: GetLanguageDetailResDto })
   update(
     @Body() body: UpdateLanguageBodyDto,
     @Param() params: GetLanguageParamsDto,
@@ -51,7 +51,7 @@ export class LanguageController {
   }
 
   @Delete(":languageId")
-  @ZodSerializerDto(MessageResDto)
+  @ZodResponse({ type: MessageResDto })
   delete(@Param() params: GetLanguageParamsDto) {
     return this.languageService.delete(params.languageId);
   }

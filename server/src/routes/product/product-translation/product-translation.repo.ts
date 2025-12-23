@@ -4,10 +4,12 @@ import {
   CreateProductTranslationBodyType,
   UpdateProductTranslationBodyType,
 } from "src/routes/product/product-translation/models/product-translation.model";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { ProductTranslationType } from "src/shared/models/shared-product-translation.model";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class ProductTranslationRepo {
   constructor(private prismaService: PrismaService) {}
 
@@ -17,7 +19,7 @@ export class ProductTranslationRepo {
         id,
         deletedAt: null,
       },
-    });
+    }) as unknown as Promise<GetProductTranslationDetailResType | null>;
   }
 
   create({
@@ -32,7 +34,7 @@ export class ProductTranslationRepo {
         ...data,
         createdById,
       },
-    });
+    }) as unknown as Promise<ProductTranslationType>;
   }
 
   update({
@@ -53,7 +55,7 @@ export class ProductTranslationRepo {
         ...data,
         updatedById,
       },
-    });
+    }) as unknown as Promise<ProductTranslationType>;
   }
 
   delete(
@@ -67,12 +69,12 @@ export class ProductTranslationRepo {
     isHard?: boolean
   ): Promise<ProductTranslationType> {
     return isHard
-      ? this.prismaService.productTranslation.delete({
+      ? (this.prismaService.productTranslation.delete({
           where: {
             id,
           },
-        })
-      : this.prismaService.productTranslation.update({
+        }) as unknown as Promise<ProductTranslationType>)
+      : (this.prismaService.productTranslation.update({
           where: {
             id,
             deletedAt: null,
@@ -81,6 +83,6 @@ export class ProductTranslationRepo {
             deletedAt: new Date(),
             deletedById,
           },
-        });
+        }) as unknown as Promise<ProductTranslationType>);
   }
 }

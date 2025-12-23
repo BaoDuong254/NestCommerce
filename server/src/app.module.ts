@@ -1,6 +1,4 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { SharedModule } from "./shared/shared.module";
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { AuthModule } from "src/routes/auth/auth.module";
@@ -64,9 +62,7 @@ import { WebsocketModule } from "src/websockets/websocket.module";
     PaymentModule,
     WebsocketModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_PIPE,
       useClass: CustomZodValidationPipe,

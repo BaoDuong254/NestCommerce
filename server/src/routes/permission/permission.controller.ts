@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
-import { ZodSerializerDto } from "nestjs-zod";
+import { ZodResponse } from "nestjs-zod";
 import {
   CreatePermissionBodyDto,
   GetPermissionDetailResDto,
@@ -17,7 +17,7 @@ export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Get()
-  @ZodSerializerDto(GetPermissionsResDto)
+  @ZodResponse({ type: GetPermissionsResDto })
   list(@Query() query: GetPermissionsQueryDto) {
     return this.permissionService.list({
       page: query.page,
@@ -26,13 +26,13 @@ export class PermissionController {
   }
 
   @Get(":permissionId")
-  @ZodSerializerDto(GetPermissionDetailResDto)
+  @ZodResponse({ type: GetPermissionDetailResDto })
   findById(@Param() params: GetPermissionParamsDto) {
     return this.permissionService.findById(params.permissionId);
   }
 
   @Post()
-  @ZodSerializerDto(GetPermissionDetailResDto)
+  @ZodResponse({ type: GetPermissionDetailResDto })
   create(@Body() body: CreatePermissionBodyDto, @ActiveUser("userId") userId: number) {
     return this.permissionService.create({
       data: body,
@@ -41,7 +41,7 @@ export class PermissionController {
   }
 
   @Patch(":permissionId")
-  @ZodSerializerDto(GetPermissionDetailResDto)
+  @ZodResponse({ type: GetPermissionDetailResDto })
   update(
     @Body() body: UpdatePermissionBodyDto,
     @Param() params: GetPermissionParamsDto,
@@ -55,7 +55,7 @@ export class PermissionController {
   }
 
   @Delete(":permissionId")
-  @ZodSerializerDto(MessageResDto)
+  @ZodResponse({ type: MessageResDto })
   delete(@Param() params: GetPermissionParamsDto, @ActiveUser("userId") userId: number) {
     return this.permissionService.delete({
       id: params.permissionId,

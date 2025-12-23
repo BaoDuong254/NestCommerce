@@ -67,7 +67,7 @@ export class AuthService {
     if (!verificationCode || verificationCode.code !== code) {
       throw InvalidOTPException;
     }
-    if (verificationCode.expiresAt < new Date()) {
+    if (new Date(verificationCode.expiresAt) < new Date()) {
       throw OTPExpiredException;
     }
     return verificationCode;
@@ -124,7 +124,7 @@ export class AuthService {
       email: body.email,
       code,
       type: body.type,
-      expiresAt: addMilliseconds(new Date(), ms(envConfig.OTP_EXPIRES_IN as StringValue)), // 5 minutes
+      expiresAt: addMilliseconds(new Date(), ms(envConfig.OTP_EXPIRES_IN as StringValue)).toISOString(), // 5 minutes
     });
 
     const { error } = await this.emailService.sendOTP({ email: body.email, code });

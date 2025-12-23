@@ -1,12 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { DeviceType, RefreshTokenType, VerificationCodeType } from "src/routes/auth/models/auth.model";
 import { TypeOfVerificationCodeType } from "src/shared/constants/auth.constant";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { RoleType } from "src/shared/models/shared-role.model";
 import { UserType } from "src/shared/models/shared-user.model";
 import { WhereUniqueUserType } from "src/shared/repositories/shared-user.repo";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class AuthRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
@@ -19,7 +21,7 @@ export class AuthRepository {
         password: true,
         totpSecret: true,
       },
-    });
+    }) as unknown as Promise<Omit<UserType, "password" | "totpSecret">>;
   }
 
   async createUserIncludeRole(
@@ -30,7 +32,7 @@ export class AuthRepository {
       include: {
         role: true,
       },
-    });
+    }) as unknown as Promise<UserType & { role: RoleType }>;
   }
 
   async createVerificationCode(payload: Pick<VerificationCodeType, "email" | "code" | "type" | "expiresAt">) {
@@ -56,7 +58,7 @@ export class AuthRepository {
   ): Promise<VerificationCodeType | null> {
     return this.prismaService.verificationCode.findUnique({
       where: uniqueValue,
-    });
+    }) as Promise<VerificationCodeType | null>;
   }
 
   async createRefreshToken(data: { userId: number; expiresAt: Date; token: string; deviceId: number }) {
@@ -82,7 +84,7 @@ export class AuthRepository {
       include: {
         role: true,
       },
-    });
+    }) as Promise<(UserType & { role: RoleType }) | null>;
   }
 
   findUniqueRefreshTokenIncludeUserRole(where: {
@@ -97,7 +99,7 @@ export class AuthRepository {
           },
         },
       },
-    });
+    }) as Promise<(RefreshTokenType & { user: UserType & { role: RoleType } }) | null>;
   }
 
   updateDevice(deviceId: number, data: Partial<DeviceType>): Promise<DeviceType> {
@@ -106,13 +108,13 @@ export class AuthRepository {
         id: deviceId,
       },
       data,
-    });
+    }) as unknown as Promise<DeviceType>;
   }
 
   deleteRefreshToken(where: { token: string }): Promise<RefreshTokenType> {
     return this.prismaService.refreshToken.delete({
       where,
-    });
+    }) as unknown as Promise<RefreshTokenType>;
   }
 
   deleteVerificationCode(
@@ -120,6 +122,6 @@ export class AuthRepository {
   ): Promise<VerificationCodeType | null> {
     return this.prismaService.verificationCode.delete({
       where: uniqueValue,
-    });
+    }) as unknown as Promise<VerificationCodeType | null>;
   }
 }

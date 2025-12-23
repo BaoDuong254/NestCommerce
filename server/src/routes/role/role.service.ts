@@ -20,7 +20,7 @@ export class RoleService {
     return data;
   }
 
-  async findById(id: number): Promise<RoleWithPermissionsType | null> {
+  async findById(id: number): Promise<RoleWithPermissionsType> {
     const role = await this.roleRepo.findById(id);
     if (!role) {
       throw NotFoundRecordException;

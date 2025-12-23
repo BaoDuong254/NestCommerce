@@ -5,10 +5,12 @@ import {
   GetPermissionsResType,
   UpdatePermissionBodyType,
 } from "src/routes/permission/models/permission.model";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { PermissionType } from "src/shared/models/shared-permission.model";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class PermissionRepo {
   constructor(private prismaService: PrismaService) {}
 
@@ -35,7 +37,7 @@ export class PermissionRepo {
       page: pagination.page,
       limit: pagination.limit,
       totalPages: Math.ceil(totalItems / pagination.limit),
-    };
+    } as unknown as Promise<GetPermissionsResType>;
   }
 
   findById(id: number): Promise<PermissionType | null> {
@@ -44,7 +46,7 @@ export class PermissionRepo {
         id,
         deletedAt: null,
       },
-    });
+    }) as unknown as Promise<PermissionType | null>;
   }
 
   create({
@@ -59,7 +61,7 @@ export class PermissionRepo {
         ...data,
         createdById,
       },
-    });
+    }) as unknown as Promise<PermissionType>;
   }
 
   update({
@@ -80,7 +82,7 @@ export class PermissionRepo {
         ...data,
         updatedById,
       },
-    });
+    }) as unknown as Promise<PermissionType>;
   }
 
   delete(
@@ -94,12 +96,12 @@ export class PermissionRepo {
     isHard?: boolean
   ): Promise<PermissionType> {
     return isHard
-      ? this.prismaService.permission.delete({
+      ? (this.prismaService.permission.delete({
           where: {
             id,
           },
-        })
-      : this.prismaService.permission.update({
+        }) as unknown as Promise<PermissionType>)
+      : (this.prismaService.permission.update({
           where: {
             id,
             deletedAt: null,
@@ -108,6 +110,6 @@ export class PermissionRepo {
             deletedAt: new Date(),
             deletedById,
           },
-        });
+        }) as unknown as Promise<PermissionType>);
   }
 }

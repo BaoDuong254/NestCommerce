@@ -47,8 +47,8 @@ export const verificationCodeSchema = z.object({
       error: "Error.InvalidVerificationType",
     }
   ),
-  expiresAt: z.date({ error: "Error.InvalidExpiresAt" }),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
+  expiresAt: z.iso.datetime({ error: "Error.InvalidExpiresAt" }),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
 });
 
 export const sendOTPBodySchema = verificationCodeSchema
@@ -94,8 +94,8 @@ export const deviceSchema = z.object({
   userId: z.number({ error: "Error.InvalidUserID" }),
   userAgent: z.string({ error: "Error.InvalidUserAgent" }),
   ip: z.string({ error: "Error.InvalidIP" }),
-  lastActive: z.date({ error: "Error.InvalidLastActive" }),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
+  lastActive: z.iso.datetime({ error: "Error.InvalidLastActive" }),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
   isActive: z.boolean({ error: "Error.InvalidIsActive" }),
 });
 
@@ -103,8 +103,8 @@ export const RefreshTokenSchema = z.object({
   token: z.string({ error: "Error.InvalidToken" }),
   userId: z.number({ error: "Error.InvalidUserID" }),
   deviceId: z.number({ error: "Error.InvalidDeviceID" }),
-  expiresAt: z.date({ error: "Error.InvalidExpiresAt" }),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
+  expiresAt: z.iso.datetime({ error: "Error.InvalidExpiresAt" }),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
 });
 
 export const logoutBodySchema = refreshTokenBodySchema;

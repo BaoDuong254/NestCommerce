@@ -138,7 +138,7 @@ export const CreateProductBodySchema = ProductSchema.pick({
   variants: true,
 })
   .extend({
-    publishedAt: z.coerce.date({ error: "Error.InvalidPublishedAt" }).nullable(),
+    publishedAt: z.iso.datetime({ error: "Error.InvalidPublishedAt" }).nullable(),
     categories: z.array(
       z.coerce
         .number({ error: "Error.InvalidCategoryId" })

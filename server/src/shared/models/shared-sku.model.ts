@@ -10,9 +10,9 @@ export const SKUSchema = z.object({
   createdById: z.number({ error: "Error.InvalidCreatedById" }).nullable(),
   updatedById: z.number({ error: "Error.InvalidUpdatedById" }).nullable(),
   deletedById: z.number({ error: "Error.InvalidDeletedById" }).nullable(),
-  deletedAt: z.coerce.date({ error: "Error.InvalidDeletedAt" }).nullable(),
-  createdAt: z.coerce.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.coerce.date({ error: "Error.InvalidUpdatedAt" }),
+  deletedAt: z.iso.datetime({ error: "Error.InvalidDeletedAt" }).nullable(),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.iso.datetime({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export type SKUSchemaType = z.infer<typeof SKUSchema>;

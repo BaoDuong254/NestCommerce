@@ -9,9 +9,9 @@ export const roleSchema = z.object({
   createdById: z.number({ error: "Error.InvalidCreatedById" }).nullable(),
   updatedById: z.number({ error: "Error.InvalidUpdatedById" }).nullable(),
   deletedById: z.number({ error: "Error.InvalidDeletedById" }).nullable(),
-  deletedAt: z.date({ error: "Error.InvalidDeletedAt" }).nullable(),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }),
+  deletedAt: z.iso.datetime({ error: "Error.InvalidDeletedAt" }).nullable(),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.iso.datetime({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export const rolePermissionsSchema = roleSchema.extend({

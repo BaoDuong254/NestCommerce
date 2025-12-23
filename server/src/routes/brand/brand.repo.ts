@@ -7,10 +7,12 @@ import {
   BrandIncludeTranslationType,
 } from "src/routes/brand/models/brand.model";
 import { ALL_LANGUAGE_CODE } from "src/shared/constants/other.constant";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { PaginationQueryType } from "src/shared/models/request.model";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class BrandRepo {
   constructor(private prismaService: PrismaService) {}
 
@@ -45,7 +47,7 @@ export class BrandRepo {
       page: pagination.page,
       limit: pagination.limit,
       totalPages: Math.ceil(totalItems / pagination.limit),
-    };
+    } as unknown as Promise<GetBrandsResType>;
   }
 
   findById(id: number, languageId: string): Promise<BrandIncludeTranslationType | null> {
@@ -59,7 +61,7 @@ export class BrandRepo {
           where: languageId === ALL_LANGUAGE_CODE ? { deletedAt: null } : { deletedAt: null, languageId },
         },
       },
-    });
+    }) as Promise<BrandIncludeTranslationType | null>;
   }
 
   create({
@@ -79,7 +81,7 @@ export class BrandRepo {
           where: { deletedAt: null },
         },
       },
-    });
+    }) as unknown as Promise<BrandIncludeTranslationType>;
   }
 
   update({
@@ -105,7 +107,7 @@ export class BrandRepo {
           where: { deletedAt: null },
         },
       },
-    });
+    }) as unknown as Promise<BrandIncludeTranslationType>;
   }
 
   delete(
@@ -119,12 +121,12 @@ export class BrandRepo {
     isHard?: boolean
   ): Promise<BrandType> {
     return isHard
-      ? this.prismaService.brand.delete({
+      ? (this.prismaService.brand.delete({
           where: {
             id,
           },
-        })
-      : this.prismaService.brand.update({
+        }) as unknown as Promise<BrandType>)
+      : (this.prismaService.brand.update({
           where: {
             id,
             deletedAt: null,
@@ -133,6 +135,6 @@ export class BrandRepo {
             deletedAt: new Date(),
             deletedById,
           },
-        });
+        }) as unknown as Promise<BrandType>);
   }
 }

@@ -5,9 +5,11 @@ import {
   BrandTranslationType,
   UpdateBrandTranslationBodyType,
 } from "src/routes/brand/brand-translation/models/brand-translation.model";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class BrandTranslationRepo {
   constructor(private prismaService: PrismaService) {}
 
@@ -17,7 +19,7 @@ export class BrandTranslationRepo {
         id,
         deletedAt: null,
       },
-    });
+    }) as unknown as Promise<GetBrandTranslationDetailResType | null>;
   }
 
   create({
@@ -32,7 +34,7 @@ export class BrandTranslationRepo {
         ...data,
         createdById,
       },
-    });
+    }) as unknown as Promise<BrandTranslationType>;
   }
 
   update({
@@ -53,7 +55,7 @@ export class BrandTranslationRepo {
         ...data,
         updatedById,
       },
-    });
+    }) as unknown as Promise<BrandTranslationType>;
   }
 
   delete(
@@ -67,12 +69,12 @@ export class BrandTranslationRepo {
     isHard?: boolean
   ): Promise<BrandTranslationType> {
     return isHard
-      ? this.prismaService.brandTranslation.delete({
+      ? (this.prismaService.brandTranslation.delete({
           where: {
             id,
           },
-        })
-      : this.prismaService.brandTranslation.update({
+        }) as unknown as Promise<BrandTranslationType>)
+      : (this.prismaService.brandTranslation.update({
           where: {
             id,
             deletedAt: null,
@@ -81,6 +83,6 @@ export class BrandTranslationRepo {
             deletedAt: new Date(),
             deletedById,
           },
-        });
+        }) as unknown as Promise<BrandTranslationType>);
   }
 }

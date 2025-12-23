@@ -13,7 +13,7 @@ import {
 } from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import type { Response } from "express";
-import { ZodSerializerDto } from "nestjs-zod";
+import { ZodResponse } from "nestjs-zod";
 import path from "path";
 import {
   PresignedUploadFileBodyDto,
@@ -29,7 +29,7 @@ import { IsPublic } from "src/shared/decorators/auth.decorator";
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
   @Post("images/upload")
-  @ZodSerializerDto(UploadFilesResDto)
+  @ZodResponse({ type: UploadFilesResDto })
   @UseInterceptors(
     FilesInterceptor("files", 100, {
       limits: {
@@ -63,7 +63,7 @@ export class MediaController {
   }
 
   @Post("images/upload/presigned-url")
-  @ZodSerializerDto(PresignedUploadFileResDto)
+  @ZodResponse({ type: PresignedUploadFileResDto })
   @IsPublic()
   async createPresignedUrl(@Body() body: PresignedUploadFileBodyDto) {
     return this.mediaService.getPresignedUrl(body);

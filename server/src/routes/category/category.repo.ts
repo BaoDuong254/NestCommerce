@@ -7,9 +7,11 @@ import {
   CategoryIncludeTranslationType,
 } from "src/routes/category/models/category.model";
 import { ALL_LANGUAGE_CODE } from "src/shared/constants/other.constant";
+import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { PrismaService } from "src/shared/services/prisma.service";
 
 @Injectable()
+@SerializeAll()
 export class CategoryRepo {
   constructor(private prismaService: PrismaService) {}
 
@@ -38,7 +40,7 @@ export class CategoryRepo {
     return {
       data: categories,
       totalItems: categories.length,
-    };
+    } as unknown as GetAllCategoriesResType;
   }
 
   findById({ id, languageId }: { id: number; languageId: string }): Promise<CategoryIncludeTranslationType | null> {
@@ -52,7 +54,7 @@ export class CategoryRepo {
           where: languageId === ALL_LANGUAGE_CODE ? { deletedAt: null } : { deletedAt: null, languageId },
         },
       },
-    });
+    }) as unknown as Promise<CategoryIncludeTranslationType | null>;
   }
 
   create({
@@ -72,7 +74,7 @@ export class CategoryRepo {
           where: { deletedAt: null },
         },
       },
-    });
+    }) as unknown as Promise<CategoryIncludeTranslationType>;
   }
 
   update({
@@ -98,7 +100,7 @@ export class CategoryRepo {
           where: { deletedAt: null },
         },
       },
-    });
+    }) as unknown as Promise<CategoryIncludeTranslationType>;
   }
 
   delete(
@@ -112,12 +114,12 @@ export class CategoryRepo {
     isHard?: boolean
   ): Promise<CategoryType> {
     return isHard
-      ? this.prismaService.category.delete({
+      ? (this.prismaService.category.delete({
           where: {
             id,
           },
-        })
-      : this.prismaService.category.update({
+        }) as unknown as Promise<CategoryType>)
+      : (this.prismaService.category.update({
           where: {
             id,
             deletedAt: null,
@@ -126,6 +128,6 @@ export class CategoryRepo {
             deletedAt: new Date(),
             deletedById,
           },
-        });
+        }) as unknown as Promise<CategoryType>);
   }
 }

@@ -8,9 +8,9 @@ export const brandSchema = z.object({
   createdById: z.number({ error: "Error.InvalidCreatedByID" }).nullable(),
   updatedById: z.number({ error: "Error.InvalidUpdatedByID" }).nullable(),
   deletedById: z.number({ error: "Error.InvalidDeletedByID" }).nullable(),
-  deletedAt: z.date({ error: "Error.InvalidDeletedAt" }).nullable(),
-  createdAt: z.date({ error: "Error.InvalidCreatedAt" }),
-  updatedAt: z.date({ error: "Error.InvalidUpdatedAt" }),
+  deletedAt: z.iso.datetime({ error: "Error.InvalidDeletedAt" }).nullable(),
+  createdAt: z.iso.datetime({ error: "Error.InvalidCreatedAt" }),
+  updatedAt: z.iso.datetime({ error: "Error.InvalidUpdatedAt" }),
 });
 
 export const brandIncludeTranslationSchema = brandSchema.extend({

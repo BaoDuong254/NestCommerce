@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Patch } from "@nestjs/common";
-import { ZodSerializerDto } from "nestjs-zod";
+import { ZodResponse } from "nestjs-zod";
 import { CategoryTranslationService } from "src/routes/category/category-translation/category-translation.service";
 import {
   CreateCategoryTranslationBodyDto,
@@ -15,13 +15,13 @@ export class CategoryTranslationController {
   constructor(private readonly categoryTranslationService: CategoryTranslationService) {}
 
   @Get(":categoryTranslationId")
-  @ZodSerializerDto(GetCategoryTranslationDetailResDto)
+  @ZodResponse({ type: GetCategoryTranslationDetailResDto })
   findById(@Param() params: GetCategoryTranslationParamsDto) {
     return this.categoryTranslationService.findById(params.categoryTranslationId);
   }
 
   @Post()
-  @ZodSerializerDto(GetCategoryTranslationDetailResDto)
+  @ZodResponse({ type: GetCategoryTranslationDetailResDto })
   create(@Body() body: CreateCategoryTranslationBodyDto, @ActiveUser("userId") userId: number) {
     return this.categoryTranslationService.create({
       data: body,
@@ -30,7 +30,7 @@ export class CategoryTranslationController {
   }
 
   @Patch(":categoryTranslationId")
-  @ZodSerializerDto(GetCategoryTranslationDetailResDto)
+  @ZodResponse({ type: GetCategoryTranslationDetailResDto })
   update(
     @Body() body: UpdateCategoryTranslationBodyDto,
     @Param() params: GetCategoryTranslationParamsDto,
@@ -44,7 +44,7 @@ export class CategoryTranslationController {
   }
 
   @Delete(":categoryTranslationId")
-  @ZodSerializerDto(MessageResDto)
+  @ZodResponse({ type: MessageResDto })
   delete(@Param() params: GetCategoryTranslationParamsDto, @ActiveUser("userId") userId: number) {
     return this.categoryTranslationService.delete({
       id: params.categoryTranslationId,
