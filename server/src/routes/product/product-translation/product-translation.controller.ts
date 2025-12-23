@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 import {
   CreateProductTranslationBodyDTO,
@@ -11,6 +12,7 @@ import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 import { MessageResDto } from "src/shared/dtos/response.dto";
 
 @Controller("product-translations")
+@ApiBearerAuth()
 export class ProductTranslationController {
   constructor(private readonly productTranslationService: ProductTranslationService) {}
 

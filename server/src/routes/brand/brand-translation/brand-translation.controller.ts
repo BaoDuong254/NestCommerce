@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Patch } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 import { BrandTranslationService } from "src/routes/brand/brand-translation/brand-translation.service";
 import {
@@ -11,6 +12,7 @@ import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 import { MessageResDto } from "src/shared/dtos/response.dto";
 
 @Controller("brand-translations")
+@ApiBearerAuth()
 export class BrandTranslationController {
   constructor(private readonly brandTranslationService: BrandTranslationService) {}
 

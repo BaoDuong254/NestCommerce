@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 import {
   CreateRoleBodyDto,
@@ -14,6 +15,7 @@ import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 import { MessageResDto } from "src/shared/dtos/response.dto";
 
 @Controller("roles")
+@ApiBearerAuth()
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 

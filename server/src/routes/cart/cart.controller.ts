@@ -12,8 +12,10 @@ import {
 import { PaginationQueryDto } from "src/shared/dtos/request.dto";
 import { ZodResponse } from "nestjs-zod";
 import { MessageResDto } from "src/shared/dtos/response.dto";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("cart")
+@ApiBearerAuth()
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 

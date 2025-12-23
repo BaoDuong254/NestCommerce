@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Patch, Query } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 import { BrandService } from "src/routes/brand/brand.service";
 import {
@@ -32,6 +33,7 @@ export class BrandController {
   }
 
   @Post()
+  @ApiBearerAuth()
   @ZodResponse({ type: GetBrandDetailResDto })
   create(@Body() body: CreateBrandBodyDto, @ActiveUser("userId") userId: number) {
     return this.brandService.create({
@@ -41,6 +43,7 @@ export class BrandController {
   }
 
   @Patch(":brandId")
+  @ApiBearerAuth()
   @ZodResponse({ type: GetBrandDetailResDto })
   update(@Body() body: UpdateBrandBodyDto, @Param() params: GetBrandParamsDto, @ActiveUser("userId") userId: number) {
     return this.brandService.update({
@@ -51,6 +54,7 @@ export class BrandController {
   }
 
   @Delete(":brandId")
+  @ApiBearerAuth()
   @ZodResponse({ type: MessageResDto })
   delete(@Param() params: GetBrandParamsDto, @ActiveUser("userId") userId: number) {
     return this.brandService.delete({

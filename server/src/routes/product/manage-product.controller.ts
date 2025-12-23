@@ -13,8 +13,10 @@ import {
 import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 import { MessageResDto } from "src/shared/dtos/response.dto";
 import type { AccessTokenPayload } from "src/shared/types/jwt.type";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("manage-product/products")
+@ApiBearerAuth()
 export class ManageProductController {
   constructor(private readonly manageProductService: ManageProductService) {}
 

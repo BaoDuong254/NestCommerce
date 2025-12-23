@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Patch } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 import { ChangePasswordBodyDto, UpdateMeBodyDto } from "src/routes/profile/dto/profile.dto";
 import { ProfileService } from "src/routes/profile/profile.service";
@@ -7,6 +8,7 @@ import { MessageResDto } from "src/shared/dtos/response.dto";
 import { GetUserProfileResDto, UpdateProfileResDto } from "src/shared/dtos/shared-user.dto";
 
 @Controller("profile")
+@ApiBearerAuth()
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 

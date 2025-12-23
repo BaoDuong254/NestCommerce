@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Patch } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 import {
   CreateLanguageBodyDto,
@@ -12,6 +13,7 @@ import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 import { MessageResDto } from "src/shared/dtos/response.dto";
 
 @Controller("languages")
+@ApiBearerAuth()
 export class LanguageController {
   constructor(private readonly languageService: LanguageService) {}
 

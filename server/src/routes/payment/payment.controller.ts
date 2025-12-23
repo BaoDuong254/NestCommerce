@@ -4,8 +4,10 @@ import { ZodResponse } from "nestjs-zod";
 import { Auth } from "src/shared/decorators/auth.decorator";
 import { WebhookPaymentBodyDTO } from "src/routes/payment/dto/payment.dto";
 import { MessageResDto } from "src/shared/dtos/response.dto";
+import { ApiSecurity } from "@nestjs/swagger";
 
 @Controller("payment")
+@ApiSecurity("payment-api-key")
 export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 

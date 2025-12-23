@@ -23,6 +23,7 @@ import type { Response } from "express";
 import envConfig from "src/shared/config";
 import { EmptyBodyDto } from "src/shared/dtos/request.dto";
 import { ActiveUser } from "src/shared/decorators/active-user.decorator";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 @Controller("auth")
 export class AuthController {
@@ -69,6 +70,7 @@ export class AuthController {
   }
 
   @Post("logout")
+  @ApiBearerAuth()
   @ZodResponse({ type: MessageResDto })
   async logout(@Body() body: LogoutBodyDto) {
     return await this.authService.logout(body.refreshToken);
@@ -106,12 +108,14 @@ export class AuthController {
   }
 
   @Post("2fa/setup")
+  @ApiBearerAuth()
   @ZodResponse({ type: TwoFASetupResDto })
   setupTwoFactorAuth(@Body() _: EmptyBodyDto, @ActiveUser("userId") userId: number) {
     return this.authService.setupTwoFactorAuth(userId);
   }
 
   @Post("2fa/disable")
+  @ApiBearerAuth()
   @ZodResponse({ type: MessageResDto })
   disableTwoFactorAuth(@Body() body: Disable2FABodyDto, @ActiveUser("userId") userId: number) {
     return this.authService.disableTwoFactorAuth({

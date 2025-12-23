@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Patch, Query } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 import { CategoryService } from "src/routes/category/category.service";
 import {
@@ -32,6 +33,7 @@ export class CategoryController {
   }
 
   @Post()
+  @ApiBearerAuth()
   @ZodResponse({ type: GetCategoryDetailResDto })
   create(@Body() body: CreateCategoryBodyDto, @ActiveUser("userId") userId: number) {
     return this.categoryService.create({
@@ -41,6 +43,7 @@ export class CategoryController {
   }
 
   @Patch(":categoryId")
+  @ApiBearerAuth()
   @ZodResponse({ type: GetCategoryDetailResDto })
   update(
     @Body() body: UpdateCategoryBodyDto,
@@ -55,6 +58,7 @@ export class CategoryController {
   }
 
   @Delete(":categoryId")
+  @ApiBearerAuth()
   @ZodResponse({ type: MessageResDto })
   delete(@Param() params: GetCategoryParamsDto, @ActiveUser("userId") userId: number) {
     return this.categoryService.delete({

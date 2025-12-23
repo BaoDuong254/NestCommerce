@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, Patch, Query } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ZodResponse } from "nestjs-zod";
 import {
   CancelOrderResDTO,
@@ -13,6 +14,7 @@ import { OrderService } from "src/routes/order/order.service";
 import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 
 @Controller("orders")
+@ApiBearerAuth()
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 

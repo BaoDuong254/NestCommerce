@@ -4,6 +4,7 @@ import { WebsocketAdapter } from "src/websockets/websocket.adapter";
 import envConfig from "src/shared/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { cleanupOpenApiDoc } from "nestjs-zod";
+import chalk from "chalk";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,6 +40,7 @@ async function bootstrap() {
 
   // Start the application
   await app.listen(envConfig.PORT ?? 3000);
+  console.log(chalk.blue(`Application is running on: http://localhost:${envConfig.PORT ?? 3000}`));
 }
 
 bootstrap().catch((err) => {
