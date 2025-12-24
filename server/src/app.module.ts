@@ -32,9 +32,13 @@ import { ReviewModule } from "src/routes/review/review.module";
 import { ScheduleModule } from "@nestjs/schedule";
 import { RemoveRefreshTokenCronjob } from "src/cronjobs/remove-refresh-token.cronjob";
 import { RemoveVerificationCodeCronjob } from "src/cronjobs/remove-verification-code.cronjob";
+import { CacheModule } from "@nestjs/cache-manager";
 
 @Module({
   imports: [
+    CacheModule.register({
+      isGlobal: true,
+    }),
     ScheduleModule.forRoot(),
     I18nModule.forRoot({
       fallbackLanguage: "en",
