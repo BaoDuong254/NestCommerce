@@ -31,6 +31,7 @@ import { ThrottlerBehindProxyGuard } from "src/shared/guards/throttler-behind-pr
 import { ReviewModule } from "src/routes/review/review.module";
 import { ScheduleModule } from "@nestjs/schedule";
 import { RemoveRefreshTokenCronjob } from "src/cronjobs/remove-refresh-token.cronjob";
+import { RemoveVerificationCodeCronjob } from "src/cronjobs/remove-verification-code.cronjob";
 
 @Module({
   imports: [
@@ -102,6 +103,7 @@ import { RemoveRefreshTokenCronjob } from "src/cronjobs/remove-refresh-token.cro
     },
     PaymentConsumer,
     RemoveRefreshTokenCronjob,
+    RemoveVerificationCodeCronjob,
   ],
 })
 export class AppModule {}
