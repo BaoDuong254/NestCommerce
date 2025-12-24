@@ -33,11 +33,15 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { RemoveRefreshTokenCronjob } from "src/cronjobs/remove-refresh-token.cronjob";
 import { RemoveVerificationCodeCronjob } from "src/cronjobs/remove-verification-code.cronjob";
 import { CacheModule } from "@nestjs/cache-manager";
+import KeyvRedis from "@keyv/redis";
 
 @Module({
   imports: [
     CacheModule.register({
       isGlobal: true,
+      useFactory: () => ({
+        stores: [new KeyvRedis(envConfig.REDIS_URL)],
+      }),
     }),
     ScheduleModule.forRoot(),
     I18nModule.forRoot({
