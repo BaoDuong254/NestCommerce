@@ -6,7 +6,7 @@ import { generateRoomUserId } from "src/shared/helpers";
 import { WebhookPaymentBodyType } from "src/routes/payment/models/payment.model";
 
 @Injectable()
-@WebSocketGateway({ namespace: "payment" })
+@WebSocketGateway({ namespace: "/api/v1/payment" })
 export class PaymentService {
   @WebSocketServer()
   server: Server;

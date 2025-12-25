@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Resend } from "resend";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 import ms, { StringValue } from "ms";
 import * as React from "react";
 import OtpEmail from "src/shared/emails/otp";

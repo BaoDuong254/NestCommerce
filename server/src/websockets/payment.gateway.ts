@@ -1,7 +1,7 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Server } from "socket.io";
 
-@WebSocketGateway({ namespace: "payment" })
+@WebSocketGateway({ namespace: "/api/v1/payment" })
 export class PaymentGateway {
   @WebSocketServer()
   server: Server;

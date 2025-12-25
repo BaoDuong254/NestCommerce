@@ -15,7 +15,7 @@ import { TokenService } from "src/shared/services/token.service";
 import { EmailService } from "src/shared/services/email.service";
 import { AccessTokenPayloadCreate } from "src/shared/types/jwt.type";
 import { StringValue } from "ms";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 import { addMilliseconds } from "date-fns";
 import ms from "ms";
 import {

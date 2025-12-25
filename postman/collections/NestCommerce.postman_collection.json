@@ -27,11 +27,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth/register",
+							"raw": "{{host}}/api/v1/auth/register",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"register"
 							]
@@ -67,7 +69,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"duonggiabao254@gmail.com\",\r\n    \"password\": \"123456789\"\r\n    // \"code\": \"375242\"\r\n    // \"totpCode\": \"123123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"duonggiabao254@gmail.com\",\r\n    \"password\": \"123456789\"\r\n    // \"code\": \"375242\"\r\n    // \"totpCode\": \"978693\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -75,11 +77,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth/login",
+							"raw": "{{host}}/api/v1/auth/login",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"login"
 							]
@@ -120,11 +124,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth/logout",
+							"raw": "{{host}}/api/v1/auth/logout",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"logout"
 							]
@@ -165,11 +171,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth/refresh-token",
+							"raw": "{{host}}/api/v1/auth/refresh-token",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"refresh-token"
 							]
@@ -187,7 +195,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"seller3@gmail.com\",\r\n    \"type\": \"REGISTER\"\r\n}",
+							"raw": "{\r\n    \"email\": \"seller4@gmail.com\",\r\n    \"type\": \"REGISTER\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -195,11 +203,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth/otp",
+							"raw": "{{host}}/api/v1/auth/otp",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"otp"
 							]
@@ -216,11 +226,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/auth/google-link",
+							"raw": "{{host}}/api/v1/auth/google-link",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"google-link"
 							]
@@ -246,11 +258,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth/forgot-password",
+							"raw": "{{host}}/api/v1/auth/forgot-password",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"forgot-password"
 							]
@@ -273,11 +287,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth/2fa/setup",
+							"raw": "{{host}}/api/v1/auth/2fa/setup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"2fa",
 								"setup"
@@ -293,7 +309,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"totpCode\": \"242627\"\r\n}",
+							"raw": "{\r\n    \"totpCode\": \"799799\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -301,11 +317,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/auth/2fa/disable",
+							"raw": "{{host}}/api/v1/auth/2fa/disable",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"2fa",
 								"disable"
@@ -334,11 +352,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/languages/en",
+							"raw": "{{host}}/api/v1/languages/en",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"languages",
 								"en"
 							]
@@ -361,11 +381,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/languages",
+							"raw": "{{host}}/api/v1/languages",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"languages"
 							]
 						}
@@ -378,11 +400,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/languages/en",
+							"raw": "{{host}}/api/v1/languages/en",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"languages",
 								"en"
 							]
@@ -396,11 +420,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/languages",
+							"raw": "{{host}}/api/v1/languages",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"languages"
 							]
 						}
@@ -413,11 +439,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/languages/en",
+							"raw": "{{host}}/api/v1/languages/en",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"languages",
 								"en"
 							]
@@ -445,11 +473,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/permissions/1",
+							"raw": "{{host}}/api/v1/permissions/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"permissions",
 								"1"
 							]
@@ -472,11 +502,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/permissions",
+							"raw": "{{host}}/api/v1/permissions",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"permissions"
 							]
 						}
@@ -489,11 +521,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/permissions/1",
+							"raw": "{{host}}/api/v1/permissions/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"permissions",
 								"1"
 							]
@@ -507,11 +541,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/permissions?page=1&limit=10",
+							"raw": "{{host}}/api/v1/permissions?page=1&limit=10",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"permissions"
 							],
 							"query": [
@@ -534,11 +570,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/permissions/1",
+							"raw": "{{host}}/api/v1/permissions/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"permissions",
 								"1"
 							]
@@ -566,11 +604,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/roles/1",
+							"raw": "{{host}}/api/v1/roles/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roles",
 								"1"
 							]
@@ -593,11 +633,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/roles",
+							"raw": "{{host}}/api/v1/roles",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roles"
 							]
 						}
@@ -610,11 +652,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/roles/1",
+							"raw": "{{host}}/api/v1/roles/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roles",
 								"1"
 							]
@@ -628,11 +672,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/roles?page=1&limit=10",
+							"raw": "{{host}}/api/v1/roles?page=1&limit=10",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roles"
 							],
 							"query": [
@@ -655,11 +701,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/roles/1",
+							"raw": "{{host}}/api/v1/roles/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"roles",
 								"1"
 							]
@@ -678,11 +726,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/profile",
+							"raw": "{{host}}/api/v1/profile",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"profile"
 							]
 						}
@@ -704,11 +754,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/profile",
+							"raw": "{{host}}/api/v1/profile",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"profile"
 							]
 						}
@@ -747,11 +799,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/profile/change-password",
+							"raw": "{{host}}/api/v1/profile/change-password",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"profile",
 								"change-password"
 							]
@@ -770,11 +824,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/users?page=1&limit=10",
+							"raw": "{{host}}/api/v1/users?page=1&limit=10",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users"
 							],
 							"query": [
@@ -806,11 +862,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/users",
+							"raw": "{{host}}/api/v1/users",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users"
 							]
 						}
@@ -832,11 +890,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/users/3",
+							"raw": "{{host}}/api/v1/users/3",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
 								"3"
 							]
@@ -850,11 +910,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/users/1",
+							"raw": "{{host}}/api/v1/users/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
 								"1"
 							]
@@ -868,11 +930,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/users/3",
+							"raw": "{{host}}/api/v1/users/3",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"users",
 								"3"
 							]
@@ -901,11 +965,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{host}}/media/images/upload",
+							"raw": "{{host}}/api/v1/media/images/upload",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"media",
 								"images",
 								"upload"
@@ -920,11 +986,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/media/static/example.png",
+							"raw": "{{host}}/api/v1/media/static/example.png",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"media",
 								"static",
 								"example.png"
@@ -965,11 +1033,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/media/images/upload/presigned-url",
+							"raw": "{{host}}/api/v1/media/images/upload/presigned-url",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"media",
 								"images",
 								"upload",
@@ -1016,11 +1086,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/brand-translations/1",
+									"raw": "{{host}}/api/v1/brand-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"brand-translations",
 										"1"
 									]
@@ -1043,11 +1115,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/brand-translations/1",
+									"raw": "{{host}}/api/v1/brand-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"brand-translations",
 										"1"
 									]
@@ -1070,11 +1144,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/brand-translations/1",
+									"raw": "{{host}}/api/v1/brand-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"brand-translations",
 										"1"
 									]
@@ -1088,11 +1164,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/brand-translations/1",
+									"raw": "{{host}}/api/v1/brand-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"brand-translations",
 										"1"
 									]
@@ -1108,11 +1186,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/brands?page=1&limit=10&lang=all",
+							"raw": "{{host}}/api/v1/brands?page=1&limit=10&lang=all",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"brands"
 							],
 							"query": [
@@ -1139,11 +1219,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/brands/1",
+							"raw": "{{host}}/api/v1/brands/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"brands",
 								"1"
 							]
@@ -1166,11 +1248,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/brands/1",
+							"raw": "{{host}}/api/v1/brands/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"brands",
 								"1"
 							]
@@ -1193,11 +1277,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/brands/1",
+							"raw": "{{host}}/api/v1/brands/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"brands",
 								"1"
 							]
@@ -1211,11 +1297,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/brands/1",
+							"raw": "{{host}}/api/v1/brands/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"brands",
 								"1"
 							]
@@ -1237,11 +1325,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/category-translations/1",
+									"raw": "{{host}}/api/v1/category-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"category-translations",
 										"1"
 									]
@@ -1264,11 +1354,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/category-translations",
+									"raw": "{{host}}/api/v1/category-translations",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"category-translations"
 									]
 								}
@@ -1290,11 +1382,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/category-translations/54",
+									"raw": "{{host}}/api/v1/category-translations/54",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"category-translations",
 										"54"
 									]
@@ -1308,11 +1402,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/category-translations/54",
+									"raw": "{{host}}/api/v1/category-translations/54",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"category-translations",
 										"54"
 									]
@@ -1328,11 +1424,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/categories?parentCategoryId=1",
+							"raw": "{{host}}/api/v1/categories?parentCategoryId=1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"categories"
 							],
 							"query": [
@@ -1360,11 +1458,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/categories",
+							"raw": "{{host}}/api/v1/categories",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"categories"
 							]
 						}
@@ -1377,11 +1477,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/categories/1?lang=all",
+							"raw": "{{host}}/api/v1/categories/1?lang=all",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"categories",
 								"1"
 							],
@@ -1410,11 +1512,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/categories/1",
+							"raw": "{{host}}/api/v1/categories/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"categories",
 								"1"
 							]
@@ -1428,11 +1532,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/categories/1",
+							"raw": "{{host}}/api/v1/categories/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"categories",
 								"1"
 							]
@@ -1454,11 +1560,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/product-translations/1",
+									"raw": "{{host}}/api/v1/product-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"product-translations",
 										"1"
 									]
@@ -1481,11 +1589,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/product-translations/1",
+									"raw": "{{host}}/api/v1/product-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"product-translations",
 										"1"
 									]
@@ -1508,11 +1618,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/product-translations/1",
+									"raw": "{{host}}/api/v1/product-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"product-translations",
 										"1"
 									]
@@ -1526,11 +1638,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/product-translations/1",
+									"raw": "{{host}}/api/v1/product-translations/1",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"product-translations",
 										"1"
 									]
@@ -1555,11 +1669,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/manage-product/products",
+							"raw": "{{host}}/api/v1/manage-product/products",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"manage-product",
 								"products"
 							]
@@ -1582,11 +1698,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/manage-product/products/1",
+							"raw": "{{host}}/api/v1/manage-product/products/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"manage-product",
 								"products",
 								"1"
@@ -1601,11 +1719,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/manage-product/products?createdById=5&orderBy=asc&sortBy=price",
+							"raw": "{{host}}/api/v1/manage-product/products?createdById=5&orderBy=asc&sortBy=price",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"manage-product",
 								"products"
 							],
@@ -1663,11 +1783,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/manage-product/products/1",
+							"raw": "{{host}}/api/v1/manage-product/products/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"manage-product",
 								"products",
 								"1"
@@ -1682,11 +1804,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/manage-product/products/1",
+							"raw": "{{host}}/api/v1/manage-product/products/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"manage-product",
 								"products",
 								"1"
@@ -1704,11 +1828,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/products",
+							"raw": "{{host}}/api/v1/products",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"products"
 							]
 						}
@@ -1724,11 +1850,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/products/4",
+							"raw": "{{host}}/api/v1/products/4",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"products",
 								"4"
 							]
@@ -1747,11 +1875,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/cart?page=1&limit=10",
+							"raw": "{{host}}/api/v1/cart?page=1&limit=10",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"cart"
 							],
 							"query": [
@@ -1783,11 +1913,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/cart/delete",
+							"raw": "{{host}}/api/v1/cart/delete",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"cart",
 								"delete"
 							]
@@ -1810,11 +1942,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/cart",
+							"raw": "{{host}}/api/v1/cart",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"cart"
 							]
 						}
@@ -1836,11 +1970,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/cart/1",
+							"raw": "{{host}}/api/v1/cart/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"cart",
 								"1"
 							]
@@ -1859,11 +1995,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/orders?page=1&limit=10&status=PENDING_PAYMENT",
+							"raw": "{{host}}/api/v1/orders?page=1&limit=10&status=PENDING_PAYMENT",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"orders"
 							],
 							"query": [
@@ -1891,7 +2029,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[\r\n    {\r\n        \"shopId\": 5,\r\n        \"receiver\": {\r\n            \"name\": \"test\",\r\n            \"phone\": \"09451883439\",\r\n            \"address\": \"KTX Khu A\"\r\n        },\r\n        \"cartItemIds\": [\r\n            10\r\n        ]\r\n    }\r\n]",
+							"raw": "[\r\n    {\r\n        \"shopId\": 5,\r\n        \"receiver\": {\r\n            \"name\": \"test\",\r\n            \"phone\": \"09451883439\",\r\n            \"address\": \"KTX Khu A\"\r\n        },\r\n        \"cartItemIds\": [\r\n            22\r\n        ]\r\n    }\r\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1899,11 +2037,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/orders",
+							"raw": "{{host}}/api/v1/orders",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"orders"
 							]
 						}
@@ -1916,11 +2056,13 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/orders/1",
+							"raw": "{{host}}/api/v1/orders/1",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"orders",
 								"1"
 							]
@@ -1934,11 +2076,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/orders/7",
+							"raw": "{{host}}/api/v1/orders/7",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"orders",
 								"7"
 							]
@@ -1973,7 +2117,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 5,                                   // ID giao dịch trên SePay\r\n    \"gateway\":\"Vietcombank\",                  // Brand name của ngân hàng\r\n    \"transactionDate\":\"2023-03-25 14:02:37\",  // Thời gian xảy ra giao dịch phía ngân hàng\r\n    \"accountNumber\":\"0123499999\",              // Số tài khoản ngân hàng\r\n    \"code\":null,                               // Mã code thanh toán (sepay tự nhận diện dựa vào cấu hình tại Công ty -> Cấu hình chung)\r\n    \"content\":\"DH8\",                            // Nội dung chuyển khoản\r\n    \"transferType\":\"in\",                       // Loại giao dịch. in là tiền vào, out là tiền ra\r\n    \"transferAmount\": 0,                        // Số tiền giao dịch\r\n    \"accumulated\":19077000,                    // Số dư tài khoản (lũy kế)\r\n    \"subAccount\":null,                         // Tài khoản ngân hàng phụ (tài khoản định danh),\r\n    \"referenceCode\":\"MBVCB.3278907687\",         // Mã tham chiếu của tin nhắn sms\r\n    \"description\":\"\"                           // Toàn bộ nội dung tin nhắn sms\r\n}",
+							"raw": "{\r\n    \"id\": 11,                                   // ID giao dịch trên SePay\r\n    \"gateway\":\"Vietcombank\",                  // Brand name của ngân hàng\r\n    \"transactionDate\":\"2023-03-25 14:02:37\",  // Thời gian xảy ra giao dịch phía ngân hàng\r\n    \"accountNumber\":\"0123499999\",              // Số tài khoản ngân hàng\r\n    \"code\":null,                               // Mã code thanh toán (sepay tự nhận diện dựa vào cấu hình tại Công ty -> Cấu hình chung)\r\n    \"content\":\"DH16\",                            // Nội dung chuyển khoản\r\n    \"transferType\":\"in\",                       // Loại giao dịch. in là tiền vào, out là tiền ra\r\n    \"transferAmount\": 0,                        // Số tiền giao dịch\r\n    \"accumulated\":19077000,                    // Số dư tài khoản (lũy kế)\r\n    \"subAccount\":null,                         // Tài khoản ngân hàng phụ (tài khoản định danh),\r\n    \"referenceCode\":\"MBVCB.3278907687\",         // Mã tham chiếu của tin nhắn sms\r\n    \"description\":\"\"                           // Toàn bộ nội dung tin nhắn sms\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1981,13 +2125,98 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/payment/receiver",
+							"raw": "{{host}}/api/v1/payment/receiver",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"payment",
 								"receiver"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "module review",
+			"item": [
+				{
+					"name": "Get product reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/reviews/products/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reviews",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a  review",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"best practices\",\r\n    \"rating\": 5,\r\n    \"productId\": 1,\r\n    \"orderId\": 1,\r\n    \"medias\": [\r\n        {\r\n            \"url\": \"https://facebook.com\",\r\n            \"type\": \"IMAGE\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a review",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"content\": \"best practices\",\r\n    \"rating\": 5,\r\n    \"productId\": 1,\r\n    \"orderId\": 1,\r\n    \"medias\": [\r\n        {\r\n            \"url\": \"https://facebook.com\",\r\n            \"type\": \"IMAGE\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/reviews/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"reviews",
+								"1"
 							]
 						}
 					},

@@ -24,7 +24,7 @@ import { OrderModule } from "src/routes/order/order.module";
 import { PaymentModule } from "src/routes/payment/payment.module";
 import { BullModule } from "@nestjs/bullmq";
 import { PaymentConsumer } from "src/queues/payment.consumer";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 import { WebsocketModule } from "src/websockets/websocket.module";
 import { ThrottlerModule } from "@nestjs/throttler";
 import { ThrottlerBehindProxyGuard } from "src/shared/guards/throttler-behind-proxy.guard";

@@ -1,4 +1,4 @@
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 import { HashingService } from "src/shared/services/hashing.service";
 import { PrismaService } from "src/shared/services/prisma.service";
 import { RoleName } from "src/shared/constants/role.constant";

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { OAuth2Client } from "google-auth-library";
 import { GoogleAuthStateType } from "src/routes/auth/models/auth.model";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 import { google } from "googleapis";
 import { AuthRepository } from "src/routes/auth/auth.repo";
 import { HashingService } from "src/shared/services/hashing.service";

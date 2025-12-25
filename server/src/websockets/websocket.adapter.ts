@@ -6,7 +6,8 @@ import { generateRoomUserId } from "src/shared/helpers";
 import { TokenService } from "src/shared/services/token.service";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { createClient } from "redis";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
+import { socketCorsConfig } from "src/shared/config/cors";
 
 export class WebsocketAdapter extends IoAdapter {
   private readonly tokenService: TokenService;
@@ -28,10 +29,7 @@ export class WebsocketAdapter extends IoAdapter {
   createIOServer(port: number, options?: ServerOptions): Server {
     const server = super.createIOServer(port, {
       ...options,
-      cors: {
-        origin: "*",
-        credentials: true,
-      },
+      cors: socketCorsConfig,
     }) as Server;
 
     server.adapter(this.adapterConstructor);

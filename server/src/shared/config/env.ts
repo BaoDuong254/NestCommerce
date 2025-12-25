@@ -3,7 +3,7 @@ import path from "path";
 import { config } from "dotenv";
 import z from "zod";
 
-const envPath = path.resolve(__dirname, "../../.env");
+const envPath = path.resolve(__dirname, "../../../.env");
 
 // Only load .env file if it exists (development mode)
 // In production, Docker Compose injects env vars directly
@@ -40,6 +40,7 @@ const configSchema = z.object({
   S3_ACCESS_KEY: z.string(),
   S3_SECRET_KEY: z.string(),
   REDIS_URL: z.string(),
+  CLIENT_URL: z.url(),
 });
 
 const configServer = configSchema.safeParse(process.env);

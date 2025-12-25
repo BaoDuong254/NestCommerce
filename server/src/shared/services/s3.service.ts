@@ -2,7 +2,7 @@ import { PutObjectCommand, S3 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import { Injectable } from "@nestjs/common";
 import { readFileSync } from "fs";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { contentType as mimeContentType } from "mime-types";
 

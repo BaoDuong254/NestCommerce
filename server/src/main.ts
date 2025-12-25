@@ -1,13 +1,15 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { WebsocketAdapter } from "src/websockets/websocket.adapter";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
+import { corsConfig } from "src/shared/config/cors";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { cleanupOpenApiDoc } from "nestjs-zod";
 import chalk from "chalk";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import helmet from "helmet";
 import { Logger } from "nestjs-pino";
+import { VersioningType } from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
@@ -18,8 +20,15 @@ async function bootstrap() {
   // Trust proxy settings
   app.set("trust proxy", "loopback");
 
-  // Enable CORS
-  app.enableCors();
+  // Enable CORS with shared configuration
+  app.enableCors(corsConfig);
+
+  // Enable API versioning
+  app.setGlobalPrefix("api");
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: ["1"],
+  });
 
   // Security middleware with Helmet
   app.use(helmet());
@@ -44,7 +53,7 @@ async function bootstrap() {
     )
     .build();
   const documentFactory = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, cleanupOpenApiDoc(documentFactory), {
+  SwaggerModule.setup("/api/v1/swagger", app, cleanupOpenApiDoc(documentFactory), {
     swaggerOptions: {
       persistAuthorization: true,
     },

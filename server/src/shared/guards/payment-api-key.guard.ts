@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from "@nestjs/common";
 import { Request } from "express";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 
 @Injectable()
 export class PaymentAPIKeyGuard implements CanActivate {

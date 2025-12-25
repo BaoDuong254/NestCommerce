@@ -20,7 +20,7 @@ import { MessageResDto } from "src/shared/dtos/response.dto";
 import { IsPublic } from "src/shared/decorators/auth.decorator";
 import { GoogleService } from "src/routes/auth/google.service";
 import type { Response } from "express";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 import { EmptyBodyDto } from "src/shared/dtos/request.dto";
 import { ActiveUser } from "src/shared/decorators/active-user.decorator";
 import { ApiBearerAuth } from "@nestjs/swagger";

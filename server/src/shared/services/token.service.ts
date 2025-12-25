@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import ms, { StringValue } from "ms";
-import envConfig from "src/shared/config";
+import envConfig from "src/shared/config/env";
 import {
   AccessTokenPayload,
   AccessTokenPayloadCreate,
