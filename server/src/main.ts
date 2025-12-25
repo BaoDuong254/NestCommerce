@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { cleanupOpenApiDoc } from "nestjs-zod";
 import chalk from "chalk";
 import { NestExpressApplication } from "@nestjs/platform-express";
+import helmet from "helmet";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -15,6 +16,9 @@ async function bootstrap() {
 
   // Enable CORS
   app.enableCors();
+
+  // Security middleware with Helmet
+  app.use(helmet());
 
   // WebSocket setup
   const websocketAdapter = new WebsocketAdapter(app);
