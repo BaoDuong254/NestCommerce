@@ -34,9 +34,36 @@ import { RemoveRefreshTokenCronjob } from "src/cronjobs/remove-refresh-token.cro
 import { RemoveVerificationCodeCronjob } from "src/cronjobs/remove-verification-code.cronjob";
 import { CacheModule } from "@nestjs/cache-manager";
 import KeyvRedis from "@keyv/redis";
+import { LoggerModule } from "nestjs-pino";
+import { Request, Response } from "express";
+import pino from "pino";
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        serializers: {
+          req(req: Request) {
+            return {
+              method: req.method,
+              url: req.url,
+              query: req.query,
+              params: req.params,
+            };
+          },
+          res(res: Response) {
+            return {
+              statusCode: res.statusCode,
+            };
+          },
+        },
+        stream: pino.destination({
+          dest: path.resolve("logs/app.log"),
+          sync: false, // Asynchronous logging
+          mkdir: true, // Create the directory if it doesn't exist
+        }),
+      },
+    }),
     CacheModule.register({
       isGlobal: true,
       useFactory: () => ({

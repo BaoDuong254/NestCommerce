@@ -7,9 +7,13 @@ import { cleanupOpenApiDoc } from "nestjs-zod";
 import chalk from "chalk";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import helmet from "helmet";
+import { Logger } from "nestjs-pino";
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
+
+  // Set up logging with Pino
+  app.useLogger(app.get(Logger));
 
   // Trust proxy settings
   app.set("trust proxy", "loopback");
