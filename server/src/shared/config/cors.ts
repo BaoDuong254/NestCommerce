@@ -4,8 +4,8 @@ import envConfig from "src/shared/config/env";
 export const corsConfig: CorsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = [
-      "http://localhost:5173", // Vite dev server
-      "http://localhost:4173", // Vite preview
+      // "http://localhost:5173", // Vite dev server
+      // "http://localhost:4173", // Vite preview
       envConfig.CLIENT_URL, // Production client URL
     ].filter(Boolean); // Remove undefined values
 
