@@ -34,7 +34,7 @@ http.interceptors.response.use(
         const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
         if (refreshToken) {
           const response = await axios.post<{ accessToken: string; refreshToken: string }>(
-            "http://localhost:3000/auth/refresh-token",
+            `${envConfig.VITE_API_ENDPOINT}/auth/refresh-token`,
             {
               refreshToken,
             }
