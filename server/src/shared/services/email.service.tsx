@@ -16,8 +16,8 @@ export class EmailService {
   }
   async sendOTP(payload: { email: string; code: string }) {
     return this.resend.emails.send({
-      from: "NestCommerce <onboarding@resend.dev>",
-      to: ["duonggiabao254@gmail.com"],
+      from: "NestCommerce <noreply@nestcommerce.ticklab.site>",
+      to: payload.email,
       subject: subjectTemplate,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       react: <OtpEmail code={payload.code} expiryTime={expiryTime} title={subjectTemplate} />,
