@@ -1,12 +1,12 @@
 export const API_ENDPOINTS = {
   AUTH: {
-    REGISTER: "/auth/register",
-    SEND_OTP: "/auth/otp",
-    LOGIN: "/auth/login",
-    REFRESH_TOKEN: "/auth/refresh-token",
-    LOGOUT: "/auth/logout",
-    GOOGLE_LINK: "/auth/google-link",
-    GOOGLE_CALLBACK: "/auth/google/callback",
+    REGISTER: "/api/v1/auth/register",
+    SEND_OTP: "/api/v1/auth/otp",
+    LOGIN: "/api/v1/auth/login",
+    REFRESH_TOKEN: "/api/v1/auth/refresh-token",
+    LOGOUT: "/api/v1/auth/logout",
+    GOOGLE_LINK: "/api/v1/auth/google-link",
+    GOOGLE_CALLBACK: "/api/v1/auth/google/callback",
   },
 } as const;
 

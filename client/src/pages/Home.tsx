@@ -78,7 +78,7 @@ export default function Home() {
         const presignedResponse = await http.post<{
           presignedUrl: string;
           url: string;
-        }>("/media/images/upload/presigned-url", {
+        }>("/api/v1/media/images/upload/presigned-url", {
           filename: file.name,
           filesize: file.size,
         });
