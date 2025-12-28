@@ -2,21 +2,22 @@ import fs from "fs";
 import path from "path";
 import { config } from "dotenv";
 import z from "zod";
+import chalk from "chalk";
 
-const envPath = path.resolve(__dirname, "../../../.env");
+const envPath = path.resolve(process.cwd(), ".env");
 
 // Only load .env file if it exists (development mode)
 // In production, Docker Compose injects env vars directly
 if (fs.existsSync(envPath)) {
   config({ path: envPath });
 } else if (process.env.NODE_ENV !== "production") {
-  console.log("Can not find .env file!");
+  console.error(chalk.red("Can not find .env file at path:"), chalk.yellow(envPath));
   process.exit(1);
 }
 
 const configSchema = z.object({
   PORT: z.string().optional(),
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  NODE_ENV: z.enum(["development", "production"]).default("development"),
   DATABASE_URL: z.string(),
   ADMIN_PASSWORD: z.string(),
   ADMIN_EMAIL: z.email(),

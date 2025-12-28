@@ -74,11 +74,15 @@ import pino from "pino";
     I18nModule.forRoot({
       fallbackLanguage: "en",
       loaderOptions: {
-        path: path.resolve("src/i18n/"),
-        watch: true,
+        path: path.join(__dirname, "i18n"),
+        watch: envConfig.NODE_ENV !== "production",
       },
       resolvers: [{ use: QueryResolver, options: ["lang"] }, AcceptLanguageResolver],
-      typesOutputPath: path.resolve("src/generated/i18n.generated.ts"),
+      typesOutputPath: path.join(
+        __dirname,
+        "generated",
+        `${envConfig.NODE_ENV === "production" ? "i18n.generated.d.ts" : "i18n.generated.ts"}`
+      ),
     }),
     BullModule.forRoot({
       connection: {
