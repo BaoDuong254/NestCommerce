@@ -15,7 +15,7 @@ import {
   GetOrderListQueryType,
   GetOrderListResType,
 } from "src/routes/order/models/order.model";
-import { VersionConflictException } from "src/shared/error";
+import { RequireLockException, VersionConflictException } from "src/shared/error";
 import { isNotFoundPrismaError } from "src/shared/helpers";
 import { PrismaService } from "src/shared/services/prisma.service";
 import { Prisma } from "generated/prisma";
@@ -24,6 +24,7 @@ import { PaymentStatus } from "src/shared/constants/payment.constant";
 import { OrderProducer } from "src/routes/order/order.producer";
 import { SerializeAll } from "src/shared/decorators/serialize.decorator";
 import { redlock } from "src/shared/redlock";
+import { Lock } from "redlock";
 
 @Injectable()
 @SerializeAll()
@@ -94,7 +95,13 @@ export class OrderRepo {
     const skuIds = cartItemsForSKUId.map((cartItem) => cartItem.skuId);
 
     // Lock all SKUs to be purchased
-    const locks = await Promise.all(skuIds.map((skuId) => redlock.acquire([`lock:sku:${skuId}`], 3000))); // Lock for 3 seconds
+    let locks: Lock[] = [];
+    try {
+      locks = await Promise.all(skuIds.map((skuId) => redlock.acquire([`lock:sku:${skuId}`], 3000))); // Lock for 3 seconds
+    } catch (error) {
+      console.error("Failed to acquire lock in order creation: ", error);
+      throw RequireLockException;
+    }
     try {
       const [paymentId, orders] = await this.prismaService.$transaction<[number, CreateOrderResType["orders"]]>(
         async (tx) => {

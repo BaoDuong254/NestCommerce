@@ -10,3 +10,4 @@ export const InvalidPasswordException = new UnprocessableEntityException([
 ]);
 
 export const VersionConflictException = new ConflictException("Error.VersionConflict");
+export const RequireLockException = new ConflictException("Error.RequireLock");
