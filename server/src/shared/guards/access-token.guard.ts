@@ -62,8 +62,13 @@ export class AccessTokenGuard implements CanActivate {
   private async validateUserPermission(decodedAccessToken: AccessTokenPayload, request: Request): Promise<void> {
     const roleId: number = decodedAccessToken.roleId;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const path = request.route.path as string;
+    let path = request.route.path as string;
     const method = request.method as keyof typeof HTTPMethod;
+
+    // Strip global prefix and version from path to match seeded permissions
+    // Example: /api/v1/cart -> /cart
+    path = path.replace(/^\/api\/v\d+/, "");
+
     const cacheKey = `role:${roleId}`;
     let cacheRole = await this.cacheManager.get<CachedRole>(cacheKey);
     if (!cacheRole) {

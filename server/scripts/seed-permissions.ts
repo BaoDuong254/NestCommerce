@@ -38,13 +38,12 @@ export default async function bootstrap() {
     .map((layer: RouteLayer) => {
       if (layer.route) {
         const path: string = layer.route.path;
-        const method: keyof typeof HTTPMethod = String(
-          layer.route.stack[0].method
-        ).toUpperCase() as keyof typeof HTTPMethod;
+        const method: string = String(layer.route.stack[0].method).toUpperCase();
+        if (!(method in HTTPMethod)) return undefined; // skip invalid methods
         const moduleName: string = String(path.split("/")[1]).toUpperCase();
         return {
           path,
-          method,
+          method: method as keyof typeof HTTPMethod,
           name: method + " " + path,
           module: moduleName,
         };
