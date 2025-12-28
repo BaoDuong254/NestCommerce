@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  redlock:
+    hash: f2b0c6a455011d67b1790671794b060f8258bd9e37d2269ea1ef4e2991e44a11
+    path: patches/redlock.patch
+
 importers:
 
   .:
@@ -240,6 +245,9 @@ importers:
       helmet:
         specifier: 8.1.0
         version: 8.1.0
+      ioredis:
+        specifier: 5.8.2
+        version: 5.8.2
       jsonwebtoken:
         specifier: ^9.0.3
         version: 9.0.3
@@ -285,6 +293,9 @@ importers:
       redis:
         specifier: 5.10.0
         version: 5.10.0
+      redlock:
+        specifier: 5.0.0-beta.2
+        version: 5.0.0-beta.2(patch_hash=f2b0c6a455011d67b1790671794b060f8258bd9e37d2269ea1ef4e2991e44a11)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -6419,6 +6430,10 @@ packages:
   redis@5.10.0:
     resolution: {integrity: sha512-0/Y+7IEiTgVGPrLFKy8oAEArSyEJkU0zvgV5xyi9NzNQ+SLZmyFbUsWIbgPcd4UdUh00opXGKlXJwMmsis5Byw==}
     engines: {node: '>= 18'}
+
+  redlock@5.0.0-beta.2:
+    resolution: {integrity: sha512-2RDWXg5jgRptDrB1w9O/JgSZC0j7y4SlaXnor93H/UJm/QyDiFgBKNtrh0TI6oCXqYSaSoXxFh6Sd3VtYfhRXw==}
+    engines: {node: '>=12'}
 
   reflect-metadata@0.2.2:
     resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
@@ -14503,6 +14518,10 @@ snapshots:
       '@redis/json': 5.10.0(@redis/client@5.10.0)
       '@redis/search': 5.10.0(@redis/client@5.10.0)
       '@redis/time-series': 5.10.0(@redis/client@5.10.0)
+
+  redlock@5.0.0-beta.2(patch_hash=f2b0c6a455011d67b1790671794b060f8258bd9e37d2269ea1ef4e2991e44a11):
+    dependencies:
+      node-abort-controller: 3.1.1
 
   reflect-metadata@0.2.2: {}
 
