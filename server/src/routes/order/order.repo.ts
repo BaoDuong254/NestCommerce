@@ -18,7 +18,7 @@ import {
 import { RequireLockException, VersionConflictException } from "src/shared/error";
 import { isNotFoundPrismaError } from "src/shared/helpers";
 import { PrismaService } from "src/shared/services/prisma.service";
-import { Prisma } from "generated/prisma";
+import { Prisma } from "generated/prisma/client";
 import { OrderStatus } from "src/shared/constants/order.constant";
 import { PaymentStatus } from "src/shared/constants/payment.constant";
 import { OrderProducer } from "src/routes/order/order.producer";

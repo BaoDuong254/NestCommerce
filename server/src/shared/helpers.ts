@@ -1,4 +1,4 @@
-import { Prisma } from "generated/prisma";
+import { Prisma } from "generated/prisma/client";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 

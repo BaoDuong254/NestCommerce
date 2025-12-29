@@ -74,7 +74,7 @@ import pino from "pino";
     I18nModule.forRoot({
       fallbackLanguage: "en",
       loaderOptions: {
-        path: path.join(__dirname, "i18n"),
+        path: path.join(__dirname, "/i18n/"),
         watch: envConfig.NODE_ENV !== "production",
       },
       resolvers: [{ use: QueryResolver, options: ["lang"] }, AcceptLanguageResolver],
