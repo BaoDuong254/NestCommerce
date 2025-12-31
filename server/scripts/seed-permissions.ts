@@ -23,6 +23,24 @@ const SellerModule = ["AUTH", "MEDIA", "MANAGE-PRODUCT", "PRODUCT-TRANSLATION", 
 const ClientModule = ["AUTH", "MEDIA", "PROFILE", "CART", "ORDERS", "REVIEWS"];
 const prisma = new PrismaService();
 
+const createGraphqlPermissions = async () => {
+  const permission = await prisma.permission.findFirst({
+    where: {
+      path: "/graphql",
+    },
+  });
+  if (permission) return permission;
+  return prisma.permission.create({
+    data: {
+      name: "POST /graphql",
+      description: "Access to Graphql",
+      path: "/graphql",
+      method: HTTPMethod.POST,
+      module: "GRAPHQL",
+    },
+  });
+};
+
 export default async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(3001);
@@ -104,13 +122,24 @@ export default async function bootstrap() {
       deletedAt: null,
     },
   });
-  const adminPermissionIds = updatedPermissionsInDb.map((item) => ({ id: item.id }));
+  const graphqlPermission = await createGraphqlPermissions();
+  const adminPermissionIds = updatedPermissionsInDb
+    .map((item) => ({ id: item.id }))
+    .concat({
+      id: graphqlPermission.id,
+    });
   const sellerPermissionIds = updatedPermissionsInDb
     .filter((item) => SellerModule.includes(item.module))
-    .map((item) => ({ id: item.id }));
+    .map((item) => ({ id: item.id }))
+    .concat({
+      id: graphqlPermission.id,
+    });
   const clientPermissionIds = updatedPermissionsInDb
     .filter((item) => ClientModule.includes(item.module))
-    .map((item) => ({ id: item.id }));
+    .map((item) => ({ id: item.id }))
+    .concat({
+      id: graphqlPermission.id,
+    });
 
   await Promise.all([
     updateRole(adminPermissionIds, RoleName.Admin),
