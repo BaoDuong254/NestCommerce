@@ -1,5 +1,6 @@
 import { Logger, Catch, ArgumentsHost, HttpException } from "@nestjs/common";
 import { BaseExceptionFilter } from "@nestjs/core";
+import { GqlContextType } from "@nestjs/graphql";
 import { ZodSerializationException } from "nestjs-zod";
 import { ZodError } from "zod";
 
@@ -15,6 +16,10 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
       } else {
         console.error(zodError);
       }
+    }
+
+    if (host.getType<GqlContextType>() === "graphql") {
+      return exception;
     }
 
     super.catch(exception, host);

@@ -37,6 +37,10 @@ import KeyvRedis from "@keyv/redis";
 import { LoggerModule } from "nestjs-pino";
 import { Request, Response } from "express";
 import pino from "pino";
+import { GraphQLModule } from "@nestjs/graphql";
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { AppService } from "src/app.service";
+import { AppController } from "src/app.controller";
 
 @Module({
   imports: [
@@ -103,6 +107,12 @@ import pino from "pino";
         },
       ],
     }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: path.join(process.cwd(), "src/schema.gql"),
+      context: ({ req, res }: { req: Request; res: Response }) => ({ req, res }),
+      path: "/api/v1/graphql",
+    }),
     SharedModule,
     AuthModule,
     LanguageModule,
@@ -123,6 +133,7 @@ import pino from "pino";
     WebsocketModule,
     ReviewModule,
   ],
+  controllers: [AppController],
   providers: [
     {
       provide: APP_PIPE,
@@ -143,6 +154,7 @@ import pino from "pino";
     PaymentConsumer,
     RemoveRefreshTokenCronjob,
     RemoveVerificationCodeCronjob,
+    AppService,
   ],
 })
 export class AppModule {}

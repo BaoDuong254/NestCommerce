@@ -7,6 +7,7 @@ import {
   ForbiddenException,
   Inject,
 } from "@nestjs/common";
+import { GqlContextType, GqlExecutionContext } from "@nestjs/graphql";
 import { Request } from "express";
 import { keyBy } from "lodash";
 import { REQUEST_ROLE_PERMISSIONS, REQUEST_USER_KEY } from "src/shared/constants/auth.constant";
@@ -31,11 +32,19 @@ export class AccessTokenGuard implements CanActivate {
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<Request>();
+    let request: Request;
+    let isGraphql: boolean = false;
+    if (context.getType<GqlContextType>() === "graphql") {
+      const gqlContext = GqlExecutionContext.create(context);
+      request = gqlContext.getContext<{ req: Request; res: Response }>().req;
+      isGraphql = true;
+    } else {
+      request = context.switchToHttp().getRequest<Request>();
+    }
 
     const decodedAccessToken = await this.extractAndValidateToken(request);
 
-    await this.validateUserPermission(decodedAccessToken, request);
+    await this.validateUserPermission(decodedAccessToken, request, isGraphql);
     return true;
   }
 
@@ -59,10 +68,14 @@ export class AccessTokenGuard implements CanActivate {
     return accessToken;
   }
 
-  private async validateUserPermission(decodedAccessToken: AccessTokenPayload, request: Request): Promise<void> {
+  private async validateUserPermission(
+    decodedAccessToken: AccessTokenPayload,
+    request: Request,
+    isGraphql: boolean
+  ): Promise<void> {
     const roleId: number = decodedAccessToken.roleId;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    let path = request.route.path as string;
+    let path = isGraphql ? request.baseUrl : (request.route.path as string);
     const method = request.method as keyof typeof HTTPMethod;
 
     // Strip global prefix and version from path to match seeded permissions

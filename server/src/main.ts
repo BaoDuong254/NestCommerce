@@ -30,8 +30,20 @@ async function bootstrap() {
     defaultVersion: ["1"],
   });
 
-  // Security middleware with Helmet
-  app.use(helmet());
+  // Security middleware with Helmet options for GraphQL Playground
+  app.use(
+    helmet({
+      crossOriginEmbedderPolicy: false,
+      contentSecurityPolicy: {
+        directives: {
+          imgSrc: [`'self'`, "data:", "apollo-server-landing-page.cdn.apollographql.com"],
+          scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+          manifestSrc: [`'self'`, "apollo-server-landing-page.cdn.apollographql.com"],
+          frameSrc: [`'self'`, "sandbox.embed.apollographql.com"],
+        },
+      },
+    })
+  );
 
   // WebSocket setup
   const websocketAdapter = new WebsocketAdapter(app);
@@ -61,7 +73,7 @@ async function bootstrap() {
 
   // Start the application
   await app.listen(envConfig.PORT ?? 3000);
-  console.log(chalk.blue(`Application is running on: http://localhost:${envConfig.PORT ?? 3000}`));
+  console.log(chalk.blue(`Application is running on: http://localhost:${envConfig.PORT ?? 3000}/api/v1`));
 }
 
 bootstrap().catch((err) => {

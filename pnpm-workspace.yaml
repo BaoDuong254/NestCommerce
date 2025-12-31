@@ -3,6 +3,7 @@ packages:
   - server
 
 onlyBuiltDependencies:
+  - '@apollo/protobufjs'
   - '@nestjs/core'
   - '@prisma/client'
   - '@prisma/engines'
