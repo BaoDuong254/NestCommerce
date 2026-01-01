@@ -24,7 +24,7 @@ COPY server/prisma.config.ts ./
 COPY server/nest-cli.json ./
 
 # Install dependencies (generate lockfile in CI)
-RUN pnpm install --no-frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # Install NestJS CLI globally for build command
 RUN npm install -g @nestjs/cli
@@ -58,7 +58,7 @@ COPY server/package.json ./
 COPY server/prisma.config.ts ./
 
 # Install production dependencies (no workspace needed here)
-RUN pnpm install --no-frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile --prod
 
 # Copy Prisma schema
 COPY server/prisma ./prisma

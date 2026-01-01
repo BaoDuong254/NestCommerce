@@ -7,10 +7,6 @@ WORKDIR /workspace
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 
-# Copy workspace config and patches (needed for workspace config even if client doesn't use them)
-COPY pnpm-workspace.yaml ./
-COPY patches ./patches
-
 # Setup client directory
 WORKDIR /workspace/client
 
@@ -20,7 +16,7 @@ COPY client/tsconfig*.json ./
 COPY client/vite.config.ts ./
 
 # Install dependencies (generate lockfile in CI)
-RUN pnpm install --no-frozen-lockfile
+RUN pnpm install --frozen-lockfile --ignore-scripts=false
 
 # Copy source code
 COPY client/public ./public
