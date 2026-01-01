@@ -22,6 +22,8 @@ RUN pnpm install --no-frozen-lockfile --ignore-scripts=false
 COPY client/public ./public
 COPY client/src ./src
 COPY client/index.html ./
+# Set environment variables for build
+COPY client/.env ./
 
 # Build the application
 ENV NODE_OPTIONS="--max-old-space-size=4096"
