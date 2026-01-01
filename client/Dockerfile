@@ -7,8 +7,9 @@ WORKDIR /workspace
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 
-# Copy workspace config
+# Copy workspace config and patches (needed for workspace config even if client doesn't use them)
 COPY pnpm-workspace.yaml ./
+COPY patches ./patches
 
 # Setup client directory
 WORKDIR /workspace/client
