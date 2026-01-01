@@ -37,6 +37,8 @@ RUN pnpm exec prisma generate
 
 # Copy source code
 COPY server/src ./src
+# Copy seed scripts for database initialization
+COPY server/scripts ./scripts
 
 # Build the application
 ENV NODE_OPTIONS="--max-old-space-size=4096"
@@ -68,9 +70,6 @@ COPY --from=builder /workspace/server/dist ./dist
 
 # Copy generated Prisma client from builder
 COPY --from=builder /workspace/server/generated ./generated
-
-# Copy seed scripts for database initialization
-COPY server/scripts ./scripts
 
 # Copy and set permissions for entrypoint script
 COPY server/scripts/docker-entrypoint.sh /app/docker-entrypoint.sh

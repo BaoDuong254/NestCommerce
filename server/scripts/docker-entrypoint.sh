@@ -21,7 +21,7 @@ pnpm exec prisma migrate deploy
 
 # Run database seed
 echo "🌱 Seeding database..."
-pnpm run seed
+node dist/scripts/index.js
 
 echo "🚀 Starting NestJS server..."
 # Start the server
