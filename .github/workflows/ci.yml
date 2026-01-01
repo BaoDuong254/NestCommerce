@@ -43,8 +43,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Create .env for server build
+        run: echo "${{ secrets.SERVER_ENV }}" > server/.env
+
+      - name: Create .env for client build
+        run: echo "${{ secrets.CLIENT_ENV }}" > client/.env
+  
       - name: Generate Prisma client
-        run: pnpm exec prisma generate
+        run: pnpm --filter server exec prisma generate
 
       - name: Run lint
         run: pnpm run lint
