@@ -45,9 +45,8 @@ COPY prisma.config.ts ./
 # Install production dependencies
 RUN pnpm install --no-frozen-lockfile --prod
 
-# Copy Prisma schema and generate client
+# Copy Prisma schema
 COPY prisma ./prisma
-RUN pnpm exec prisma generate
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist
