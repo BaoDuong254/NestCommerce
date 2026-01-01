@@ -45,6 +45,8 @@ jobs:
 
       - name: Run lint
         run: pnpm run lint
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
 
       - name: Run format check
         run: pnpm run format
