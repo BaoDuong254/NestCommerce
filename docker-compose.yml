@@ -1,0 +1,87 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: nestcommerce-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - nestcommerce-network
+
+  server:
+    image: ${DOCKERHUB_USERNAME}/nestcommerce-server:latest
+    container_name: nestcommerce-server
+    restart: unless-stopped
+    ports:
+      - "4010:3000"
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server/logs:/app/logs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - nestcommerce-network
+
+  client:
+    image: ${DOCKERHUB_USERNAME}/nestcommerce-client:latest
+    container_name: nestcommerce-client
+    restart: unless-stopped
+    ports:
+      - "4009:80"
+    env_file:
+      - ./client/.env
+    depends_on:
+      server:
+        condition: service_healthy
+    networks:
+      - nestcommerce-network
+
+  adminer:
+    image: adminer:latest
+    container_name: nestcommerce-adminer
+    restart: unless-stopped
+    environment:
+      - ADMINER_DEFAULT_SERVER=db
+      - ADMINER_DESIGN=nette
+    ports:
+      - "8084:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - nestcommerce-network
+
+networks:
+  nestcommerce-network:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local

@@ -1,7 +1,7 @@
 import z from "zod";
 
 const configSchema = z.object({
-  VITE_API_ENDPOINT: z.string().default("http://localhost:3000"),
+  VITE_API_ENDPOINT: z.string().default(""),
   VITE_BANK_ACCOUNT_NUMBER: z.string(),
   VITE_BANK_NAME: z.string(),
 });
