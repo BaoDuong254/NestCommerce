@@ -27,7 +27,7 @@ COPY server/nest-cli.json ./
 RUN pnpm install --no-frozen-lockfile
 
 # Install NestJS CLI globally for build command
-RUN pnpm add -g @nestjs/cli
+RUN npm install -g @nestjs/cli
 
 # Copy Prisma schema and generate client
 COPY server/prisma ./prisma
