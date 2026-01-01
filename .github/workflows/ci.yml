@@ -48,7 +48,7 @@ jobs:
 
       - name: Create .env for client build
         run: echo "${{ secrets.CLIENT_ENV }}" > client/.env
-  
+
       - name: Generate Prisma client
         run: pnpm --filter server exec prisma generate
 
@@ -62,3 +62,5 @@ jobs:
 
       - name: Run build
         run: pnpm run build
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
