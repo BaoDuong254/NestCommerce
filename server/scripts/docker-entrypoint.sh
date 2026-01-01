@@ -11,6 +11,10 @@ until pg_isready -h ${DB_HOST:-db} -p ${DB_PORT:-5432} -U ${DB_USER} -q; do
 done
 echo "✅ PostgreSQL is ready!"
 
+# Generate Prisma Client with actual DATABASE_URL
+echo "🔄 Generating Prisma Client..."
+pnpm exec prisma generate
+
 # Run Prisma migrations
 echo "🔄 Running Prisma migrations..."
 pnpm exec prisma migrate deploy
