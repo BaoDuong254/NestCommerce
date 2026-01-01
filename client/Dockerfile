@@ -29,6 +29,7 @@ COPY client/scripts ./scripts
 COPY client/index.html ./
 
 # Build the application
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm run build
 
 # Production stage

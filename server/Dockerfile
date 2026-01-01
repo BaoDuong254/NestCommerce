@@ -38,7 +38,8 @@ RUN pnpm exec prisma generate
 # Copy source code
 COPY server/src ./src
 
-# Generate swagger bundle and build the application
+# Build the application
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm run build
 
 # Production stage
