@@ -1,7 +1,8 @@
 # Build stage
 FROM node:24-alpine AS builder
 
-WORKDIR /app
+# Set workdir to parent to have workspace structure
+WORKDIR /workspace
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
@@ -9,25 +10,29 @@ RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 # Install OpenSSL for Prisma
 RUN apk add --no-cache openssl
 
-# Copy patches first (needed before pnpm install)
-COPY ../patches ./patches
+# Copy workspace config and patches first
+COPY pnpm-workspace.yaml ./
+COPY patches ./patches
 
-# Copy package files
-COPY package.json ./.npmrc ./
-COPY tsconfig.json ./
-COPY prisma.config.ts ./
+# Setup server directory
+WORKDIR /workspace/server
+
+# Copy package files from server/
+COPY server/package.json ./
+COPY server/tsconfig.json ./
+COPY server/prisma.config.ts ./
 
 # Install dependencies (generate lockfile in CI)
 RUN pnpm install --no-frozen-lockfile
 
 # Copy Prisma schema and generate client
-COPY prisma ./prisma
+COPY server/prisma ./prisma
 # Set a dummy DATABASE_URL for prisma generate (not used during generation)
 ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy?schema=public"
 RUN pnpm exec prisma generate
 
 # Copy source code
-COPY src ./src
+COPY server/src ./src
 
 # Generate swagger bundle and build the application
 RUN pnpm run bundle:swagger && pnpm run build
@@ -43,30 +48,27 @@ RUN apk add --no-cache openssl wget postgresql-client
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 
-# Copy patches first (needed before pnpm install)
-COPY ../patches ./patches
-
 # Copy package files
-COPY package.json ./.npmrc ./
-COPY prisma.config.ts ./
+COPY server/package.json ./
+COPY server/prisma.config.ts ./
 
-# Install production dependencies
+# Install production dependencies (no workspace needed here)
 RUN pnpm install --no-frozen-lockfile --prod
 
 # Copy Prisma schema
-COPY prisma ./prisma
+COPY server/prisma ./prisma
 
 # Copy built application from builder
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /workspace/server/dist ./dist
 
 # Copy generated Prisma client from builder
-COPY --from=builder /app/generated ./generated
+COPY --from=builder /workspace/server/generated ./generated
 
 # Copy seed scripts for database initialization
-COPY scripts ./scripts
+COPY server/scripts ./scripts
 
 # Copy and set permissions for entrypoint script
-COPY scripts/docker-entrypoint.sh /app/docker-entrypoint.sh
+COPY server/scripts/docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
 # Expose port 3000 for NestJS server

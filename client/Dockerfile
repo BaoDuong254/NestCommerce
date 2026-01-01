@@ -1,24 +1,32 @@
 # Build stage
 FROM node:24-alpine AS builder
 
-WORKDIR /app
+# Set workdir to parent to have workspace structure
+WORKDIR /workspace
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 
+# Copy workspace config and patches first
+COPY pnpm-workspace.yaml ./
+COPY patches ./patches
+
+# Setup client directory
+WORKDIR /workspace/client
+
 # Copy package files
-COPY package.json ./
-COPY tsconfig*.json ./
-COPY vite.config.ts ./
+COPY client/package.json ./
+COPY client/tsconfig*.json ./
+COPY client/vite.config.ts ./
 
 # Install dependencies (generate lockfile in CI)
 RUN pnpm install --no-frozen-lockfile
 
 # Copy source code
-COPY public ./public
-COPY src ./src
-COPY scripts ./scripts
-COPY index.html ./
+COPY client/public ./public
+COPY client/src ./src
+COPY client/scripts ./scripts
+COPY client/index.html ./
 
 # Build the application
 RUN pnpm run build
@@ -27,10 +35,10 @@ RUN pnpm run build
 FROM nginx:alpine
 
 # Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY client/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built application from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /workspace/client/dist /usr/share/nginx/html
 
 # Expose ports
 EXPOSE 80
