@@ -16,7 +16,7 @@ COPY client/tsconfig*.json ./
 COPY client/vite.config.ts ./
 
 # Install dependencies (generate lockfile in CI)
-RUN pnpm install --frozen-lockfile --ignore-scripts=false
+RUN pnpm install --no-frozen-lockfile --ignore-scripts=false
 
 # Copy source code
 COPY client/public ./public
