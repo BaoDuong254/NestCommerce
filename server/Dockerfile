@@ -19,11 +19,15 @@ WORKDIR /workspace/server
 
 # Copy package files from server/
 COPY server/package.json ./
-COPY server/tsconfig.json ./
+COPY server/tsconfig*.json ./
 COPY server/prisma.config.ts ./
+COPY server/nest-cli.json ./
 
 # Install dependencies (generate lockfile in CI)
 RUN pnpm install --no-frozen-lockfile
+
+# Install NestJS CLI globally for build command
+RUN pnpm add -g @nestjs/cli
 
 # Copy Prisma schema and generate client
 COPY server/prisma ./prisma
@@ -35,7 +39,7 @@ RUN pnpm exec prisma generate
 COPY server/src ./src
 
 # Generate swagger bundle and build the application
-RUN pnpm run bundle:swagger && pnpm run build
+RUN pnpm run build
 
 # Production stage
 FROM node:24-alpine
