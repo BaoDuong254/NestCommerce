@@ -19,7 +19,7 @@ RUN pnpm install --no-frozen-lockfile
 
 # Copy Prisma schema and generate client
 COPY prisma ./prisma
-RUN npx prisma generate
+RUN pnpm exec prisma generate
 
 # Copy source code
 COPY src ./src
@@ -47,7 +47,7 @@ RUN pnpm install --no-frozen-lockfile --prod
 
 # Copy Prisma schema and generate client
 COPY prisma ./prisma
-RUN npx prisma generate
+RUN pnpm exec prisma generate
 
 # Copy built application from builder
 COPY --from=builder /app/dist ./dist

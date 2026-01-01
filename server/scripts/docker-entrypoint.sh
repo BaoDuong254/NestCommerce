@@ -13,7 +13,7 @@ echo "✅ PostgreSQL is ready!"
 
 # Run Prisma migrations
 echo "🔄 Running Prisma migrations..."
-npx prisma migrate deploy
+pnpm exec prisma migrate deploy
 
 # Run database seed
 echo "🌱 Seeding database..."
