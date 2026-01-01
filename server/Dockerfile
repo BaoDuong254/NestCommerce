@@ -9,8 +9,11 @@ RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 # Install OpenSSL for Prisma
 RUN apk add --no-cache openssl
 
+# Copy patches first (needed before pnpm install)
+COPY ../patches ./patches
+
 # Copy package files
-COPY package.json ./
+COPY package.json ./.npmrc ./
 COPY tsconfig.json ./
 COPY prisma.config.ts ./
 
@@ -19,6 +22,8 @@ RUN pnpm install --no-frozen-lockfile
 
 # Copy Prisma schema and generate client
 COPY prisma ./prisma
+# Set a dummy DATABASE_URL for prisma generate (not used during generation)
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy?schema=public"
 RUN pnpm exec prisma generate
 
 # Copy source code
@@ -38,8 +43,11 @@ RUN apk add --no-cache openssl wget postgresql-client
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.27.0 --activate
 
+# Copy patches first (needed before pnpm install)
+COPY ../patches ./patches
+
 # Copy package files
-COPY package.json ./
+COPY package.json ./.npmrc ./
 COPY prisma.config.ts ./
 
 # Install production dependencies
