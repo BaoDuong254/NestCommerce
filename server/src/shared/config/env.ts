@@ -17,7 +17,7 @@ if (fs.existsSync(envPath)) {
 
 const configSchema = z.object({
   PORT: z.string().optional(),
-  NODE_ENV: z.enum(["development", "production"]).default("development"),
+  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
   DATABASE_URL: z.string(),
   ADMIN_PASSWORD: z.string(),
   ADMIN_EMAIL: z.email(),

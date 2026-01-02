@@ -1,6 +1,13 @@
 import { ArgsType, Field, Float, InputType, Int, ObjectType, PickType } from "@nestjs/graphql";
 import { UpsertSKUInput } from "src/routes/product/graphql/entities/sku.entity";
-import { OrderBy, type OrderByType, SortBy, type SortByType } from "src/shared/constants/other.constant";
+import {
+  OrderBy,
+  OrderByEnum,
+  type OrderByType,
+  SortBy,
+  SortByEnum,
+  type SortByType,
+} from "src/shared/constants/other.constant";
 import { BrandIncludeTranslation } from "src/shared/graphql-entities/shared-brand-translation.entity";
 import { CategoryIncludeTranslation } from "src/shared/graphql-entities/shared-category-translation.entity";
 import { Pagination } from "src/shared/graphql-entities/shared-pagination.entity";
@@ -34,10 +41,10 @@ export class GetProductsQuery {
   @Field(() => Int, { nullable: true })
   createdById?: number;
 
-  @Field({ defaultValue: OrderBy.Desc, nullable: true })
+  @Field(() => OrderByEnum, { defaultValue: OrderBy.Desc, nullable: true })
   orderBy: OrderByType;
 
-  @Field({ defaultValue: SortBy.CreatedAt, nullable: true })
+  @Field(() => SortByEnum, { defaultValue: SortBy.CreatedAt, nullable: true })
   sortBy: SortByType;
 }
 

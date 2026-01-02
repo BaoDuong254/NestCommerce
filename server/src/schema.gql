@@ -139,9 +139,22 @@ type GetProduct {
 }
 
 type Query {
-  products(page: Int = 1, limit: Int = 10, name: String, brandIds: [Int!], categories: [Int!], minPrice: Float, maxPrice: Float, createdById: Int, orderBy: String = "desc", sortBy: String = "createdAt"): [GetProducts!]!
+  products(page: Int = 1, limit: Int = 10, name: String, brandIds: [Int!], categories: [Int!], minPrice: Float, maxPrice: Float, createdById: Int, orderBy: OrderBy = Desc, sortBy: SortBy = CreatedAt): [GetProducts!]!
   product(id: Int!): GetProducts!
-  manageProducts(page: Int = 1, limit: Int = 10, name: String, brandIds: [Int!], categories: [Int!], minPrice: Float, maxPrice: Float, createdById: Int!, orderBy: String = "desc", sortBy: String = "createdAt", isPublic: Boolean): GetProducts!
+  manageProducts(page: Int = 1, limit: Int = 10, name: String, brandIds: [Int!], categories: [Int!], minPrice: Float, maxPrice: Float, createdById: Int!, orderBy: OrderBy = Desc, sortBy: SortBy = CreatedAt, isPublic: Boolean): GetProducts!
+}
+
+"""Order direction for sorting"""
+enum OrderBy {
+  Asc
+  Desc
+}
+
+"""Field to sort by"""
+enum SortBy {
+  Price
+  CreatedAt
+  Sale
 }
 
 type Mutation {

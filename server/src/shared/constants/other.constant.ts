@@ -1,4 +1,5 @@
 import path from "path";
+import { registerEnumType } from "@nestjs/graphql";
 
 export const UPLOAD_DIR = path.resolve("upload");
 export const ALL_LANGUAGE_CODE = "all";
@@ -13,6 +14,27 @@ export const SortBy = {
   CreatedAt: "createdAt",
   Sale: "sale",
 } as const;
+
+export enum OrderByEnum {
+  Asc = "asc",
+  Desc = "desc",
+}
+
+export enum SortByEnum {
+  Price = "price",
+  CreatedAt = "createdAt",
+  Sale = "sale",
+}
+
+registerEnumType(OrderByEnum, {
+  name: "OrderBy",
+  description: "Order direction for sorting",
+});
+
+registerEnumType(SortByEnum, {
+  name: "SortBy",
+  description: "Field to sort by",
+});
 
 export const PREFIX_PAYMENT_CODE = "DH";
 

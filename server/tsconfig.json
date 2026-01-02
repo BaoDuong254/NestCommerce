@@ -23,6 +23,7 @@
     "noFallthroughCasesInSwitch": false,
     "strict": true,
     "strictPropertyInitialization": false,
+    "types": ["jest"],
     "paths": {
       "src/*": ["./src/*"],
       "generated/*": ["./generated/*"]
@@ -31,5 +32,7 @@
   // Enable ts-node to recognize path aliases
   "ts-node": {
     "require": ["tsconfig-paths/register"]
-  }
+  },
+  "include": ["**/*.spec.ts", "**/*.d.ts", "**/*.ts"],
+  "exclude": ["node_modules", "dist", "generated"]
 }
