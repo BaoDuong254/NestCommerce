@@ -1,0 +1,12 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow API endpoints
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://nestcommerce.ticklab.site/sitemap.xml
+
+# Crawl delay (optional, 1 second)
+Crawl-delay: 1
