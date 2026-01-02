@@ -53,9 +53,13 @@ export class PaymentRepo {
       });
 
       // 2. Check payment and money info valid with orders
-      const paymentId = body.code
-        ? Number(body.code.split(PREFIX_PAYMENT_CODE)[1])
-        : Number(body.content?.split(PREFIX_PAYMENT_CODE)[1]);
+      const extractPaymentId = (text: string | null): number => {
+        if (!text) return NaN;
+        const match = text.match(new RegExp(`${PREFIX_PAYMENT_CODE}(\\d+)`, "i"));
+        return match ? Number(match[1]) : NaN;
+      };
+
+      const paymentId = extractPaymentId(body.code) || extractPaymentId(body.content);
       if (isNaN(paymentId)) {
         throw new BadRequestException("Cannot get payment id from content");
       }
