@@ -8,7 +8,7 @@ import jestPlugin from "eslint-plugin-jest";
 
 export default defineConfig(
   {
-    ignores: ["eslint.config.mjs", "dist/**", "node_modules/**", "**/generated/**"],
+    ignores: ["eslint.config.mjs", "dist/**", "node_modules/**", "**/generated/**", "coverage/**"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,

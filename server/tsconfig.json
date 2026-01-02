@@ -34,5 +34,5 @@
     "require": ["tsconfig-paths/register"]
   },
   "include": ["**/*.spec.ts", "**/*.d.ts", "**/*.ts"],
-  "exclude": ["node_modules", "dist", "generated"]
+  "exclude": ["node_modules", "dist", "generated", "coverage"]
 }
