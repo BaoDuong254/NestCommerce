@@ -2,6 +2,37 @@
 
 A comprehensive e-commerce platform built with modern technologies. Features product management, order processing, user authentication, and real-time communication. Built as a full-stack monorepo application.
 
+## 📋 Table of Contents
+
+- [NestCommerce](#nestcommerce)
+  - [📋 Table of Contents](#-table-of-contents)
+  - [✨ Features](#-features)
+  - [🛠 Tech Stack](#-tech-stack)
+    - [Frontend](#frontend)
+    - [Backend](#backend)
+    - [DevOps \& Tools](#devops--tools)
+  - [🛠 System Requirements](#-system-requirements)
+    - [Install pnpm](#install-pnpm)
+  - [🚀 Project Installation](#-project-installation)
+    - [1. Clone repository](#1-clone-repository)
+    - [2. Install dependencies](#2-install-dependencies)
+  - [🏃‍♂️ Running the Project](#️-running-the-project)
+    - [Development mode](#development-mode)
+    - [First-time setup](#first-time-setup)
+    - [Production build](#production-build)
+  - [📚 API Documentation](#-api-documentation)
+    - [Accessing API Docs](#accessing-api-docs)
+  - [📮 Testing with Postman](#-testing-with-postman)
+    - [Setup](#setup)
+    - [Features](#features)
+  - [🧪 Testing](#-testing)
+    - [Running Tests](#running-tests)
+    - [⚠️ Important: E2E Testing Requirements](#️-important-e2e-testing-requirements)
+  - [🔄 Git Workflow](#-git-workflow)
+    - [Commit Message Convention](#commit-message-convention)
+    - [Hooks](#hooks)
+    - [Branch Naming](#branch-naming)
+    - [Standard Workflow](#standard-workflow)
 ## ✨ Features
 
 - 🔐 **Authentication & Authorization** - JWT-based auth with Google OAuth integration and 2FA (TOTP)
@@ -53,38 +84,6 @@ A comprehensive e-commerce platform built with modern technologies. Features pro
 - **Formatting**: Prettier
 - **Git Hooks**: Husky + lint-staged
 - **Commit Convention**: Commitlint
-
-## 📋 Table of Contents
-
-- [NestCommerce](#nestcommerce)
-  - [✨ Features](#-features)
-  - [🛠 Tech Stack](#-tech-stack)
-    - [Frontend](#frontend)
-    - [Backend](#backend)
-    - [DevOps \& Tools](#devops--tools)
-  - [📋 Table of Contents](#-table-of-contents)
-  - [🛠 System Requirements](#-system-requirements)
-    - [Install pnpm](#install-pnpm)
-  - [🚀 Project Installation](#-project-installation)
-    - [1. Clone repository](#1-clone-repository)
-    - [2. Install dependencies](#2-install-dependencies)
-  - [🏃‍♂️ Running the Project](#️-running-the-project)
-    - [Development mode](#development-mode)
-    - [First-time setup](#first-time-setup)
-    - [Production build](#production-build)
-  - [📚 API Documentation](#-api-documentation)
-    - [Accessing API Docs](#accessing-api-docs)
-  - [📮 Testing with Postman](#-testing-with-postman)
-    - [Setup](#setup)
-    - [Features](#features)
-  - [🧪 Testing](#-testing)
-    - [Running Tests](#running-tests)
-    - [⚠️ Important: E2E Testing Requirements](#️-important-e2e-testing-requirements)
-  - [🔄 Git Workflow](#-git-workflow)
-    - [Commit Message Convention](#commit-message-convention)
-    - [Hooks](#hooks)
-    - [Branch Naming](#branch-naming)
-    - [Standard Workflow](#standard-workflow)
 
 ## 🛠 System Requirements
 
