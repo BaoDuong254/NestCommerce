@@ -58,3 +58,13 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 .turbo/
 .react-email/
+
+# Generated at deploy time by server/scripts/export-openapi.ts
+client/public/openapi.json
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+infra/terraform/terraform.tfvars
+.wrangler/

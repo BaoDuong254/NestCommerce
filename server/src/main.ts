@@ -3,8 +3,8 @@ import { AppModule } from "./app.module";
 import { WebsocketAdapter } from "src/websockets/websocket.adapter";
 import envConfig from "src/shared/config/env";
 import { corsConfig } from "src/shared/config/cors";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { cleanupOpenApiDoc } from "nestjs-zod";
+import { SwaggerModule } from "@nestjs/swagger";
+import { createOpenApiDocument } from "src/shared/config/swagger";
 import chalk from "chalk";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import helmet from "helmet";
@@ -51,21 +51,7 @@ async function bootstrap() {
   app.useWebSocketAdapter(websocketAdapter);
 
   // Swagger setup
-  const config = new DocumentBuilder()
-    .setTitle("NestCommerce API")
-    .setDescription("API documentation for the NestCommerce application")
-    .setVersion("1.0")
-    .addBearerAuth()
-    .addApiKey(
-      {
-        name: "authorization",
-        type: "apiKey",
-      },
-      "payment-api-key"
-    )
-    .build();
-  const documentFactory = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("/api/v1/swagger", app, cleanupOpenApiDoc(documentFactory), {
+  SwaggerModule.setup("/api/v1/swagger", app, createOpenApiDocument(app), {
     swaggerOptions: {
       persistAuthorization: true,
     },

@@ -64,7 +64,6 @@ export class MediaController {
 
   @Post("images/upload/presigned-url")
   @ZodResponse({ type: PresignedUploadFileResDto })
-  @IsPublic()
   async createPresignedUrl(@Body() body: PresignedUploadFileBodyDto) {
     return this.mediaService.getPresignedUrl(body);
   }

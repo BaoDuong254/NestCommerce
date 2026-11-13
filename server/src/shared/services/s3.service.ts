@@ -13,6 +13,7 @@ export class S3Service {
     this.s3 = new S3({
       // endpoint: envConfig.S3_ENPOINT, // Uncomment this line if using another service like DigitalOcean Spaces
       region: envConfig.S3_REGION,
+      requestChecksumCalculation: "WHEN_REQUIRED",
       credentials: {
         secretAccessKey: envConfig.S3_SECRET_KEY,
         accessKeyId: envConfig.S3_ACCESS_KEY,
@@ -66,10 +67,15 @@ export class S3Service {
     return parallelUploads3.done();
   }
 
-  createPresignedUrlWithClient(filename: string) {
+  createPresignedUrlWithClient(filename: string, contentLength: number) {
     const lookup = mimeContentType(filename);
     const contentType = typeof lookup === "string" ? lookup : "application/octet-stream";
-    const command = new PutObjectCommand({ Bucket: envConfig.S3_BUCKET_NAME, Key: filename, ContentType: contentType });
-    return getSignedUrl(this.s3, command, { expiresIn: 100 });
+    const command = new PutObjectCommand({
+      Bucket: envConfig.S3_BUCKET_NAME,
+      Key: filename,
+      ContentType: contentType,
+      ContentLength: contentLength,
+    });
+    return getSignedUrl(this.s3, command, { expiresIn: 100, signableHeaders: new Set(["content-type"]) });
   }
 }

@@ -153,6 +153,7 @@
           "tsconfig": {
             "module": "commonjs",
             "moduleResolution": "node",
+            "allowJs": true,
             "resolvePackageJsonExports": false,
             "paths": {
               "src/*": [
@@ -166,6 +167,9 @@
         }
       ]
     },
+    "transformIgnorePatterns": [
+      "node_modules/(?!\\.pnpm|chalk|uuid)"
+    ],
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],

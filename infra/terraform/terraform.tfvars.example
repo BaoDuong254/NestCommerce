@@ -1,0 +1,31 @@
+# Copy to terraform.tfvars (gitignored) and fill in.
+
+cloudflare_account_id = "your-cloudflare-account-id"
+cloudflare_zone_id    = "zone-id-of-duonggiabao.com"
+# cloudflare_api_token = "..."  # or export CLOUDFLARE_API_TOKEN
+
+server_image = "your-dockerhub-user/nestcommerce-server:latest"
+
+# Everything from server/.env.example except PORT, NODE_ENV, DATABASE_URL, REDIS_URL, CLIENT_URL, S3_* (set by the stack).
+server_env = {
+  ADMIN_PASSWORD     = ""
+  ADMIN_EMAIL        = ""
+  ADMIN_NAME         = ""
+  ADMIN_PHONE_NUMBER = ""
+
+  ACCESS_TOKEN_SECRET      = ""
+  ACCESS_TOKEN_EXPIRES_IN  = "1H"
+  REFRESH_TOKEN_SECRET     = ""
+  REFRESH_TOKEN_EXPIRES_IN = "1D"
+
+  PAYMENT_API_KEY = ""
+  OTP_EXPIRES_IN  = "5M"
+  RESEND_API_KEY  = ""
+
+  GOOGLE_CLIENT_ID           = ""
+  GOOGLE_CLIENT_SECRET       = ""
+  GOOGLE_REDIRECT_URI        = "https://nestcommerce-api.duonggiabao.com/api/v1/auth/google/callback"
+  GOOGLE_CLIENT_REDIRECT_URI = "https://nestcommerce.duonggiabao.com/oauth-google-callback"
+
+  APP_NAME = "NestCommerce"
+}

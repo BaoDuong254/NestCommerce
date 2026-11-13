@@ -7,5 +7,11 @@
   "useTabs": false,
   "singleQuote": false,
   "printWidth": 120,
-  "jsxSingleQuote": true
+  "jsxSingleQuote": true,
+  "overrides": [
+    {
+      "files": ["**/*.jsonc", "tsconfig*.json"],
+      "options": { "trailingComma": "none" }
+    }
+  ]
 }

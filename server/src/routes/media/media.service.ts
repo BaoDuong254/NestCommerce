@@ -34,7 +34,7 @@ export class MediaService {
 
   async getPresignedUrl(body: PresignedUploadFileBodyType) {
     const randomFilename = generateRandomFilename(body.filename);
-    const presignedUrl = await this.s3Service.createPresignedUrlWithClient(randomFilename);
+    const presignedUrl = await this.s3Service.createPresignedUrlWithClient(randomFilename, body.filesize);
     const url = presignedUrl.split("?")[0];
     return {
       presignedUrl,

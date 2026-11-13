@@ -1,0 +1,100 @@
+version: "3"
+
+# Run from the repo root: task -d infra <task>   (or `cd infra && task <task>`)
+# Always uses the "nestcommerce" AWS profile (see README), never whatever profile the shell has.
+
+env:
+  AWS_PROFILE: nestcommerce
+
+vars:
+  AWS_PROFILE_GUARD:
+    sh: '[ -z "$AWS_PROFILE" ] || [ "$AWS_PROFILE" = nestcommerce ] || { echo "AWS_PROFILE is set to \"$AWS_PROFILE\" in this shell and overrides the Taskfile; unset it (PowerShell: Remove-Item Env:AWS_PROFILE, bash: unset AWS_PROFILE)" >&2; exit 1; }'
+  TF: terraform
+  REGION: ap-southeast-1
+  CLUSTER: nestcommerce
+  SERVICE: nestcommerce
+  API: https://nestcommerce-api.duonggiabao.com
+  WEB: https://nestcommerce.duonggiabao.com
+  ECS: aws ecs --region ap-southeast-1 --cluster nestcommerce
+
+tasks:
+  login:
+    desc: Create the nestcommerce SSO profile on first run (interactive), log in if the session expired
+    interactive: true
+    cmds:
+      - |
+        if ! aws configure get sso_session >/dev/null 2>&1 && ! aws configure get sso_start_url >/dev/null 2>&1; then
+          echo "Profile nestcommerce not found, creating it: enter your IAM Identity Center start URL, then pick the account and role."
+          (unset AWS_PROFILE; aws configure sso --profile nestcommerce)
+        fi
+      - aws sts get-caller-identity >/dev/null 2>&1 || aws sso login
+      - aws sts get-caller-identity --query Arn --output text
+
+  init:
+    desc: "terraform init with the S3 backend (BUCKET=S3 state bucket in the nestcommerce account)"
+    requires:
+      vars: [BUCKET]
+    cmds:
+      - terraform -chdir={{.TF}} init -backend-config="bucket={{.BUCKET}}"
+
+  plan:
+    desc: terraform plan
+    cmds:
+      - terraform -chdir={{.TF}} plan {{.CLI_ARGS}}
+
+  apply:
+    desc: terraform apply (read the plan before typing yes)
+    interactive: true
+    cmds:
+      - terraform -chdir={{.TF}} apply {{.CLI_ARGS}}
+
+  destroy:
+    desc: Tear down everything (ECS, SSM params, tunnel, DNS record)
+    interactive: true
+    cmds:
+      - terraform -chdir={{.TF}} destroy {{.CLI_ARGS}}
+
+  api:up:
+    desc: Start the API (1 Fargate task, pulls :latest) and wait until it answers
+    cmds:
+      - "{{.ECS}} update-service --service {{.SERVICE}} --desired-count 1 --query service.desiredCount"
+      - "{{.ECS}} wait services-stable --services {{.SERVICE}}"
+      - |
+        for i in $(seq 1 60); do
+          code=$(curl -s -o /dev/null -w "%{http_code}" {{.API}}/api/v1)
+          [ "$code" = 200 ] && echo "API up: {{.API}}/api/v1  docs: {{.WEB}}/docs" && exit 0
+          echo "waiting for API ($code)"; sleep 5
+        done
+        echo "API did not answer 200, check: task api:logs"; exit 1
+
+  api:down:
+    desc: Stop the API (0 tasks, ~0 cost). The client and /docs stay online.
+    cmds:
+      - "{{.ECS}} update-service --service {{.SERVICE}} --desired-count 0 --query service.desiredCount"
+
+  api:redeploy:
+    desc: Restart the running task to pull the latest image (DB is reseeded)
+    cmds:
+      - "{{.ECS}} update-service --service {{.SERVICE}} --force-new-deployment --query service.desiredCount"
+
+  api:status:
+    desc: Desired/running task count
+    cmds:
+      - "{{.ECS}} describe-services --services {{.SERVICE}} --query 'services[0].{desired:desiredCount,running:runningCount,pending:pendingCount}'"
+
+  api:logs:
+    desc: Tail CloudWatch logs of all containers
+    cmds:
+      - aws logs tail /ecs/nestcommerce --region {{.REGION}} --follow {{.CLI_ARGS}}
+
+  client:deploy:
+    desc: Manual client deploy to Cloudflare Workers (CI does this on every merge to main)
+    summary: Needs CLOUDFLARE_API_TOKEN (or wrangler login) and server/.env for the OpenAPI export.
+    dir: ..
+    env:
+      VITE_API_ENDPOINT: "{{.API}}"
+      API_URL: "{{.API}}"
+    cmds:
+      - pnpm run build
+      - cd server && node dist/scripts/export-openapi.js ../client/dist/openapi.json
+      - cd client && npx --yes --ignore-scripts wrangler@4.156.0 deploy

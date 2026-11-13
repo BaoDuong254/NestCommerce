@@ -2,8 +2,14 @@ import { z } from "zod";
 
 export const presignedUploadFileBodySchema = z
   .object({
-    filename: z.string({ error: "Error.InvalidFilename" }),
-    filesize: z.number({ error: "Error.InvalidFilesize" }).max(5 * 1024 * 1024, { error: "Error.FilesizeTooLarge" }), // 5MB
+    filename: z
+      .string({ error: "Error.InvalidFilename" })
+      .regex(/\.(jpe?g|png|webp)$/i, { error: "Error.InvalidFilename" }),
+    filesize: z
+      .number({ error: "Error.InvalidFilesize" })
+      .int({ error: "Error.InvalidFilesize" })
+      .positive({ error: "Error.InvalidFilesize" })
+      .max(5 * 1024 * 1024, { error: "Error.FilesizeTooLarge" }), // 5MB
   })
   .strict();
 

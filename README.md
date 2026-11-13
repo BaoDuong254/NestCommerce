@@ -46,7 +46,7 @@ A comprehensive e-commerce platform built with modern technologies. Features pro
 - 📧 **Email Notifications** - Automated email system with React Email and Resend
 - 🌐 **Internationalization** - Multi-language support (i18n)
 - 📊 **Admin Dashboard** - Comprehensive management tools
-- 🐳 **Docker Support** - Containerized deployment with Docker Compose
+- ☁️ **Deployment** - API on AWS ECS Fargate (on-demand), client + static Swagger on Cloudflare Workers ([infra/README.md](infra/README.md))
 - 📝 **API Documentation** - OpenAPI/Swagger and GraphQL
 
 ## 🛠 Tech Stack
@@ -79,7 +79,7 @@ A comprehensive e-commerce platform built with modern technologies. Features pro
 
 - **Package Manager**: pnpm 10.27.0
 - **Monorepo**: Turbo
-- **Containerization**: Docker + Docker Compose
+- **Deployment**: Docker, AWS ECS Fargate, Cloudflare Workers + Tunnel, Terraform
 - **Database UI**: Adminer
 - **Linting**: ESLint 9
 - **Formatting**: Prettier
