@@ -186,10 +186,10 @@ resource "aws_ecs_task_definition" "this" {
 }
 
 resource "aws_ecs_service" "this" {
-  name            = local.name
-  cluster         = aws_ecs_cluster.this.id
-  task_definition = aws_ecs_task_definition.this.arn
-  launch_type     = "FARGATE"
+  name                               = local.name
+  cluster                            = aws_ecs_cluster.this.id
+  task_definition                    = aws_ecs_task_definition.this.arn
+  launch_type                        = "FARGATE"
   desired_count                      = 0
   deployment_minimum_healthy_percent = 0
   deployment_maximum_percent         = 100
