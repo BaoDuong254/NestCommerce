@@ -33,6 +33,7 @@ A comprehensive e-commerce platform built with modern technologies. Features pro
     - [Hooks](#hooks)
     - [Branch Naming](#branch-naming)
     - [Standard Workflow](#standard-workflow)
+
 ## ✨ Features
 
 - 🔐 **Authentication & Authorization** - JWT-based auth with Google OAuth integration and 2FA (TOTP)
@@ -62,7 +63,7 @@ A comprehensive e-commerce platform built with modern technologies. Features pro
 
 ### Backend
 
-- **Runtime**: Node.js 24.12.0
+- **Runtime**: Node.js 26.13.0
 - **Framework**: NestJS 11 + TypeScript
 - **Database**: PostgreSQL 17
 - **ORM**: Prisma 7
@@ -87,7 +88,7 @@ A comprehensive e-commerce platform built with modern technologies. Features pro
 
 ## 🛠 System Requirements
 
-- Node.js >= 24.12.0
+- Node.js >= 26.13.0
 - pnpm >= 10.27.0
 - Git
 - Docker (optional, for containerized deployment)
