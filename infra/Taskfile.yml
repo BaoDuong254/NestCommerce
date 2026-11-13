@@ -15,7 +15,7 @@ vars:
   SERVICE: nestcommerce
   API: https://nestcommerce-api.duonggiabao.com
   WEB: https://nestcommerce.duonggiabao.com
-  ECS: aws ecs --region ap-southeast-1 --cluster nestcommerce
+  ECS: aws ecs --region ap-southeast-1
 
 tasks:
   login:
@@ -48,6 +48,11 @@ tasks:
     cmds:
       - terraform -chdir={{.TF}} apply {{.CLI_ARGS}}
 
+  output:
+    desc: "terraform output (e.g. task output -- -raw media_secret_key)"
+    cmds:
+      - terraform -chdir={{.TF}} output {{.CLI_ARGS}}
+
   destroy:
     desc: Tear down everything (ECS, SSM params, tunnel, DNS record)
     interactive: true
@@ -57,11 +62,12 @@ tasks:
   api:up:
     desc: Start the API (1 Fargate task, pulls :latest) and wait until it answers
     cmds:
-      - "{{.ECS}} update-service --service {{.SERVICE}} --desired-count 1 --query service.desiredCount"
-      - "{{.ECS}} wait services-stable --services {{.SERVICE}}"
+      - "{{.ECS}} update-service --cluster {{.CLUSTER}} --service {{.SERVICE}} --desired-count 1 --query service.desiredCount"
+      - "{{.ECS}} wait services-stable --cluster {{.CLUSTER}} --services {{.SERVICE}}"
       - |
         for i in $(seq 1 60); do
-          code=$(curl -s -o /dev/null -w "%{http_code}" {{.API}}/api/v1)
+          # Body goes to a temp file: curl.exe on Windows cannot write to the literal path /dev/null.
+          code=$(curl -s -o "${TEMP:-/tmp}/nestcommerce-health" -w "%{http_code}" {{.API}}/api/v1)
           [ "$code" = 200 ] && echo "API up: {{.API}}/api/v1  docs: {{.WEB}}/docs" && exit 0
           echo "waiting for API ($code)"; sleep 5
         done
@@ -70,17 +76,17 @@ tasks:
   api:down:
     desc: Stop the API (0 tasks, ~0 cost). The client and /docs stay online.
     cmds:
-      - "{{.ECS}} update-service --service {{.SERVICE}} --desired-count 0 --query service.desiredCount"
+      - "{{.ECS}} update-service --cluster {{.CLUSTER}} --service {{.SERVICE}} --desired-count 0 --query service.desiredCount"
 
   api:redeploy:
     desc: Restart the running task to pull the latest image (DB is reseeded)
     cmds:
-      - "{{.ECS}} update-service --service {{.SERVICE}} --force-new-deployment --query service.desiredCount"
+      - "{{.ECS}} update-service --cluster {{.CLUSTER}} --service {{.SERVICE}} --force-new-deployment --query service.desiredCount"
 
   api:status:
     desc: Desired/running task count
     cmds:
-      - "{{.ECS}} describe-services --services {{.SERVICE}} --query 'services[0].{desired:desiredCount,running:runningCount,pending:pendingCount}'"
+      - "{{.ECS}} describe-services --cluster {{.CLUSTER}} --services {{.SERVICE}} --query 'services[0].{desired:desiredCount,running:runningCount,pending:pendingCount}'"
 
   api:logs:
     desc: Tail CloudWatch logs of all containers

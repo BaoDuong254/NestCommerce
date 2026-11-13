@@ -88,7 +88,16 @@ export class AuthController {
 
   @Get("google/callback")
   @IsPublic()
-  async googleCallback(@Query("code") code: string, @Query("state") state: string, @Res() res: Response) {
+  async googleCallback(
+    @Query("code") code: string | undefined,
+    @Query("state") state: string,
+    @Query("error") googleError: string | undefined,
+    @Res() res: Response
+  ) {
+    if (!code) {
+      const message = googleError ?? "Missing authorization code";
+      return res.redirect(`${envConfig.GOOGLE_CLIENT_REDIRECT_URI}?error=${encodeURIComponent(message)}`);
+    }
     try {
       const data = await this.googleService.googleCallback({ code, state });
       return res.redirect(
